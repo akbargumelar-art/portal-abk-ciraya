@@ -79,13 +79,10 @@ export const authService = {
     },
 
     generateToken(userId: number, email: string, role: string): string {
-        return jwt.sign(
-            { userId, email, role },
-            appConfig.jwt.secret,
-            { expiresIn: appConfig.jwt.expiresIn }
-        );
+        const payload = { userId, email, role };
+        const options = { expiresIn: appConfig.jwt.expiresIn };
+        return jwt.sign(payload, appConfig.jwt.secret, options);
     },
-
     async getUserById(userId: number) {
         const user = await prisma.user.findUnique({
             where: { id: userId },
