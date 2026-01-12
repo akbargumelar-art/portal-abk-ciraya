@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import prisma from '../config/database.js';
 import { appConfig } from '../config/index.js';
 import { AppError } from '../middleware/errorHandler.js';
@@ -79,9 +79,11 @@ export const authService = {
     },
 
     generateToken(userId: number, email: string, role: string): string {
-        const payload = { userId, email, role };
-        const options = { expiresIn: appConfig.jwt.expiresIn };
-        return jwt.sign(payload, appConfig.jwt.secret, options);
+        return jwt.sign(
+            { userId, email, role },
+            appConfig.jwt.secret as Secret,
+            { expiresIn: appConfig.jwt.expiresIn }
+        );
     },
     async getUserById(userId: number) {
         const user = await prisma.user.findUnique({
