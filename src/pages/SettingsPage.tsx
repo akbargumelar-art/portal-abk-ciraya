@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Database, Server, CheckCircle, XCircle, RefreshCw, Settings as SettingsIcon, Save, Eye, EyeOff, BarChart3, Link as LinkIcon } from 'lucide-react';
-import Header from '../components/layout/Header';
 import { Card, Button, Input, Badge } from '../components/ui/index';
+import { PageShell } from '../components/layout/Page';
 
 interface ConnectionConfig {
     host: string;
@@ -13,6 +13,16 @@ interface ConnectionConfig {
 
 const LOOKER_URL_KEY = 'portal_looker_url';
 const DEFAULT_LOOKER_URL = 'https://lookerstudio.google.com/embed/reporting/fe7230d7-5028-4682-bc15-b99859ceb2aa';
+
+const isAllowedLookerUrl = (url: string) => {
+    try {
+        const parsed = new URL(url);
+        return parsed.origin === 'https://lookerstudio.google.com'
+            && parsed.pathname.startsWith('/embed/reporting/');
+    } catch {
+        return false;
+    }
+};
 
 const SettingsPage: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -61,6 +71,10 @@ const SettingsPage: React.FC = () => {
     };
 
     const handleSaveLookerUrl = () => {
+        if (!isAllowedLookerUrl(lookerUrl)) {
+            alert('URL Looker harus berasal dari https://lookerstudio.google.com/embed/reporting/.');
+            return;
+        }
         localStorage.setItem(LOOKER_URL_KEY, lookerUrl);
         setLookerSaved(true);
         setTimeout(() => setLookerSaved(false), 3000);
@@ -74,12 +88,8 @@ const SettingsPage: React.FC = () => {
     };
 
     return (
-        <div className="p-6 animate-fade-in">
-            <Header
-                title="Pengaturan"
-            />
-
-            <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <PageShell title="Pengaturan">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left Column - Settings Cards */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* Looker Reports URL */}
@@ -150,8 +160,8 @@ const SettingsPage: React.FC = () => {
                                 <Database size={20} className="text-blue-600" />
                             </div>
                             <div>
-                                <h3 className="font-semibold text-gray-900">Koneksi Database</h3>
-                                <p className="text-sm text-gray-500">Konfigurasi koneksi MySQL</p>
+                                <h3 className="font-semibold text-gray-900">Koneksi API & MySQL</h3>
+                                <p className="text-sm text-gray-500">Frontend terhubung ke API; MySQL tetap di server terpisah</p>
                             </div>
                         </div>
 
@@ -196,7 +206,8 @@ const SettingsPage: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-9 text-gray-400 hover:text-white"
+                                        className="absolute right-3 top-9 text-gray-400 hover:text-gray-700"
+                                        aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
                                     >
                                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                     </button>
@@ -259,18 +270,18 @@ const SettingsPage: React.FC = () => {
                         </div>
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-white">API Server</span>
-                                <Badge variant="success">Online</Badge>
+                                <span className="text-sm text-gray-600">API Server</span>
+                                <Badge variant="neutral">Belum diuji</Badge>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-white">Database</span>
+                                <span className="text-sm text-gray-600">Database</span>
                                 <Badge variant={connectionStatus === 'connected' ? 'success' : 'neutral'}>
-                                    {connectionStatus === 'connected' ? 'Connected' : 'Not Tested'}
+                                    {connectionStatus === 'connected' ? 'Terhubung' : 'Server terpisah'}
                                 </Badge>
                             </div>
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-white">Cache</span>
-                                <Badge variant="success">Active</Badge>
+                                <span className="text-sm text-gray-600">Cache</span>
+                                <Badge variant="neutral">N/A</Badge>
                             </div>
                         </div>
                     </Card>
@@ -298,12 +309,12 @@ const SettingsPage: React.FC = () => {
 
                     <Card className="bg-yellow-50 border border-yellow-200">
                         <p className="text-sm text-yellow-700">
-                            <strong>Catatan:</strong> Perubahan konfigurasi database memerlukan restart server untuk diterapkan.
+                            <strong>Catatan:</strong> Kredensial MySQL tidak boleh disimpan di frontend. Simpan koneksi database di backend/API server.
                         </p>
                     </Card>
                 </div>
             </div>
-        </div>
+        </PageShell>
     );
 };
 

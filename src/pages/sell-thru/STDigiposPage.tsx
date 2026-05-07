@@ -132,7 +132,7 @@ const SummaryTable: React.FC<SummaryTableProps> = ({ data, title, icon, mode }) 
 
             {expanded && (
                 <div className="overflow-x-auto max-h-[400px]">
-                    <table className="w-full text-[10px] border-collapse whitespace-nowrap">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-20 bg-[#2c4a6a]">
                             {mode === 'voucher' && (
                                 <tr>
@@ -321,7 +321,7 @@ const DetailTable: React.FC<DetailTableProps> = ({ data, mode }) => {
                         </button>
                     </div>
                     <div className="overflow-x-auto max-h-[500px]">
-                        <table className="w-full text-[9px] border-collapse whitespace-nowrap">
+                        <table className="data-table data-table-compact whitespace-nowrap">
                             <thead className="sticky top-0 z-20 bg-[#2c4a6a]">
                                 {/* Row 1: Brand Groups (only for voucher mode) */}
                                 {mode === 'voucher' && (
@@ -410,7 +410,7 @@ const DetailTable: React.FC<DetailTableProps> = ({ data, mode }) => {
                                             {row.rs_number}
                                         </td>
                                         <td className="p-1.5 font-medium sticky left-[140px] bg-white border-r truncate max-w-[120px]" title={row.outlet_name}>{row.outlet_name}</td>
-                                        <td className="p-1.5 text-white sticky left-[260px] bg-white border-r truncate">{row.salesforce_name}</td>
+                                        <td className="p-1.5 text-gray-700 sticky left-[260px] bg-white border-r truncate">{row.salesforce_name}</td>
                                         <td className="p-1.5 text-gray-500 border-r">{row.tap_name}</td>
                                         <td className="p-1.5 text-gray-500 border-r text-[8px]">{row.kabupaten}</td>
                                         <td className="p-1.5 text-gray-500 border-r text-[8px]">{row.kecamatan}</td>

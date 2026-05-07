@@ -206,7 +206,7 @@ export const Modal: React.FC<ModalProps> = ({
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div
-                className={`bg-white rounded-xl shadow-xl ${sizeClasses[size]} w-full mx-4 animate-fade-in`}
+                className={`bg-white rounded-lg shadow-lg ${sizeClasses[size]} w-full mx-4 animate-fade-in`}
                 onClick={e => e.stopPropagation()}
             >
                 {title && (

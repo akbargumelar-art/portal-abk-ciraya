@@ -26,6 +26,7 @@ import {
     DollarSign,
     Upload,
     FolderOpen,
+    Database,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSidebar } from '../../contexts/SidebarContext';
@@ -129,7 +130,7 @@ const Tooltip: React.FC<TooltipProps> = ({ label, anchorRect }) => {
 };
 
 const Sidebar: React.FC = () => {
-    const { isCollapsed, toggleSidebar } = useSidebar();
+    const { isCollapsed, toggleSidebar, isMobileOpen, closeMobileSidebar } = useSidebar();
     const { user, logout } = useAuth();
     const location = useLocation();
     const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
@@ -164,6 +165,7 @@ const Sidebar: React.FC = () => {
             fee: <DollarSign size={20} />,
             upload: <Upload size={20} />,
             docs: <FolderOpen size={20} />,
+            doa: <Database size={20} />,
         };
         return icons[iconName] || <LayoutDashboard size={20} />;
     };
@@ -320,68 +322,93 @@ const Sidebar: React.FC = () => {
     };
 
     return (
-        <aside
-            className={`fixed left-0 top-0 h-screen bg-white border-r border-gray-200 z-40 transition-all duration-300 flex flex-col ${isCollapsed ? 'w-[72px]' : 'w-64'
-                }`}
-        >
-            {/* Logo Section */}
-            <div className="h-16 flex items-center px-4 border-b border-gray-200">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F13B4B] to-[#D92939] flex items-center justify-center shadow-lg flex-shrink-0">
-                        <span className="text-white font-bold text-lg">CR</span>
+        <>
+            {/* Mobile Backdrop */}
+            {isMobileOpen && (
+                <div
+                    className="fixed inset-0 bg-black/40 z-30 lg:hidden"
+                    onClick={closeMobileSidebar}
+                    aria-hidden="true"
+                />
+            )}
+
+            <aside
+                className={`
+                    fixed left-0 top-0 h-screen bg-white border-r border-gray-200 z-40 flex flex-col
+                    transition-all duration-300
+                    ${isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'}
+                    w-64
+                    ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                `}
+            >
+                {/* Logo Section */}
+                <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F13B4B] to-[#D92939] flex items-center justify-center shadow-lg flex-shrink-0">
+                            <span className="text-white font-bold text-lg">CR</span>
+                        </div>
+                        {!isCollapsed && (
+                            <div className="overflow-hidden">
+                                <h1 className="font-bold text-gray-900 text-sm whitespace-nowrap">Portal Cirebon Raya</h1>
+                                <p className="text-xs text-gray-500 whitespace-nowrap">PT Agrabudi Komunika</p>
+                            </div>
+                        )}
                     </div>
+                    {/* Close button on mobile */}
+                    <button
+                        onClick={closeMobileSidebar}
+                        className="lg:hidden p-1.5 hover:bg-gray-100 rounded-lg text-gray-500"
+                        aria-label="Tutup sidebar"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                {/* Navigation */}
+                <nav className="flex-1 py-4 px-3 overflow-y-auto" aria-label="Navigasi utama">
+                    <ul className="space-y-1">
+                        {navItems.map((item) => renderNavItem(item))}
+                    </ul>
+                </nav>
+
+                {/* User Section */}
+                <div className="p-3 border-t border-gray-200">
                     {!isCollapsed && (
-                        <div className="overflow-hidden">
-                            <h1 className="font-bold text-gray-900 text-sm whitespace-nowrap">Portal Cirebon Raya</h1>
-                            <p className="text-xs text-gray-500 whitespace-nowrap">PT Agrabudi Komunika</p>
+                        <div className="flex items-center gap-3 px-3 py-2 mb-2">
+                            <img
+                                src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=F13B4B&color=fff`}
+                                alt={`Avatar ${user.name}`}
+                                className="w-9 h-9 rounded-full object-cover ring-2 ring-gray-100 flex-shrink-0"
+                            />
+                            <div className="overflow-hidden flex-1">
+                                <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
+                                <p className="text-xs text-gray-500 truncate capitalize">{user.role.replace('_', ' ')}</p>
+                            </div>
                         </div>
                     )}
+
+                    <button
+                        onClick={logout}
+                        className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors ${isCollapsed ? 'justify-center' : ''}`}
+                        title={isCollapsed ? 'Logout' : undefined}
+                    >
+                        <LogOut size={20} />
+                        {!isCollapsed && <span className="text-sm font-medium">Logout</span>}
+                    </button>
                 </div>
-            </div>
 
-            {/* Navigation */}
-            <nav className="flex-1 py-4 px-3 overflow-y-auto">
-                <ul className="space-y-1">
-                    {navItems.map((item) => renderNavItem(item))}
-                </ul>
-            </nav>
-
-            {/* User Section */}
-            <div className="p-3 border-t border-gray-200">
-                {!isCollapsed && (
-                    <div className="flex items-center gap-3 px-3 py-2 mb-2">
-                        <img
-                            src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=F13B4B&color=fff`}
-                            alt={user.name}
-                            className="w-9 h-9 rounded-full object-cover ring-2 ring-gray-100 flex-shrink-0"
-                        />
-                        <div className="overflow-hidden flex-1">
-                            <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
-                            <p className="text-xs text-gray-500 truncate capitalize">{user.role.replace('_', ' ')}</p>
-                        </div>
-                    </div>
-                )}
-
+                {/* Collapse Toggle — desktop only */}
                 <button
-                    onClick={logout}
-                    className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors ${isCollapsed ? 'justify-center' : ''
-                        }`}
-                    title={isCollapsed ? 'Logout' : undefined}
+                    onClick={toggleSidebar}
+                    className="hidden lg:flex absolute -right-3 top-20 w-6 h-6 bg-white border border-gray-200 rounded-full items-center justify-center shadow-sm hover:bg-gray-50 transition-colors z-50"
+                    aria-label={isCollapsed ? 'Buka sidebar' : 'Tutup sidebar'}
                 >
-                    <LogOut size={20} />
-                    {!isCollapsed && <span className="text-sm font-medium">Logout</span>}
+                    {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
                 </button>
-            </div>
-
-            {/* Collapse Toggle */}
-            <button
-                onClick={toggleSidebar}
-                className="absolute -right-3 top-20 w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors z-50"
-            >
-                {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-            </button>
-        </aside>
+            </aside>
+        </>
     );
 };
 
 export default Sidebar;
+

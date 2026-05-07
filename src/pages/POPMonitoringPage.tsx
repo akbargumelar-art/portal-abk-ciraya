@@ -218,7 +218,7 @@ const POPMonitoringPage: React.FC = () => {
                     <p className="text-sm text-gray-500">Hilang</p>
                 </Card>
                 <Card className="text-center">
-                    <p className="text-2xl font-bold text-white">{stats.pending}</p>
+                    <p className="text-2xl font-bold text-amber-600">{stats.pending}</p>
                     <p className="text-sm text-gray-500">Pending</p>
                 </Card>
             </div>
@@ -262,7 +262,7 @@ const POPMonitoringPage: React.FC = () => {
 
                             {/* Records Table */}
                             <div className="overflow-x-auto">
-                                <table className="w-full">
+                                <table className="data-table">
                                     <thead>
                                         <tr className="border-b border-gray-100 bg-gray-50">
                                             <th className="text-left p-4 text-sm font-semibold text-white">Bukti</th>
@@ -292,7 +292,7 @@ const POPMonitoringPage: React.FC = () => {
                                                             size="md"
                                                         />
                                                     </td>
-                                                    <td className="p-4 text-sm text-white">{record.date}</td>
+                                                    <td className="p-4 text-sm text-gray-600">{record.date}</td>
                                                     <td className="p-4">
                                                         <div>
                                                             <p className="font-medium text-gray-900">{record.outletName}</p>
@@ -321,7 +321,7 @@ const POPMonitoringPage: React.FC = () => {
                                                             {getStatusDisplayName(record.status)}
                                                         </Badge>
                                                     </td>
-                                                    <td className="p-4 text-sm text-white">
+                                                    <td className="p-4 text-sm text-gray-600">
                                                         {record.salesforceName || '-'}
                                                     </td>
                                                     <td className="p-4 text-sm text-gray-500">
@@ -354,7 +354,7 @@ const POPMonitoringPage: React.FC = () => {
                             </div>
 
                             <div className="overflow-x-auto">
-                                <table className="w-full">
+                                <table className="data-table">
                                     <thead>
                                         <tr className="border-b border-gray-100 bg-gray-50">
                                             <th className="text-left p-4 text-sm font-semibold text-white">Bukti</th>
@@ -379,9 +379,9 @@ const POPMonitoringPage: React.FC = () => {
                                                     />
                                                 </td>
                                                 <td className="p-4">
-                                                    <span className="font-mono text-sm text-white">{trx.id}</span>
+                                                    <span className="font-mono text-sm text-gray-700">{trx.id}</span>
                                                 </td>
-                                                <td className="p-4 text-sm text-white">{trx.date}</td>
+                                                <td className="p-4 text-sm text-gray-600">{trx.date}</td>
                                                 <td className="p-4">
                                                     <Badge variant={
                                                         trx.type === 'inbound' ? 'info' :
@@ -392,8 +392,8 @@ const POPMonitoringPage: React.FC = () => {
                                                     </Badge>
                                                 </td>
                                                 <td className="p-4 font-medium text-gray-900">{trx.itemName}</td>
-                                                <td className="p-4 text-sm text-white">{trx.quantity}</td>
-                                                <td className="p-4 text-sm text-white">
+                                                <td className="p-4 text-sm text-gray-600">{trx.quantity}</td>
+                                                <td className="p-4 text-sm text-gray-600">
                                                     {trx.toOutletName || trx.fromLocation || '-'}
                                                 </td>
                                                 <td className="p-4 text-sm text-gray-500">
@@ -460,7 +460,7 @@ const POPMonitoringPage: React.FC = () => {
 
                             {/* Categories Table */}
                             <div className="overflow-x-auto">
-                                <table className="w-full">
+                                <table className="data-table">
                                     <thead>
                                         <tr className="border-b border-gray-100 bg-gray-50">
                                             <th className="text-left p-4 text-sm font-semibold text-white">ID</th>
@@ -474,7 +474,7 @@ const POPMonitoringPage: React.FC = () => {
                                     <tbody>
                                         {categories.map(cat => (
                                             <tr key={cat.id} className="border-b border-gray-50 hover:bg-gray-50">
-                                                <td className="p-4 font-mono text-sm text-white">{cat.id}</td>
+                                                <td className="p-4 font-mono text-sm text-gray-700">{cat.id}</td>
                                                 <td className="p-4">
                                                     {editingCategory === cat.id ? (
                                                         <Input

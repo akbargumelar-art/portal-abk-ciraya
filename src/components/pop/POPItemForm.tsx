@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { X, Save, Package } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { Modal, Input, Select, Button } from '../ui/index';
 import ImageDropzone from '../ui/ImageDropzone';
 import { CATEGORY_OPTIONS } from '../../services/mock/popData';
@@ -151,11 +151,10 @@ const POPItemForm: React.FC<POPItemFormProps> = ({
                 {/* Photo Upload */}
                 <ImageDropzone
                     label="Foto Referensi"
-                    helpText="Upload foto item untuk katalog (max 5MB)"
-                    previewUrl={photoPreview}
+                    helperText="Upload foto item untuk katalog (max 5MB)"
+                    currentPreview={photoPreview}
                     onImageSelect={handleImageSelect}
-                    onImageRemove={handleImageRemove}
-                    size="lg"
+                    onImageClear={handleImageRemove}
                 />
 
                 {/* Name */}
@@ -232,7 +231,7 @@ const POPItemForm: React.FC<POPItemFormProps> = ({
                     value={formData.minStock}
                     onChange={(e) => handleChange('minStock', parseInt(e.target.value) || 0)}
                     min={0}
-                    helpText="Notifikasi akan muncul jika stock di bawah nilai ini"
+                    helperText="Notifikasi akan muncul jika stock di bawah nilai ini"
                 />
 
                 {/* Actions */}

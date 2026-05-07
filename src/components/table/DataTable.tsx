@@ -108,16 +108,16 @@ function DataTable<T extends Record<string, any>>({
         <div className="card overflow-hidden">
             {/* Header */}
             {(title || searchable || exportable) && (
-                <div className="p-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4">
+                <div className="table-caption-bar">
                     {title && <h3 className="font-semibold text-gray-900">{title}</h3>}
 
                     <div className="flex items-center gap-3 ml-auto">
                         {searchable && (
-                            <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2">
+                            <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2">
                                 <Search size={16} className="text-gray-400" />
                                 <input
                                     type="text"
-                                    placeholder="Search..."
+                                    placeholder="Cari data..."
                                     value={searchQuery}
                                     onChange={e => {
                                         setSearchQuery(e.target.value);
@@ -142,17 +142,17 @@ function DataTable<T extends Record<string, any>>({
             )}
 
             {/* Table */}
-            <div className="overflow-x-auto">
-                <table className="w-full">
+            <div className="table-scroll">
+                <table className="data-table">
                     {/* Grouped Headers */}
                     {groupedHeaders && (
                         <thead>
-                            <tr className="bg-[#2c4a6a]">
+                            <tr>
                                 {groupedHeaders.map((group, idx) => (
                                     <th
                                         key={idx}
                                         colSpan={group.colspan}
-                                        className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider border-b border-gray-700"
+                                        className="text-center"
                                     >
                                         {group.label}
                                     </th>
@@ -162,11 +162,11 @@ function DataTable<T extends Record<string, any>>({
                     )}
 
                     <thead>
-                        <tr className="bg-[#2c4a6a]">
+                        <tr>
                             {columns.map((col, idx) => (
                                 <th
                                     key={idx}
-                                    className={`px-4 py-3 text-${col.align || 'left'} text-xs font-semibold text-white uppercase tracking-wider border-b border-gray-700 ${col.sortable ? 'cursor-pointer hover:bg-[#3d5f85] select-none' : ''
+                                    className={`text-${col.align || 'left'} ${col.sortable ? 'cursor-pointer select-none' : ''
                                         }`}
                                     style={{ width: col.width }}
                                     onClick={() => col.sortable && handleSort(col.key as string)}
@@ -212,7 +212,7 @@ function DataTable<T extends Record<string, any>>({
                                     {columns.map((col, colIdx) => (
                                         <td
                                             key={colIdx}
-                                            className={`px-4 py-3 text-sm text-${col.align || 'left'}`}
+                                            className={`text-${col.align || 'left'} ${col.align === 'right' ? 'numeric' : ''}`}
                                         >
                                             {col.render
                                                 ? col.render(row[col.key as keyof T], row)
@@ -229,9 +229,9 @@ function DataTable<T extends Record<string, any>>({
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+                <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between bg-white">
                     <p className="text-sm text-gray-500">
-                        Showing {((currentPage - 1) * pageSize) + 1} to {Math.min(currentPage * pageSize, processedData.length)} of {processedData.length} entries
+                        Menampilkan {((currentPage - 1) * pageSize) + 1} - {Math.min(currentPage * pageSize, processedData.length)} dari {processedData.length} data
                     </p>
 
                     <div className="flex items-center gap-1">

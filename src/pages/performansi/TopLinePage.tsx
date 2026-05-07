@@ -211,7 +211,7 @@ const ParameterSummaryCards: React.FC<{ data: TopLineRow[] }> = memo(({ data }) 
     }, [data]);
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             <div className="bg-slate-500 px-4 py-2">
                 <div className="flex items-center gap-2">
                     <Layers size={16} className="text-white/80" />
@@ -248,7 +248,7 @@ const ParameterSummaryCards: React.FC<{ data: TopLineRow[] }> = memo(({ data }) 
                                     </div>
                                     <div className="flex justify-between text-[10px] pt-1 border-t border-gray-200">
                                         <span className="text-gray-500">M-1:</span>
-                                        <span className="text-white">{formatCurrency(s.m1)}</span>
+                                        <span className="text-gray-600">{formatCurrency(s.m1)}</span>
                                     </div>
                                     <div className="flex justify-between text-[10px]">
                                         <span className="text-gray-500">MoM:</span>
@@ -299,7 +299,7 @@ const TopLineSummaryCard: React.FC<{ data: TopLineRow[] }> = memo(({ data }) => 
     const isPositiveGrowth = stats.momGrowth >= 0;
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             <div className="bg-slate-600 px-4 py-2">
                 <div className="flex items-center gap-2">
                     <BarChart3 size={16} className="text-white/80" />
@@ -321,7 +321,7 @@ const TopLineSummaryCard: React.FC<{ data: TopLineRow[] }> = memo(({ data }) => 
                     </div>
                     <div className="flex justify-between mt-1.5 text-[10px] text-gray-400">
                         <span>Act: <b className="text-green-600">{formatCurrency(stats.totalActual)}</b></span>
-                        <span>Tgt: <b className="text-white">{formatCurrency(stats.totalTarget)}</b></span>
+                        <span>Tgt: <b className="text-gray-600">{formatCurrency(stats.totalTarget)}</b></span>
                     </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
@@ -390,7 +390,7 @@ const MetricCell = memo(({ metric }: { metric: RevenueMetric }) => {
 
     return (
         <>
-            <td className="p-1 text-center text-white text-[10px]">{formatCurrency(metric.target)}</td>
+            <td className="p-1 text-center text-gray-600 text-[10px]">{formatCurrency(metric.target)}</td>
             <td className="p-1 text-center font-semibold text-blue-700 text-[10px]">{formatCurrency(metric.actual)}</td>
             <td className="p-1 text-center">
                 <div className="flex flex-col gap-0.5">
@@ -443,7 +443,7 @@ const RevenueTable: React.FC<RevenueTableProps> = memo(({ title, icon, data, sho
 
             {expanded && (
                 <div className="overflow-x-auto">
-                    <table className="w-full text-[10px] border-collapse whitespace-nowrap">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-20 bg-[#2c4a6a]">
                             <tr>
                                 {showKabupatenColumn && (
@@ -482,7 +482,7 @@ const RevenueTable: React.FC<RevenueTableProps> = memo(({ title, icon, data, sho
                             {data.map(row => (
                                 <tr key={row.id} className="hover:bg-gray-50 border-b">
                                     {showKabupatenColumn && (
-                                        <td className="p-2 border-r sticky left-0 bg-white z-10 text-white text-[10px]">
+                                        <td className="p-2 border-r sticky left-0 bg-white z-10 text-gray-700 text-[10px]">
                                             {row.kabupaten || '-'}
                                         </td>
                                     )}
@@ -490,7 +490,7 @@ const RevenueTable: React.FC<RevenueTableProps> = memo(({ title, icon, data, sho
                                         {row.name}
                                     </td>
                                     {extraColumns.map((col, idx) => (
-                                        <td key={idx} className={`p-2 border-r text-white text-[10px] ${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : 'text-left'}`}>
+                                        <td key={idx} className={`p-2 border-r text-gray-700 text-[10px] ${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : 'text-left'}`}>
                                             {row[col.accessor] as React.ReactNode}
                                         </td>
                                     ))}
@@ -538,7 +538,7 @@ const TopLinePage: React.FC = () => {
             </div>
 
             {/* Month Filter */}
-            <div className="mt-4 bg-slate-100 rounded-xl border border-gray-200 p-4">
+            <div className="mt-4 bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <Calendar size={16} className="text-gray-400" />

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Upload, FileText, Download, CheckCircle, XCircle, Clock, AlertTriangle } from 'lucide-react';
-import Header from '../components/layout/Header';
 import { Card, Button, Select, Badge } from '../components/ui/index';
+import { ContentPanel, PageShell } from '../components/layout/Page';
 
 interface UploadRecord {
     id: string;
@@ -55,7 +55,7 @@ const DataUploadPage: React.FC = () => {
             case 'failed':
                 return <Badge variant="error">Gagal</Badge>;
             case 'processing':
-                return <Badge variant="info">Processing</Badge>;
+                return <Badge variant="info">Diproses</Badge>;
             case 'pending':
                 return <Badge variant="neutral">Pending</Badge>;
         }
@@ -85,11 +85,11 @@ const DataUploadPage: React.FC = () => {
             id: `UPL${String(records.length + 1).padStart(3, '0')}`,
             filename: file.name,
             type: uploadTypes.find(t => t.value === selectedType)?.label || 'Other',
-            uploadedBy: 'Current User',
+            uploadedBy: 'Pengguna Aktif',
             uploadedAt: new Date().toLocaleString('id-ID'),
             status: 'processing',
         };
-        setRecords([newRecord, ...records]);
+        setRecords(prev => [newRecord, ...prev]);
 
         // Simulate processing
         setTimeout(() => {
@@ -102,13 +102,11 @@ const DataUploadPage: React.FC = () => {
     };
 
     return (
-        <div className="p-6 animate-fade-in">
-            <Header
-                title="Data Upload Center"
-                subtitle="Upload dan import data secara bulk"
-            />
-
-            <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <PageShell
+            title="Pusat Unggah Data"
+            subtitle="Upload dan import data secara bulk"
+        >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Upload Area */}
                 <div className="lg:col-span-1">
                     <Card>
@@ -135,7 +133,7 @@ const DataUploadPage: React.FC = () => {
                             onDrop={handleDrop}
                         >
                             <Upload size={40} className="text-gray-400 mx-auto mb-4" />
-                            <p className="text-sm text-white mb-2">
+                            <p className="text-sm text-gray-700 mb-2">
                                 Drag & drop file disini atau
                             </p>
                             <Button
@@ -168,21 +166,18 @@ const DataUploadPage: React.FC = () => {
                         </div>
 
                         <Button variant="outline" className="w-full mt-4" leftIcon={<Download size={16} />}>
-                            Download Template
+                            Unduh Template
                         </Button>
                     </Card>
                 </div>
 
                 {/* Upload History */}
                 <div className="lg:col-span-2">
-                    <Card padding="none">
-                        <div className="p-4 border-b border-gray-100">
-                            <h3 className="font-semibold text-gray-900">Riwayat Upload</h3>
-                        </div>
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
+                    <ContentPanel title="Riwayat Upload">
+                        <div className="table-scroll">
+                            <table className="data-table">
                                 <thead>
-                                    <tr className="border-b border-gray-100 bg-gray-50">
+                                    <tr className="border-b border-[#1f3a55] bg-[#2C4A6A]">
                                         <th className="text-left p-4 text-sm font-semibold text-white">File</th>
                                         <th className="text-left p-4 text-sm font-semibold text-white">Tipe</th>
                                         <th className="text-left p-4 text-sm font-semibold text-white">Waktu</th>
@@ -205,7 +200,7 @@ const DataUploadPage: React.FC = () => {
                                             <td className="p-4">
                                                 <Badge variant="neutral">{record.type}</Badge>
                                             </td>
-                                            <td className="p-4 text-sm text-white">{record.uploadedAt}</td>
+                                            <td className="p-4 text-sm text-gray-600">{record.uploadedAt}</td>
                                             <td className="p-4 text-center">
                                                 <div className="flex items-center justify-center gap-2">
                                                     {getStatusIcon(record.status)}
@@ -215,7 +210,7 @@ const DataUploadPage: React.FC = () => {
                                             <td className="p-4 text-center text-sm">
                                                 {record.status === 'success' && (
                                                     <span className="text-green-600">
-                                                        {record.rowsProcessed} rows
+                                                        {record.rowsProcessed} baris
                                                         {record.errors ? `, ${record.errors} errors` : ''}
                                                     </span>
                                                 )}
@@ -223,7 +218,7 @@ const DataUploadPage: React.FC = () => {
                                                     <span className="text-red-600">{record.errors} errors</span>
                                                 )}
                                                 {record.status === 'processing' && (
-                                                    <span className="text-blue-600">Processing...</span>
+                                                    <span className="text-blue-600">Diproses...</span>
                                                 )}
                                             </td>
                                         </tr>
@@ -231,10 +226,10 @@ const DataUploadPage: React.FC = () => {
                                 </tbody>
                             </table>
                         </div>
-                    </Card>
+                    </ContentPanel>
                 </div>
             </div>
-        </div>
+        </PageShell>
     );
 };
 

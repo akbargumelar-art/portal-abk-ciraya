@@ -16,7 +16,7 @@ export const SellThruSummaryCard: React.FC<SellThruSummaryCardProps> = memo(({ s
     // Handle null/undefined stats gracefully
     if (!stats) {
         return (
-            <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
+            <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
                 <div className="text-center text-gray-400 py-4">Memuat data...</div>
             </div>
         );
@@ -38,7 +38,7 @@ export const SellThruSummaryCard: React.FC<SellThruSummaryCardProps> = memo(({ s
     const headerBg = mode === 'perdana' ? 'from-red-600 to-red-700' : 'from-emerald-500 to-emerald-600';
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             {/* Header Strip */}
             <div className={`bg-gradient-to-r ${headerBg} px-4 py-2 flex items-center justify-between`}>
                 <div className="flex items-center gap-2">
@@ -74,7 +74,7 @@ export const SellThruSummaryCard: React.FC<SellThruSummaryCardProps> = memo(({ s
                                 style={{ width: `${Math.min(stats.achievementPct, 100)}%` }}
                             />
                         </div>
-                        <div className="flex justify-between mt-1.5 text-[10px] text-gray-400">
+                        <div className="flex justify-between mt-1.5 text-xs text-gray-400">
                             <span>Actual: <b className="text-gray-600">{stats.totalActual?.toLocaleString() || 0}</b></span>
                             <span>Target: <b className="text-gray-600">{stats.totalTarget?.toLocaleString() || 0}</b></span>
                         </div>
@@ -99,7 +99,7 @@ export const SellThruSummaryCard: React.FC<SellThruSummaryCardProps> = memo(({ s
                             </span>
                             <span className="text-gray-400 ml-1">unit</span>
                         </div>
-                        <div className="text-[10px] text-gray-400 mt-0.5">
+                        <div className="text-xs text-gray-400 mt-0.5">
                             M-1: {stats.totalPrevMonth?.toLocaleString() || 0}
                         </div>
                     </div>
@@ -119,7 +119,7 @@ export const SellThruSummaryCard: React.FC<SellThruSummaryCardProps> = memo(({ s
                                     <span className="text-green-600 font-bold text-lg">
                                         {Math.round(stats.bestPerformer.ach)}%
                                     </span>
-                                    <span className="text-[10px] text-gray-400">achievement</span>
+                                    <span className="text-xs text-gray-400">achievement</span>
                                 </div>
                             </>
                         ) : (
@@ -142,7 +142,7 @@ export const SellThruSummaryCard: React.FC<SellThruSummaryCardProps> = memo(({ s
                                     <span className="text-red-500 font-bold text-lg">
                                         {Math.round(stats.worstPerformer.ach)}%
                                     </span>
-                                    <span className="text-[10px] text-gray-400">achievement</span>
+                                    <span className="text-xs text-gray-400">achievement</span>
                                 </div>
                             </>
                         ) : (

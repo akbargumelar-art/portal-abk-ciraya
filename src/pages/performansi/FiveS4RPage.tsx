@@ -183,7 +183,7 @@ const SummaryCards: React.FC<{ data5S: FiveSData[], data4R: FourRData[] }> = mem
     ];
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             <div className="bg-slate-600 px-4 py-2">
                 <div className="flex items-center gap-2">
                     <BarChart3 size={16} className="text-white/80" />
@@ -245,7 +245,7 @@ const FiveSTable: React.FC<{ data: FiveSData[] }> = memo(({ data }) => {
 
             {expanded && (
                 <div className="overflow-x-auto">
-                    <table className="w-full text-[9px] border-collapse whitespace-nowrap">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-20">
                             <tr className="bg-gray-100">
                                 <th className="p-1.5 border border-gray-200 min-w-[100px] sticky left-0 bg-gray-100 z-30 text-left font-semibold">TAP</th>
@@ -253,7 +253,7 @@ const FiveSTable: React.FC<{ data: FiveSData[] }> = memo(({ data }) => {
                                     <th key={g.label} colSpan={g.cols} className={`p-1.5 border border-gray-300 text-center text-white font-semibold ${g.color}`}>{g.label}</th>
                                 ))}
                             </tr>
-                            <tr className="bg-gray-50 text-white">
+                            <tr className="bg-gray-50 text-gray-700">
                                 <th className="p-1 border border-gray-200 sticky left-0 bg-gray-50 z-30"></th>
                                 {/* SA */}
                                 <th className="p-1 border text-center">M-1</th><th className="p-1 border text-center">Actual</th><th className="p-1 border text-center bg-amber-50">MoM</th><th className="p-1 border text-center">Target</th><th className="p-1 border text-center bg-green-50">%Ach</th>
@@ -368,7 +368,7 @@ const FourRTable: React.FC<{ data: FourRData[] }> = memo(({ data }) => {
 
             {expanded && (
                 <div className="overflow-x-auto">
-                    <table className="w-full text-[9px] border-collapse whitespace-nowrap">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-20">
                             <tr className="bg-gray-100">
                                 <th className="p-1.5 border border-gray-200 min-w-[100px] sticky left-0 bg-gray-100 z-30 text-left font-semibold">TAP</th>
@@ -376,7 +376,7 @@ const FourRTable: React.FC<{ data: FourRData[] }> = memo(({ data }) => {
                                     <th key={g.label} colSpan={g.cols} className={`p-1.5 border border-gray-300 text-center text-white font-semibold ${g.color}`}>{g.label}</th>
                                 ))}
                             </tr>
-                            <tr className="bg-gray-50 text-white">
+                            <tr className="bg-gray-50 text-gray-700">
                                 <th className="p-1 border border-gray-200 sticky left-0 bg-gray-50 z-30"></th>
                                 {/* RS Coverage */}
                                 <th className="p-1 border text-center">Register</th><th className="p-1 border text-center">PJP M-1</th><th className="p-1 border text-center">PJP Act</th><th className="p-1 border text-center bg-amber-50">MoM</th><th className="p-1 border text-center">Rate%</th>
@@ -470,7 +470,7 @@ const FiveS4RPage: React.FC = () => {
             </div>
 
             {/* Month Filter */}
-            <div className="mt-4 bg-slate-100 rounded-xl border border-gray-200 p-4">
+            <div className="mt-4 bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
                 <div className="flex items-center gap-4">
                     <Calendar size={16} className="text-gray-400" />
                     <span className="text-sm font-medium text-gray-700">Periode:</span>

@@ -6,12 +6,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Save, MapPin, Package, Image as ImageIcon } from 'lucide-react';
-import { Modal, Input, Select, Button, Badge } from '../ui/index';
+import { Save, Package } from 'lucide-react';
+import { Modal, Select, Button, Badge } from '../ui/index';
 import ImageDropzone from '../ui/ImageDropzone';
-import { getPOPItems, CATEGORY_OPTIONS } from '../../services/mock/popData';
+import { getPOPItems } from '../../services/mock/popData';
 import { getCategoryDisplayName } from '../../types/pop';
-import type { POPItem, POPInstallationFormData } from '../../types/pop';
+import type { POPInstallationFormData } from '../../types/pop';
 
 // Mock outlet options
 const OUTLET_OPTIONS = [
@@ -216,13 +216,11 @@ const POPInstallationForm: React.FC<POPInstallationFormProps> = ({
                 <div>
                     <ImageDropzone
                         label="Foto Bukti Pemasangan"
-                        helpText="Upload foto POP yang sudah terpasang di outlet"
-                        previewUrl={proofPhotoPreview}
+                        helperText="Upload foto POP yang sudah terpasang di outlet"
+                        currentPreview={proofPhotoPreview}
                         onImageSelect={handleImageSelect}
-                        onImageRemove={handleImageRemove}
-                        required
+                        onImageClear={handleImageRemove}
                         error={errors.proofPhoto}
-                        size="md"
                     />
                 </div>
 

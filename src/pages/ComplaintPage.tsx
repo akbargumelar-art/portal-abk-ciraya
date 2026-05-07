@@ -167,7 +167,7 @@ const ComplaintPage: React.FC = () => {
                                                 {getStatusBadge(complaint.status)}
                                             </div>
                                             <h4 className="font-semibold text-gray-900">{complaint.subject}</h4>
-                                            <p className="text-sm text-white mt-1">{complaint.description}</p>
+                                            <p className="text-sm text-gray-600 mt-1">{complaint.description}</p>
                                             <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
                                                 <span className="flex items-center gap-1">
                                                     <Clock size={12} /> {complaint.date}
@@ -190,7 +190,7 @@ const ComplaintPage: React.FC = () => {
                         <h4 className="font-semibold text-gray-900 mb-4">Statistik</h4>
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                                <span className="text-sm text-white">Total Komplain</span>
+                                <span className="text-sm text-gray-600">Total Komplain</span>
                                 <span className="font-semibold">{complaints.length}</span>
                             </div>
                             <div className="flex items-center justify-between">

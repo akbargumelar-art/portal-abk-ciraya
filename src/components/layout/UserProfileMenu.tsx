@@ -56,7 +56,7 @@ const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onEditProfile }) => {
 
             {/* Dropdown Panel */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 z-50 overflow-hidden animate-fade-in">
                     {/* User Info */}
                     <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
                         <div className="flex items-center gap-3">

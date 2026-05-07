@@ -261,7 +261,7 @@ const PlanCVMPage: React.FC = () => {
 
             {expanded && (
                 <div className="overflow-auto max-h-[400px]">
-                    <table className="w-full text-xs text-left border-collapse">
+                    <table className="data-table data-table-compact text-left">
                         <thead>
                             <tr>
                                 {showTap && <th className="sticky top-0 z-10 p-1 bg-gray-100 border-b border-r min-w-[100px]" rowSpan={2}>TAP</th>}
@@ -390,7 +390,7 @@ const PlanCVMPage: React.FC = () => {
                         </div>
 
                         <div className="overflow-auto max-h-[600px] relative">
-                            <table className="w-full text-xs text-left border-collapse whitespace-nowrap">
+                            <table className="data-table data-table-compact text-left whitespace-nowrap">
                                 <thead>
                                     <tr>
                                         <th className={`${stickyHeaderStyle} z-40 left-0 min-w-[100px] border-r border-gray-300`} rowSpan={2}>ID Digipos</th>

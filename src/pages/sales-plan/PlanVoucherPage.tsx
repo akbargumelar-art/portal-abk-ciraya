@@ -20,7 +20,7 @@ import type { VoucherOutletSalesPlan } from '../../services/mock/voucherSalesDat
 import { VOUCHER_PRODUCTS, VALIDITY_LABELS, getShortProductName } from '../../config/voucherConfig';
 import type { VoucherProduct } from '../../config/voucherConfig';
 import type { ProductMetric } from '../../types/salesPlan';
-import { getProductHeaderBg, getProductCellBg, getProductSubHeaderBg, getProductTargetBg } from '../../utils/brandColors';
+import { getProductHeaderBg, getProductSubHeaderBg, getProductTargetBg } from '../../utils/brandColors';
 import { exportToExcel } from '../../utils/excelExport';
 import { formatRSNumber } from '../../utils/formatters';
 
@@ -364,898 +364,900 @@ const PlanVoucherPage: React.FC = () => {
                 products: aggregatedProducts
             };
         }).sort((a, b) => a.name.localeCompare(b.name));
-        // Sort Data
-        const sortedData = useMemo(() => {
-            return [...filteredData].sort((a, b) => {
-                let aValue: any = a[sortColumn as keyof VoucherOutletSalesPlan];
-                let bValue: any = b[sortColumn as keyof VoucherOutletSalesPlan];
+    }, [filteredData, filteredProducts]);
 
-                // Handle nested product data sorting if needed (simplified for main columns first)
-                // For now, supporting main columns. Complex nested sorting can be added if requested.
+    // Sort Data
+    const sortedData = useMemo(() => {
+        return [...filteredData].sort((a, b) => {
+            let aValue: any = a[sortColumn as keyof VoucherOutletSalesPlan];
+            let bValue: any = b[sortColumn as keyof VoucherOutletSalesPlan];
 
-                if (typeof aValue === 'string') {
-                    return sortDirection === 'asc'
-                        ? aValue.localeCompare(bValue)
-                        : bValue.localeCompare(aValue);
-                }
-                if (typeof aValue === 'number') {
-                    return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-                }
-                return 0;
-            });
-        }, [filteredData, sortColumn, sortDirection]);
+            // Handle nested product data sorting if needed (simplified for main columns first)
+            // For now, supporting main columns. Complex nested sorting can be added if requested.
 
-        // Styles
-        const stickyHeaderStyle = "sticky top-0 z-30 font-semibold uppercase p-2 border-b border-gray-200 text-[11px] align-middle";
+            if (typeof aValue === 'string') {
+                return sortDirection === 'asc'
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            }
+            if (typeof aValue === 'number') {
+                return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+            }
+            return 0;
+        });
+    }, [filteredData, sortColumn, sortDirection]);
 
-        // Calculate product metric columns count (matches Perdana structure)
-        // Base: Tgt, Act, Ach%, M-1, Growth = 5 columns
-        // Weekly: T.W, A.W, Ac%, G% = 4 per week (Target, Actual, Achievement%, Growth%)
-        // Custom Range: A, G = 2 columns
-        const getMetricColSpan = () => {
-            let cols = 5; // Tgt, Act, Ach%, M-1, Growth
-            cols += selectedWeeks.length * 4; // T.W, A.W, Ac%, G% per week
-            if (customRange) cols += 2;
-            return cols;
-        };
+    // Styles
+    const stickyHeaderStyle = "sticky top-0 z-30 font-semibold uppercase p-2 border-b border-gray-200 text-[11px] align-middle";
 
-        // Calculate total column span (matches Perdana structure)
-        const getTotalColSpan = () => {
-            let cols = 5; // Tgt, Act, Ach%, M-1, Growth
-            cols += selectedWeeks.length * 4; // T.W, A.W, Ac%, G% per week
-            if (customRange) cols += 2;
-            return cols;
-        };
+    // Calculate product metric columns count (matches Perdana structure)
+    // Base: Tgt, Act, Ach%, M-1, Growth = 5 columns
+    // Weekly: T.W, A.W, Ac%, G% = 4 per week (Target, Actual, Achievement%, Growth%)
+    // Custom Range: A, G = 2 columns
+    const getMetricColSpan = () => {
+        let cols = 5; // Tgt, Act, Ach%, M-1, Growth
+        cols += selectedWeeks.length * 4; // T.W, A.W, Ac%, G% per week
+        if (customRange) cols += 2;
+        return cols;
+    };
 
-        // Calculate group colspan (products + total only if > 1 product)
-        const getGroupColSpan = (productCount: number) => {
-            const productCols = productCount * getMetricColSpan();
-            // Only add TOTAL column if more than 1 product
-            return productCount > 1 ? productCols + getTotalColSpan() : productCols;
-        };
+    // Calculate total column span (matches Perdana structure)
+    const getTotalColSpan = () => {
+        let cols = 5; // Tgt, Act, Ach%, M-1, Growth
+        cols += selectedWeeks.length * 4; // T.W, A.W, Ac%, G% per week
+        if (customRange) cols += 2;
+        return cols;
+    };
 
-        // Excel Export Handler
-        const handleExportExcel = useCallback(() => {
-            const columns = [
-                { header: 'ID Digipos', key: 'id_digipos', width: 15 },
-                { header: 'Nama Outlet', key: 'outlet_name', width: 25 },
-                { header: 'No RS', key: 'rs_number', width: 12 },
-                { header: 'TAP', key: 'tap_name', width: 15 },
-                { header: 'Salesforce', key: 'salesforce_name', width: 20 },
-                { header: 'Kabupaten', key: 'kabupaten', width: 15 },
-                { header: 'Flag', key: 'outlet_flag', width: 10 },
-                { header: 'Lokasi', key: 'outlet_location', width: 10 },
-            ];
+    // Calculate group colspan (products + total only if > 1 product)
+    const getGroupColSpan = (productCount: number) => {
+        const productCols = productCount * getMetricColSpan();
+        // Only add TOTAL column if more than 1 product
+        return productCount > 1 ? productCols + getTotalColSpan() : productCols;
+    };
 
-            // Add product columns
+    // Excel Export Handler
+    const handleExportExcel = useCallback(() => {
+        const columns = [
+            { header: 'ID Digipos', key: 'id_digipos', width: 15 },
+            { header: 'Nama Outlet', key: 'outlet_name', width: 25 },
+            { header: 'No RS', key: 'rs_number', width: 12 },
+            { header: 'TAP', key: 'tap_name', width: 15 },
+            { header: 'Salesforce', key: 'salesforce_name', width: 20 },
+            { header: 'Kabupaten', key: 'kabupaten', width: 15 },
+            { header: 'Flag', key: 'outlet_flag', width: 10 },
+            { header: 'Lokasi', key: 'outlet_location', width: 10 },
+        ];
+
+        // Add product columns
+        filteredProducts.forEach(product => {
+            columns.push(
+                { header: `${product.name} - Target`, key: `${product.id}_target`, width: 12 },
+                { header: `${product.name} - Aktual`, key: `${product.id}_aktual`, width: 12 },
+                { header: `${product.name} - Gap`, key: `${product.id}_gap`, width: 10 }
+            );
+        });
+
+        // Prepare data
+        const exportData = sortedData.map(row => {
+            const flatRow: Record<string, unknown> = {
+                id_digipos: row.id_digipos,
+                outlet_name: row.outlet_name,
+                rs_number: row.rs_number,
+                tap_name: row.tap_name,
+                salesforce_name: row.salesforce_name,
+                kabupaten: row.kabupaten,
+                outlet_flag: row.outlet_flag,
+                outlet_location: row.outlet_location,
+            };
+
+            // Add product data
             filteredProducts.forEach(product => {
-                columns.push(
-                    { header: `${product.name} - Target`, key: `${product.id}_target`, width: 12 },
-                    { header: `${product.name} - Aktual`, key: `${product.id}_aktual`, width: 12 },
-                    { header: `${product.name} - Gap`, key: `${product.id}_gap`, width: 10 }
-                );
+                const prod = row.products[product.id];
+                if (prod) {
+                    flatRow[`${product.id}_target`] = prod.target.mtd;
+                    flatRow[`${product.id}_aktual`] = prod.actual.mtd;
+                    flatRow[`${product.id}_gap`] = prod.gap.mtd;
+                } else {
+                    flatRow[`${product.id}_target`] = 0;
+                    flatRow[`${product.id}_aktual`] = 0;
+                    flatRow[`${product.id}_gap`] = 0;
+                }
             });
 
-            // Prepare data
-            const exportData = sortedData.map(row => {
-                const flatRow: Record<string, unknown> = {
-                    id_digipos: row.id_digipos,
-                    outlet_name: row.outlet_name,
-                    rs_number: row.rs_number,
-                    tap_name: row.tap_name,
-                    salesforce_name: row.salesforce_name,
-                    kabupaten: row.kabupaten,
-                    outlet_flag: row.outlet_flag,
-                    outlet_location: row.outlet_location,
-                };
+            return flatRow;
+        });
 
-                // Add product data
-                filteredProducts.forEach(product => {
-                    const prod = row.products[product.id];
-                    if (prod) {
-                        flatRow[`${product.id}_target`] = prod.target.mtd;
-                        flatRow[`${product.id}_aktual`] = prod.actual.mtd;
-                        flatRow[`${product.id}_gap`] = prod.gap.mtd;
-                    } else {
-                        flatRow[`${product.id}_target`] = 0;
-                        flatRow[`${product.id}_aktual`] = 0;
-                        flatRow[`${product.id}_gap`] = 0;
-                    }
-                });
+        exportToExcel({
+            filename: 'SalesPlan_Voucher_DetailOutlet',
+            sheetName: 'Detail Outlet',
+            columns,
+            data: exportData
+        });
+    }, [sortedData, filteredProducts]);
 
-                return flatRow;
-            });
+    // Summary Table Component
+    const SummaryTable = ({ data, title, icon, expanded, onToggle, showTap = false }: {
+        data: SummaryRow[]; title: string; icon: React.ReactNode; expanded: boolean; onToggle: () => void; showTap?: boolean;
+    }) => (
+        <div className="border border-gray-200 rounded-lg mb-4 overflow-hidden">
+            <button onClick={onToggle} className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors">
+                <div className="flex items-center gap-2">
+                    {icon}
+                    <span className="font-semibold text-gray-800 text-sm">{title}</span>
+                    <span className="text-xs text-gray-500">({data.length} items, {productGroups.length} groups)</span>
+                </div>
+                {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+            </button>
 
-            exportToExcel({
-                filename: 'SalesPlan_Voucher_DetailOutlet',
-                sheetName: 'Detail Outlet',
-                columns,
-                data: exportData
-            });
-        }, [sortedData, filteredProducts]);
+            {expanded && (
+                <div className="overflow-auto max-h-[400px]">
+                    <table className="data-table data-table-compact text-left whitespace-nowrap">
+                        <thead className="bg-[#2c4a6a]">
+                            {/* Level 1: Brand + Validity Groups */}
+                            <tr className="text-white">
+                                {showTap && <th rowSpan={3} className="p-1 border-b border-gray-600 border-r min-w-[100px] sticky left-0 top-0 bg-[#2c4a6a] z-50 align-middle">TAP</th>}
+                                <th rowSpan={3} className={`p-1 border-b border-gray-600 border-r min-w-[120px] align-middle top-0 z-40 ${!showTap && 'sticky left-0 bg-[#2c4a6a]'}`}>Name</th>
+                                <th rowSpan={3} className="p-1 border-b border-gray-600 border-r min-w-[40px] text-center align-middle sticky top-0 bg-[#2c4a6a] z-30">PJP</th>
 
-        // Summary Table Component
-        const SummaryTable = ({ data, title, icon, expanded, onToggle, showTap = false }: {
-            data: SummaryRow[]; title: string; icon: React.ReactNode; expanded: boolean; onToggle: () => void; showTap?: boolean;
-        }) => (
-            <div className="border border-gray-200 rounded-lg mb-4 overflow-hidden">
-                <button onClick={onToggle} className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center gap-2">
-                        {icon}
-                        <span className="font-semibold text-gray-800 text-sm">{title}</span>
-                        <span className="text-xs text-gray-500">({data.length} items, {productGroups.length} groups)</span>
-                    </div>
-                    {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-                </button>
+                                {/* Global Totals Header */}
+                                <th rowSpan={2} colSpan={getTotalColSpan()} className="p-1 border-b text-center border-l-2 border-gray-400 bg-gray-200 align-middle sticky top-0 z-30">TOTAL ALL</th>
+                                <th rowSpan={2} colSpan={getTotalColSpan()} className={`p-1 border-b text-center border-l-2 border-gray-400 align-middle sticky top-0 z-30 ${getProductHeaderBg('simpati')}`}>TOTAL SIMPATI</th>
+                                <th rowSpan={2} colSpan={getTotalColSpan()} className={`p-1 border-b text-center border-l-2 border-gray-400 align-middle sticky top-0 z-30 ${getProductHeaderBg('byu')}`}>TOTAL BYU</th>
+                                {productGroups.map(group => (
+                                    <th
+                                        key={group.key}
+                                        colSpan={getGroupColSpan(group.products.length)}
+                                        className={`p-1 border-b text-center ${productSeparator} ${getProductHeaderBg(group.brand)} sticky top-0 z-30`}
+                                    >
+                                        {group.label}
+                                    </th>
+                                ))}
+                            </tr>
+                            {/* Level 2: Product Names + Total */}
+                            <tr className="bg-[#3d5f85]">
+                                {productGroups.map(group => (
+                                    <React.Fragment key={group.key}>
+                                        {group.products.map((product, idx) => (
+                                            <th
+                                                key={product.id}
+                                                colSpan={getMetricColSpan()}
+                                                className={`p-1 border-b text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'} ${getProductSubHeaderBg(group.key)} sticky top-[23px] z-20`}
+                                            >
+                                                {getShortProductName(product.name)}
+                                            </th>
+                                        ))}
+                                        {group.products.length > 1 && (
+                                            <th colSpan={getTotalColSpan()} className="p-1 border-b text-center border-l-2 border-gray-500 bg-slate-200 font-bold sticky top-[23px] z-20">
+                                                TOTAL
+                                            </th>
+                                        )}
+                                    </React.Fragment>
+                                ))}
+                            </tr>
+                            {/* Level 3: Metrics */}
+                            <tr className="bg-white text-gray-500 sticky top-[46px] z-10">
+                                {/* Global Totals Metrics Headers */}
+                                {['bg-gray-200', 'bg-red-50', 'bg-purple-50'].map((bg, i) => (
+                                    <React.Fragment key={`global-total-hdr-sum-${i}`}>
+                                        <th className={`p-1 border-b min-w-[40px] text-center border-l-2 border-gray-400 ${bg} font-semibold`}>Tgt</th>
+                                        <th className={`p-1 border-b min-w-[40px] text-center ${bg} font-semibold`}>Act</th>
+                                        <th className={`p-1 border-b min-w-[45px] text-center ${bg} font-semibold`}>Ach%</th>
+                                        <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>M-1</th>
+                                        <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>Gwth</th>
+                                        {selectedWeeks.map(w => (
+                                            <React.Fragment key={`global-total-w${w}-sum-${i}`}>
+                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
+                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
+                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
+                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
+                                            </React.Fragment>
+                                        ))}
+                                        {customRange && (
+                                            <React.Fragment>
+                                                <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
+                                                <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
+                                            </React.Fragment>
+                                        )}
+                                    </React.Fragment>
+                                ))}
 
-                {expanded && (
-                    <div className="overflow-auto max-h-[400px]">
-                        <table className="w-full text-[10px] text-left border-collapse whitespace-nowrap">
-                            <thead>
-                                {/* Level 1: Brand + Validity Groups */}
-                                <tr className="bg-gray-100">
-                                    {showTap && <th rowSpan={3} className="p-1 border-b border-r border-gray-300 min-w-[100px] sticky left-0 top-0 bg-gray-100 z-50 align-middle">TAP</th>}
-                                    <th rowSpan={3} className={`p-1 border-b border-r border-gray-300 min-w-[120px] align-middle top-0 z-40 ${!showTap && 'sticky left-0 bg-gray-100'}`}>Name</th>
-                                    <th rowSpan={3} className="p-1 border-b border-r border-gray-300 min-w-[40px] text-center align-middle sticky top-0 bg-gray-100 z-30">PJP</th>
+                                {productGroups.map(group => (
+                                    <React.Fragment key={group.key}>
+                                        {group.products.map((product, idx) => (
+                                            <React.Fragment key={product.id}>
+                                                <th className={`p-1 border-b text-center ${idx === 0 ? 'border-l-2 border-gray-400' : 'border-l border-gray-200'}`}>Tgt</th>
+                                                <th className="p-1 border-b text-center">Act</th>
+                                                <th className="p-1 border-b text-center">Ach%</th>
+                                                <th className="p-1 border-b text-center bg-amber-50 text-amber-800">M-1</th>
+                                                <th className="p-1 border-b text-center bg-amber-50 text-amber-800">Gwth</th>
+                                                {selectedWeeks.map(w => (
+                                                    <React.Fragment key={`${product.id}-w${w}`}>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
+                                                    </React.Fragment>
+                                                ))}
+                                                {customRange && (
+                                                    <>
+                                                        <th className="p-1 border-b text-center bg-green-100 text-green-800">A</th>
+                                                        <th className="p-1 border-b text-center bg-green-100 text-green-800">G</th>
+                                                    </>
+                                                )}
+                                            </React.Fragment>
+                                        ))}
+                                        {/* Total Headers - only if more than 1 product */}
+                                        {group.products.length > 1 && (
+                                            <>
+                                                <th className="p-1 border-b text-center border-l-2 border-gray-500 bg-slate-100">Tgt</th>
+                                                <th className="p-1 border-b text-center bg-slate-100">Act</th>
+                                                <th className="p-1 border-b text-center bg-slate-100">Ach%</th>
+                                                <th className="p-1 border-b text-center bg-amber-50 text-amber-800">M-1</th>
+                                                <th className="p-1 border-b text-center bg-amber-50 text-amber-800">Gwth</th>
+                                                {selectedWeeks.map(w => (
+                                                    <React.Fragment key={`total-w${w}`}>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>T</th>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>A</th>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac</th>
+                                                        <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
+                                                    </React.Fragment>
+                                                ))}
+                                                {customRange && (
+                                                    <>
+                                                        <th className="p-1 border-b text-center bg-green-100 text-green-800">A</th>
+                                                        <th className="p-1 border-b text-center bg-green-100 text-green-800">G</th>
+                                                    </>
+                                                )}
+                                            </>
+                                        )}
+                                    </React.Fragment>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map(row => (
+                                <tr key={row.name} className="hover:bg-gray-50 border-b border-gray-100">
+                                    {showTap && <td className="p-1 font-medium border-r border-gray-200 sticky left-0 bg-white z-10">{row.tap}</td>}
+                                    <td className={`p-1 font-medium border-r border-gray-200 ${!showTap && 'sticky left-0 bg-white z-10'}`}>{row.name}</td>
+                                    <td className="p-1 text-center border-r border-gray-200 text-gray-500">{formatNumber(row.outletCount)}</td>
 
-                                    {/* Global Totals Header */}
-                                    <th rowSpan={2} colSpan={getTotalColSpan()} className="p-1 border-b text-center border-l-2 border-gray-400 bg-gray-200 align-middle sticky top-0 z-30">TOTAL ALL</th>
-                                    <th rowSpan={2} colSpan={getTotalColSpan()} className={`p-1 border-b text-center border-l-2 border-gray-400 align-middle sticky top-0 z-30 ${getProductHeaderBg('simpati')}`}>TOTAL SIMPATI</th>
-                                    <th rowSpan={2} colSpan={getTotalColSpan()} className={`p-1 border-b text-center border-l-2 border-gray-400 align-middle sticky top-0 z-30 ${getProductHeaderBg('byu')}`}>TOTAL BYU</th>
-                                    {productGroups.map(group => (
-                                        <th
-                                            key={group.key}
-                                            colSpan={getGroupColSpan(group.products.length)}
-                                            className={`p-1 border-b text-center ${productSeparator} ${getProductHeaderBg(group.brand)} sticky top-0 z-30`}
-                                        >
-                                            {group.label}
-                                        </th>
-                                    ))}
-                                </tr>
-                                {/* Level 2: Product Names + Total */}
-                                <tr className="bg-[#3d5f85]">
-                                    {productGroups.map(group => (
-                                        <React.Fragment key={group.key}>
-                                            {group.products.map((product, idx) => (
-                                                <th
-                                                    key={product.id}
-                                                    colSpan={getMetricColSpan()}
-                                                    className={`p-1 border-b text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'} ${getProductSubHeaderBg(group.key)} sticky top-[23px] z-20`}
-                                                >
-                                                    {getShortProductName(product.name)}
-                                                </th>
-                                            ))}
-                                            {group.products.length > 1 && (
-                                                <th colSpan={getTotalColSpan()} className="p-1 border-b text-center border-l-2 border-gray-500 bg-slate-200 font-bold sticky top-[23px] z-20">
-                                                    TOTAL
-                                                </th>
-                                            )}
-                                        </React.Fragment>
-                                    ))}
-                                </tr>
-                                {/* Level 3: Metrics */}
-                                <tr className="bg-white text-gray-500 sticky top-[46px] z-10">
-                                    {/* Global Totals Metrics Headers */}
-                                    {['bg-gray-200', 'bg-red-50', 'bg-purple-50'].map((bg, i) => (
-                                        <React.Fragment key={`global-total-hdr-sum-${i}`}>
-                                            <th className={`p-1 border-b min-w-[40px] text-center border-l-2 border-gray-400 ${bg} font-semibold`}>Tgt</th>
-                                            <th className={`p-1 border-b min-w-[40px] text-center ${bg} font-semibold`}>Act</th>
-                                            <th className={`p-1 border-b min-w-[45px] text-center ${bg} font-semibold`}>Ach%</th>
-                                            <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>M-1</th>
-                                            <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>Gwth</th>
-                                            {selectedWeeks.map(w => (
-                                                <React.Fragment key={`global-total-w${w}-sum-${i}`}>
-                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
-                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
-                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
-                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
-                                                </React.Fragment>
-                                            ))}
-                                            {customRange && (
+                                    {/* Calculated Global Totals for Summary */}
+                                    {(() => {
+                                        const renderSummaryTotalColumn = (products: any[], bgClass: string) => {
+                                            let tgt = 0, act = 0, m1 = 0;
+                                            const weeklyActuals = [0, 0, 0, 0, 0];
+                                            const weeklyGaps = [0, 0, 0, 0, 0];
+
+                                            products.forEach(p => {
+                                                const d = row.products[p.id];
+                                                if (d) {
+                                                    tgt += d.target.mtd;
+                                                    act += d.actual.mtd;
+                                                    m1 += (d.actual.mtd - (d.mom_growth || 0));
+                                                    d.actual.weekly.forEach((v, i) => weeklyActuals[i] += v || 0);
+                                                    d.gap.weekly.forEach((v, i) => weeklyGaps[i] += v || 0);
+                                                }
+                                            });
+                                            const ach = tgt > 0 ? (act / tgt) * 100 : 0;
+                                            const growthAbs = act - m1;
+                                            const growthPct = m1 !== 0 ? (growthAbs / m1) * 100 : 0;
+                                            const growthColor = growthPct >= 0 ? 'text-green-600' : 'text-red-600';
+
+                                            return (
                                                 <React.Fragment>
-                                                    <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
-                                                    <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
-                                                </React.Fragment>
-                                            )}
-                                        </React.Fragment>
-                                    ))}
+                                                    <td className={`p-1 text-center border-l-2 border-gray-400 border-r border-gray-300 font-semibold ${bgClass}`}>{formatNumber(tgt)}</td>
+                                                    <td className={`p-1 text-center border-r border-gray-300 font-bold ${bgClass}`}>{formatNumber(act)}</td>
+                                                    <td className={`p-1 text-center border-r border-gray-300 ${bgClass}`}>{Math.round(ach)}%</td>
+                                                    <td className={`p-1 text-center border-r border-gray-300 ${bgClass} text-gray-700`}>{formatNumber(m1)}</td>
+                                                    <td className={`p-1 text-center border-r border-gray-300 ${bgClass} ${growthColor}`}>
+                                                        {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                    </td>
+                                                    {selectedWeeks.map(w => {
+                                                        // Calc Weekly Target for Group for %
+                                                        let wTgt = 0;
+                                                        products.forEach(p => { const d = row.products[p.id]; if (d) wTgt += d.target.weekly[w - 1] || 0; });
 
-                                    {productGroups.map(group => (
-                                        <React.Fragment key={group.key}>
-                                            {group.products.map((product, idx) => (
-                                                <React.Fragment key={product.id}>
-                                                    <th className={`p-1 border-b text-center ${idx === 0 ? 'border-l-2 border-gray-400' : 'border-l border-gray-200'}`}>Tgt</th>
-                                                    <th className="p-1 border-b text-center">Act</th>
-                                                    <th className="p-1 border-b text-center">Ach%</th>
-                                                    <th className="p-1 border-b text-center bg-amber-50 text-amber-800">M-1</th>
-                                                    <th className="p-1 border-b text-center bg-amber-50 text-amber-800">Gwth</th>
-                                                    {selectedWeeks.map(w => (
-                                                        <React.Fragment key={`${product.id}-w${w}`}>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
-                                                        </React.Fragment>
-                                                    ))}
+                                                        const wAct = weeklyActuals[w - 1];
+                                                        const wAchPct = wTgt > 0 ? (wAct / wTgt) * 100 : 0;
+
+                                                        // Mock Growth
+                                                        const wPrev = getPrevMonthValue(wAct);
+                                                        const wGrowthPct = wPrev > 0 ? ((wAct - wPrev) / wPrev) * 100 : 0;
+
+                                                        return (
+                                                            <React.Fragment key={w}>
+                                                                <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]} text-gray-500`}>{formatNumber(wTgt)}</td>
+                                                                <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{formatNumber(wAct)}</td>
+                                                                <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{Math.round(wAchPct)}%</td>
+                                                                <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]} ${wGrowthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                    {wGrowthPct > 0 ? `+${Math.round(wGrowthPct)}%` : `${Math.round(wGrowthPct)}%`}
+                                                                </td>
+                                                            </React.Fragment>
+                                                        );
+                                                    })}
                                                     {customRange && (
-                                                        <>
-                                                            <th className="p-1 border-b text-center bg-green-100 text-green-800">A</th>
-                                                            <th className="p-1 border-b text-center bg-green-100 text-green-800">G</th>
-                                                        </>
+                                                        <React.Fragment>
+                                                            <td className={`p-1 text-center ${bgClass}`}>-</td>
+                                                            <td className={`p-1 text-center ${bgClass}`}>-</td>
+                                                        </React.Fragment>
                                                     )}
                                                 </React.Fragment>
-                                            ))}
-                                            {/* Total Headers - only if more than 1 product */}
-                                            {group.products.length > 1 && (
-                                                <>
-                                                    <th className="p-1 border-b text-center border-l-2 border-gray-500 bg-slate-100">Tgt</th>
-                                                    <th className="p-1 border-b text-center bg-slate-100">Act</th>
-                                                    <th className="p-1 border-b text-center bg-slate-100">Ach%</th>
-                                                    <th className="p-1 border-b text-center bg-amber-50 text-amber-800">M-1</th>
-                                                    <th className="p-1 border-b text-center bg-amber-50 text-amber-800">Gwth</th>
-                                                    {selectedWeeks.map(w => (
-                                                        <React.Fragment key={`total-w${w}`}>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>T</th>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>A</th>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac</th>
-                                                            <th className={`p-1 border-b text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
+                                            );
+                                        };
+
+                                        const allProducts = productGroups.flatMap(g => g.products);
+                                        const simpatiProducts = allProducts.filter(p => p.brand === 'simpati');
+                                        const byuProducts = allProducts.filter(p => p.brand === 'byu');
+
+                                        return (
+                                            <>
+                                                {renderSummaryTotalColumn(allProducts, 'bg-gray-50')}
+                                                {renderSummaryTotalColumn(simpatiProducts, 'bg-red-50')}
+                                                {renderSummaryTotalColumn(byuProducts, 'bg-purple-50')}
+                                            </>
+                                        );
+                                    })()}
+
+                                    {productGroups.map(group => {
+                                        const total = calculateGroupTotal(group.products, row.products, selectedWeeks);
+                                        return (
+                                            <React.Fragment key={group.key}>
+                                                {group.products.map((product, idx) => {
+                                                    const pData = row.products[product.id];
+                                                    if (!pData) return <td key={product.id} colSpan={getMetricColSpan()} className="p-1 text-center text-gray-300">-</td>;
+                                                    return (
+                                                        <React.Fragment key={product.id}>
+                                                            <td className={`p-1 text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'}`}>{formatNumber(pData.target.mtd)}</td>
+                                                            <td className="p-1 text-center font-semibold">{formatNumber(pData.actual.mtd)}</td>
+                                                            <td className="p-1 text-center">
+                                                                <div className="flex flex-col gap-0.5">
+                                                                    <span>{Math.round(pData.achievement_pct)}%</span>
+                                                                    <ProgressBar value={pData.achievement_pct} />
+                                                                </div>
+                                                            </td>
+                                                            {/* M-1 and Growth */}
+                                                            {(() => {
+                                                                const m1 = pData.actual.mtd - (pData.mom_growth || 0);
+                                                                const growthPct = m1 !== 0 ? ((pData.mom_growth || 0) / m1) * 100 : 0;
+                                                                return (
+                                                                    <>
+                                                                        <td className="p-1 text-center text-gray-700">{formatNumber(m1)}</td>
+                                                                        <td className={`p-1 text-center ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                            {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                                        </td>
+                                                                    </>
+                                                                )
+                                                            })()}
+
+                                                            {selectedWeeks.map(w => {
+                                                                const tgt = pData.target.weekly[w - 1] || 0;
+                                                                const act = pData.actual.weekly[w - 1] || 0;
+                                                                const achPct = tgt > 0 ? (act / tgt) * 100 : 0;
+
+                                                                // Mock Growth
+                                                                const prev = getPrevMonthValue(act);
+                                                                const growthPct = prev > 0 ? ((act - prev) / prev) * 100 : 0;
+
+                                                                return (
+                                                                    <React.Fragment key={`${product.id}-w${w}-data`}>
+                                                                        <td className={`p-1 text-center text-gray-500 ${weekBgColors[w]}`}>{formatNumber(tgt)}</td>
+                                                                        <td className={`p-1 text-center ${weekBgColors[w]}`}>{formatNumber(act)}</td>
+                                                                        <td className={`p-1 text-center ${weekBgColors[w]}`}>{Math.round(achPct)}%</td>
+                                                                        <td className={`p-1 text-center ${weekBgColors[w]} ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                            {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                                        </td>
+                                                                    </React.Fragment>
+                                                                );
+                                                            })}
+                                                            {customRange && (() => {
+                                                                /* Placeholder simple calc */
+                                                                return (
+                                                                    <>
+                                                                        <td className="p-1 text-center bg-green-50">-</td>
+                                                                        <td className="p-1 text-center bg-green-50">-</td>
+                                                                    </>
+                                                                );
+                                                            })()}
                                                         </React.Fragment>
-                                                    ))}
-                                                    {customRange && (
-                                                        <>
-                                                            <th className="p-1 border-b text-center bg-green-100 text-green-800">A</th>
-                                                            <th className="p-1 border-b text-center bg-green-100 text-green-800">G</th>
-                                                        </>
-                                                    )}
-                                                </>
-                                            )}
-                                        </React.Fragment>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.map(row => (
-                                    <tr key={row.name} className="hover:bg-gray-50 border-b border-gray-100">
-                                        {showTap && <td className="p-1 font-medium border-r border-gray-200 sticky left-0 bg-white z-10">{row.tap}</td>}
-                                        <td className={`p-1 font-medium border-r border-gray-200 ${!showTap && 'sticky left-0 bg-white z-10'}`}>{row.name}</td>
-                                        <td className="p-1 text-center border-r border-gray-200 text-gray-500">{formatNumber(row.outletCount)}</td>
-
-                                        {/* Calculated Global Totals for Summary */}
-                                        {(() => {
-                                            const renderSummaryTotalColumn = (products: any[], bgClass: string) => {
-                                                let tgt = 0, act = 0, m1 = 0;
-                                                const weeklyActuals = [0, 0, 0, 0, 0];
-                                                const weeklyGaps = [0, 0, 0, 0, 0];
-
-                                                products.forEach(p => {
-                                                    const d = row.products[p.id];
-                                                    if (d) {
-                                                        tgt += d.target.mtd;
-                                                        act += d.actual.mtd;
-                                                        m1 += (d.actual.mtd - (d.mom_growth || 0));
-                                                        d.actual.weekly.forEach((v, i) => weeklyActuals[i] += v || 0);
-                                                        d.gap.weekly.forEach((v, i) => weeklyGaps[i] += v || 0);
-                                                    }
-                                                });
-                                                const ach = tgt > 0 ? (act / tgt) * 100 : 0;
-                                                const growthAbs = act - m1;
-                                                const growthPct = m1 !== 0 ? (growthAbs / m1) * 100 : 0;
-                                                const growthColor = growthPct >= 0 ? 'text-green-600' : 'text-red-600';
-
-                                                return (
-                                                    <React.Fragment>
-                                                        <td className={`p-1 text-center border-l-2 border-gray-400 border-r border-gray-300 font-semibold ${bgClass}`}>{formatNumber(tgt)}</td>
-                                                        <td className={`p-1 text-center border-r border-gray-300 font-bold ${bgClass}`}>{formatNumber(act)}</td>
-                                                        <td className={`p-1 text-center border-r border-gray-300 ${bgClass}`}>{Math.round(ach)}%</td>
-                                                        <td className={`p-1 text-center border-r border-gray-300 ${bgClass} text-white`}>{formatNumber(m1)}</td>
-                                                        <td className={`p-1 text-center border-r border-gray-300 ${bgClass} ${growthColor}`}>
-                                                            {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                    );
+                                                })}
+                                                {/* Total - only if more than 1 product */}
+                                                {group.products.length > 1 && (
+                                                    <>
+                                                        <td className="p-1 text-center border-l-2 border-gray-500 bg-slate-50 font-semibold">{formatNumber(total.target)}</td>
+                                                        <td className="p-1 text-center bg-slate-50 font-bold text-blue-700">{formatNumber(total.actual)}</td>
+                                                        <td className="p-1 text-center bg-slate-50">
+                                                            <div className="flex flex-col gap-0.5">
+                                                                <span className="font-semibold">{Math.round(total.achievementPct)}%</span>
+                                                                <ProgressBar value={total.achievementPct} />
+                                                            </div>
                                                         </td>
+                                                        <td className="p-1 text-center bg-slate-50 text-gray-700">{formatNumber(total.m1)}</td>
+                                                        {(() => {
+                                                            const growthPct = total.m1 !== 0 ? (total.growth / total.m1) * 100 : 0;
+                                                            return (
+                                                                <td className={`p-1 text-center bg-slate-50 ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                    {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                                </td>
+                                                            );
+                                                        })()}
                                                         {selectedWeeks.map(w => {
-                                                            // Calc Weekly Target for Group for %
+                                                            const gap = total.weeklyGaps[w - 1];
+                                                            // We need weekly target for this group total to calc %
                                                             let wTgt = 0;
-                                                            products.forEach(p => { const d = row.products[p.id]; if (d) wTgt += d.target.weekly[w - 1] || 0; });
-
-                                                            const wAct = weeklyActuals[w - 1];
-                                                            const wAchPct = wTgt > 0 ? (wAct / wTgt) * 100 : 0;
-
-                                                            // Mock Growth
-                                                            const wPrev = getPrevMonthValue(wAct);
-                                                            const wGrowthPct = wPrev > 0 ? ((wAct - wPrev) / wPrev) * 100 : 0;
+                                                            group.products.forEach(p => {
+                                                                const d = row.products[p.id];
+                                                                if (d) wTgt += d.target.weekly[w - 1] || 0;
+                                                            });
+                                                            const wGapPct = wTgt > 0 ? (gap / wTgt) * 100 : 0;
 
                                                             return (
-                                                                <React.Fragment key={w}>
-                                                                    <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]} text-gray-500`}>{formatNumber(wTgt)}</td>
-                                                                    <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{formatNumber(wAct)}</td>
-                                                                    <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{Math.round(wAchPct)}%</td>
-                                                                    <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]} ${wGrowthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                        {wGrowthPct > 0 ? `+${Math.round(wGrowthPct)}%` : `${Math.round(wGrowthPct)}%`}
+                                                                <React.Fragment key={`total-w${w}-data`}>
+                                                                    <td className={`p-1 text-center ${weekBgColors[w]} font-semibold`}>{formatNumber(total.weeklyActuals[w - 1])}</td>
+                                                                    <td className={`p-1 text-center ${weekBgColors[w]} font-semibold ${wGapPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                        {wGapPct > 0 ? `+${Math.round(wGapPct)}%` : `${Math.round(wGapPct)}%`}
                                                                     </td>
                                                                 </React.Fragment>
                                                             );
                                                         })}
                                                         {customRange && (
-                                                            <React.Fragment>
-                                                                <td className={`p-1 text-center ${bgClass}`}>-</td>
-                                                                <td className={`p-1 text-center ${bgClass}`}>-</td>
+                                                            <>
+                                                                <td className="p-1 text-center bg-green-50 font-semibold">-</td>
+                                                                <td className="p-1 text-center bg-green-50 font-semibold">-</td>
+                                                            </>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
+    );
+
+    return (
+        <div className="p-6 animate-fade-in">
+            <Header title="Sales Plan Voucher Fisik" subtitle="" />
+
+            <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
+                <Clock size={14} />
+                <span>Data diperbarui: <span className="font-medium text-gray-700">{dataUpdateTime}</span></span>
+                <span className="ml-4 px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">
+                    {filteredProducts.length} produk aktif • {productGroups.length} grup
+                </span>
+            </div>
+
+            <FilterBar
+                onFilterChange={setFilters}
+                useMonthPicker={true}
+                className="mt-4"
+                showTAP={true}
+                showSalesforce={true}
+                showKabupaten={true}
+                showFlag={true}
+                showPJPStatus={true}
+                tapOptions={tapOptions}
+                salesforceOptions={salesforceOptions}
+                kabupatenOptions={kabupatenOptions}
+                flagOptions={flagOptions}
+                pjpOptions={locationOptions}
+            />
+
+            <VoucherFilterPanel
+                onFilterChange={setFilters}
+                month={filters.month || new Date().getMonth() + 1}
+                year={filters.year || new Date().getFullYear()}
+                selectedBrand={selectedBrand}
+                onBrandChange={setSelectedBrand}
+                selectedValidities={selectedValidities}
+                onValiditiesChange={setSelectedValidities}
+                selectedWeeks={selectedWeeks}
+                onSelectedWeeksChange={setSelectedWeeks}
+                customRange={customRange}
+                onCustomRangeChange={setCustomRange}
+                showCustomDate={false}
+            />
+
+            <Card padding="none" className="mt-2">
+                <Tabs defaultValue="summary">
+                    <TabList>
+                        <Tab value="summary" icon={<LayoutDashboard size={16} />}>Summary</Tab>
+                        <Tab value="detail" icon={<TableIcon size={16} />}>Detail Outlet</Tab>
+                    </TabList>
+
+                    <TabPanel value="summary" className="p-4">
+                        <SummaryTable data={tapSummary} title="Summary per TAP" icon={<MapPin size={16} className="text-blue-600" />} expanded={tapExpanded} onToggle={() => setTapExpanded(!tapExpanded)} />
+                        <SummaryTable data={sfSummary} showTap={true} title="Summary per Salesforce" icon={<User size={16} className="text-green-600" />} expanded={sfExpanded} onToggle={() => setSfExpanded(!sfExpanded)} />
+                    </TabPanel>
+
+                    <TabPanel value="detail" className="p-0">
+                        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+                            <Input placeholder="Search Outlet, ID Digipos, or Salesforce..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} leftIcon={<Search size={16} />} className="max-w-md" />
+                            <Button variant="outline" size="sm" leftIcon={<Download size={16} />} onClick={handleExportExcel}>Export Excel</Button>
+                        </div>
+                        <div className="overflow-auto max-h-[600px] relative">
+                            <table className="data-table data-table-compact text-left whitespace-nowrap">
+                                <thead>
+                                    <tr className="bg-gray-100 uppercase">
+                                        <th rowSpan={3} onClick={() => handleSort('id_digipos')} className={`${stickyHeaderStyle} left-0 z-40 bg-gray-100 min-w-[80px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">ID {getSortIcon('id_digipos')}</div>
+                                        </th>
+                                        <th rowSpan={3} onClick={() => handleSort('outlet_name')} className={`${stickyHeaderStyle} left-[80px] z-40 bg-gray-100 min-w-[120px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">OUTLET {getSortIcon('outlet_name')}</div>
+                                        </th>
+                                        <th rowSpan={3} onClick={() => handleSort('rs_number')} className={`${stickyHeaderStyle} left-[200px] z-40 bg-gray-100 min-w-[80px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">NO RS {getSortIcon('rs_number')}</div>
+                                        </th>
+                                        <th rowSpan={3} onClick={() => handleSort('tap_name')} className={`${stickyHeaderStyle} left-[280px] z-40 bg-gray-100 min-w-[100px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">TAP {getSortIcon('tap_name')}</div>
+                                        </th>
+                                        <th rowSpan={3} onClick={() => handleSort('salesforce_name')} className={`${stickyHeaderStyle} left-[380px] z-40 bg-gray-100 min-w-[100px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">SF {getSortIcon('salesforce_name')}</div>
+                                        </th>
+                                        <th rowSpan={3} onClick={() => handleSort('kabupaten')} className={`${stickyHeaderStyle} min-w-[100px] border-r border-gray-300 bg-gray-100 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">KAB {getSortIcon('kabupaten')}</div>
+                                        </th>
+                                        <th rowSpan={3} onClick={() => handleSort('outlet_flag')} className={`${stickyHeaderStyle} min-w-[80px] border-r border-gray-300 bg-gray-100 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">FLAG {getSortIcon('outlet_flag')}</div>
+                                        </th>
+                                        <th rowSpan={3} onClick={() => handleSort('outlet_location')} className={`${stickyHeaderStyle} min-w-[70px] border-r border-gray-300 bg-gray-100 cursor-pointer hover:bg-gray-200`}>
+                                            <div className="flex items-center justify-between">LOC {getSortIcon('outlet_location')}</div>
+                                        </th>
+
+                                        {/* Global Totals Header */}
+                                        <th rowSpan={2} colSpan={getTotalColSpan()} className={`${stickyHeaderStyle} text-center bg-gray-200 border-r-2 border-gray-400 align-middle`}>TOTAL ALL</th>
+                                        <th rowSpan={2} colSpan={getTotalColSpan()} className={`${stickyHeaderStyle} text-center ${getProductHeaderBg('simpati')} border-r-2 border-gray-400 align-middle`}>TOTAL SIMPATI</th>
+                                        <th rowSpan={2} colSpan={getTotalColSpan()} className={`${stickyHeaderStyle} text-center ${getProductHeaderBg('byu')} border-r-2 border-gray-400 align-middle`}>TOTAL BYU</th>
+                                        {productGroups.map(group => (
+                                            <th key={group.key} colSpan={getGroupColSpan(group.products.length)} className={`${stickyHeaderStyle} text-center ${productSeparator} ${getProductHeaderBg(group.brand)}`}>
+                                                {group.label}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                    <tr className="bg-[#3d5f85]">
+                                        {/* Empty headers for locked columns are handled by rowspan */}
+                                        {/* Product Headers */}
+                                        {/* Global Totals Sub-headers */}
+                                        {[
+                                            { key: 'total_all', label: 'TOTAL ALL', bg: 'bg-slate-300' },
+                                            { key: 'total_simpati', label: 'TOTAL SIMPATI', bg: getProductSubHeaderBg('simpati') },
+                                            { key: 'total_byu', label: 'TOTAL BYU', bg: getProductSubHeaderBg('byu') }
+                                        ].map((g) => (
+                                            <th key={g.key} colSpan={getTotalColSpan()} className={`p-1 border-b text-center border-l-2 border-gray-400 font-semibold sticky top-[33px] z-20 ${g.bg}`}>
+                                            </th>
+                                        ))}
+
+                                        {productGroups.map(group => (
+                                            <React.Fragment key={group.key}>
+                                                {group.products.map((product, idx) => (
+                                                    <th key={product.id} colSpan={getMetricColSpan()} className={`p-1 border-b text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'} ${getProductSubHeaderBg(group.key)} sticky top-[33px] z-20`}>
+                                                        {getShortProductName(product.name)}
+                                                    </th>
+                                                ))}
+                                                {group.products.length > 1 && (
+                                                    <th colSpan={getTotalColSpan()} className="p-1 border-b text-center border-l-2 border-gray-500 bg-slate-200 font-bold sticky top-[33px] z-20">
+                                                        TOTAL
+                                                    </th>
+                                                )}
+                                            </React.Fragment>
+                                        ))}
+                                    </tr>
+                                    <tr className="bg-white text-gray-500 text-[10px] sticky top-[66px] z-20">
+                                        {/* Global Totals Metrics Headers */}
+                                        {['bg-gray-200', 'bg-red-50', 'bg-purple-50'].map((bg, i) => (
+                                            <React.Fragment key={`global-total-hdr-${i}`}>
+                                                <th className={`p-1 border-b min-w-[40px] text-center border-l-2 border-gray-400 ${bg} font-semibold`}>Tgt</th>
+                                                <th className={`p-1 border-b min-w-[40px] text-center ${bg} font-semibold`}>Act</th>
+                                                <th className={`p-1 border-b min-w-[45px] text-center ${bg} font-semibold`}>Ach%</th>
+                                                <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>M-1</th>
+                                                <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>Gwth</th>
+                                                {selectedWeeks.map(w => (
+                                                    <React.Fragment key={`global-total-w${w}-${i}`}>
+                                                        <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
+                                                        <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
+                                                        <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
+                                                        <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
+                                                    </React.Fragment>
+                                                ))}
+                                                {customRange && (
+                                                    <React.Fragment>
+                                                        <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
+                                                        <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
+                                                    </React.Fragment>
+                                                )}
+                                            </React.Fragment>
+                                        ))}
+
+                                        {productGroups.map(group => (
+                                            <React.Fragment key={group.key}>
+                                                {group.products.map((product, idx) => (
+                                                    <React.Fragment key={product.id}>
+                                                        <th className={`p-1 border-b min-w-[35px] text-center ${idx === 0 ? 'border-l-2 border-gray-400' : 'border-l border-gray-200'}`}>Tgt</th>
+                                                        <th className="p-1 border-b min-w-[35px] text-center">Act</th>
+                                                        <th className="p-1 border-b min-w-[40px] text-center">Ach%</th>
+                                                        <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">M-1</th>
+                                                        <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">Gwth</th>
+                                                        {selectedWeeks.map(w => (
+                                                            <React.Fragment key={`${product.id}-w${w}`}>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
                                                             </React.Fragment>
+                                                        ))}
+                                                        {customRange && (
+                                                            <>
+                                                                <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
+                                                                <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
+                                                            </>
                                                         )}
                                                     </React.Fragment>
-                                                );
-                                            };
-
-                                            const allProducts = productGroups.flatMap(g => g.products);
-                                            const simpatiProducts = allProducts.filter(p => p.brand === 'simpati');
-                                            const byuProducts = allProducts.filter(p => p.brand === 'byu');
-
-                                            return (
-                                                <>
-                                                    {renderSummaryTotalColumn(allProducts, 'bg-gray-50')}
-                                                    {renderSummaryTotalColumn(simpatiProducts, 'bg-red-50')}
-                                                    {renderSummaryTotalColumn(byuProducts, 'bg-purple-50')}
-                                                </>
-                                            );
-                                        })()}
-
-                                        {productGroups.map(group => {
-                                            const total = calculateGroupTotal(group.products, row.products, selectedWeeks);
-                                            return (
-                                                <React.Fragment key={group.key}>
-                                                    {group.products.map((product, idx) => {
-                                                        const pData = row.products[product.id];
-                                                        if (!pData) return <td key={product.id} colSpan={getMetricColSpan()} className="p-1 text-center text-gray-300">-</td>;
-                                                        return (
-                                                            <React.Fragment key={product.id}>
-                                                                <td className={`p-1 text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'}`}>{formatNumber(pData.target.mtd)}</td>
-                                                                <td className="p-1 text-center font-semibold">{formatNumber(pData.actual.mtd)}</td>
-                                                                <td className="p-1 text-center">
-                                                                    <div className="flex flex-col gap-0.5">
-                                                                        <span>{Math.round(pData.achievement_pct)}%</span>
-                                                                        <ProgressBar value={pData.achievement_pct} />
-                                                                    </div>
-                                                                </td>
-                                                                {/* M-1 and Growth */}
-                                                                {(() => {
-                                                                    const m1 = pData.actual.mtd - (pData.mom_growth || 0);
-                                                                    const growthPct = m1 !== 0 ? ((pData.mom_growth || 0) / m1) * 100 : 0;
-                                                                    return (
-                                                                        <>
-                                                                            <td className="p-1 text-center text-white">{formatNumber(m1)}</td>
-                                                                            <td className={`p-1 text-center ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                                {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
-                                                                            </td>
-                                                                        </>
-                                                                    )
-                                                                })()}
-
-                                                                {selectedWeeks.map(w => {
-                                                                    const tgt = pData.target.weekly[w - 1] || 0;
-                                                                    const act = pData.actual.weekly[w - 1] || 0;
-                                                                    const achPct = tgt > 0 ? (act / tgt) * 100 : 0;
-
-                                                                    // Mock Growth
-                                                                    const prev = getPrevMonthValue(act);
-                                                                    const growthPct = prev > 0 ? ((act - prev) / prev) * 100 : 0;
-
-                                                                    return (
-                                                                        <React.Fragment key={`${product.id}-w${w}-data`}>
-                                                                            <td className={`p-1 text-center text-gray-500 ${weekBgColors[w]}`}>{formatNumber(tgt)}</td>
-                                                                            <td className={`p-1 text-center ${weekBgColors[w]}`}>{formatNumber(act)}</td>
-                                                                            <td className={`p-1 text-center ${weekBgColors[w]}`}>{Math.round(achPct)}%</td>
-                                                                            <td className={`p-1 text-center ${weekBgColors[w]} ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                                {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
-                                                                            </td>
-                                                                        </React.Fragment>
-                                                                    );
-                                                                })}
-                                                                {customRange && (() => {
-                                                                    /* Placeholder simple calc */
-                                                                    return (
-                                                                        <>
-                                                                            <td className="p-1 text-center bg-green-50">-</td>
-                                                                            <td className="p-1 text-center bg-green-50">-</td>
-                                                                        </>
-                                                                    );
-                                                                })()}
+                                                ))}
+                                                {/* Total Headers - only if more than 1 product */}
+                                                {group.products.length > 1 && (
+                                                    <>
+                                                        <th className="p-1 border-b min-w-[40px] text-center border-l-2 border-gray-500 bg-slate-100 font-semibold">Tgt</th>
+                                                        <th className="p-1 border-b min-w-[40px] text-center bg-slate-100 font-semibold">Act</th>
+                                                        <th className="p-1 border-b min-w-[45px] text-center bg-slate-100 font-semibold">Ach%</th>
+                                                        <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">M-1</th>
+                                                        <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">Gwth</th>
+                                                        {selectedWeeks.map(w => (
+                                                            <React.Fragment key={`total-w${w}-hdr`}>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T</th>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A</th>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac</th>
+                                                                <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
                                                             </React.Fragment>
-                                                        );
-                                                    })}
-                                                    {/* Total - only if more than 1 product */}
-                                                    {group.products.length > 1 && (
-                                                        <>
-                                                            <td className="p-1 text-center border-l-2 border-gray-500 bg-slate-50 font-semibold">{formatNumber(total.target)}</td>
-                                                            <td className="p-1 text-center bg-slate-50 font-bold text-blue-700">{formatNumber(total.actual)}</td>
-                                                            <td className="p-1 text-center bg-slate-50">
-                                                                <div className="flex flex-col gap-0.5">
-                                                                    <span className="font-semibold">{Math.round(total.achievementPct)}%</span>
-                                                                    <ProgressBar value={total.achievementPct} />
-                                                                </div>
+                                                        ))}
+                                                        {customRange && (
+                                                            <>
+                                                                <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
+                                                                <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
+                                                            </>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </React.Fragment>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {sortedData.map(row => (
+                                        <tr key={row.outlet_id} className="hover:bg-gray-50 border-b border-gray-100">
+                                            <td className="sticky left-0 z-20 bg-white p-1 font-mono text-[9px] border-r border-gray-100">{row.id_digipos}</td>
+                                            <td className="sticky left-[80px] z-20 bg-white p-1 font-medium border-r border-gray-100">{row.outlet_name}</td>
+                                            <td className="sticky left-[200px] z-20 bg-white p-1 font-mono text-[9px] border-r border-gray-100">{formatRSNumber(row.rs_number)}</td>
+                                            <td className="sticky left-[280px] z-20 bg-white p-1 text-gray-700 border-r border-gray-100">{row.tap_name}</td>
+                                            <td className="sticky left-[380px] z-20 bg-white p-1 text-gray-700 border-r border-gray-100">{row.salesforce_name}</td>
+                                            <td className="p-1 text-center border-r border-gray-200">{row.kabupaten || '-'}</td>
+                                            <td className="p-1 text-center border-r border-gray-200">{row.outlet_flag || '-'}</td>
+                                            <td className="p-1 text-center border-r border-gray-200">
+                                                <span className={`px-1.5 py-0.5 rounded text-[9px] font-medium ${row.outlet_location === 'Ring 1' ? 'bg-green-100 text-green-700' : row.outlet_location === 'Ring 2' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
+                                                    {row.outlet_location || '-'}
+                                                </span>
+                                            </td>
+
+                                            {/* Global Totals Logic */}
+                                            {(() => {
+                                                // Calculate Totals for All, Simpati, and byU
+                                                const allProducts = productGroups.flatMap(g => g.products);
+                                                const simpatiProducts = allProducts.filter(p => p.brand === 'simpati');
+                                                const byuProducts = allProducts.filter(p => p.brand === 'byu');
+
+                                                const renderTotalColumn = (products: any[], bgClass: string) => {
+                                                    let tgt = 0, act = 0, m1 = 0;
+                                                    const weeklyActuals = [0, 0, 0, 0, 0];
+                                                    const weeklyGaps = [0, 0, 0, 0, 0];
+
+                                                    products.forEach(p => {
+                                                        const d = row.products[p.id];
+                                                        if (d) {
+                                                            tgt += d.target.mtd;
+                                                            act += d.actual.mtd;
+                                                            m1 += (d.actual.mtd - (d.mom_growth || 0)); // Approx M-1
+
+                                                            // Weekly aggregation
+                                                            for (let i = 0; i < 5; i++) {
+                                                                weeklyActuals[i] += d.actual.weekly[i] || 0;
+                                                                weeklyGaps[i] += d.gap.weekly[i] || 0;
+                                                            }
+                                                        }
+                                                    });
+                                                    const ach = tgt > 0 ? (act / tgt) * 100 : 0;
+                                                    const growthAbs = act - m1;
+                                                    const growthPct = m1 !== 0 ? (growthAbs / m1) * 100 : 0;
+                                                    const growthColor = growthPct >= 0 ? 'text-green-600' : 'text-red-600';
+
+                                                    return (
+                                                        <React.Fragment>
+                                                            <td className={`p-1 text-center border-r border-gray-300 font-semibold ${bgClass}`}>{formatNumber(tgt)}</td>
+                                                            <td className={`p-1 text-center border-r border-gray-300 font-bold ${bgClass}`}>{formatNumber(act)}</td>
+                                                            <td className={`p-1 text-center border-r border-gray-300 ${bgClass}`}>{Math.round(ach)}%</td>
+                                                            <td className={`p-1 text-center border-r border-gray-300 ${bgClass} text-amber-800`}>{formatNumber(m1)}</td>
+                                                            <td className={`p-1 text-center border-r border-gray-300 ${bgClass} ${growthColor}`}>
+                                                                {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
                                                             </td>
-                                                            <td className="p-1 text-center bg-slate-50 text-white">{formatNumber(total.m1)}</td>
-                                                            {(() => {
-                                                                const growthPct = total.m1 !== 0 ? (total.growth / total.m1) * 100 : 0;
-                                                                return (
-                                                                    <td className={`p-1 text-center bg-slate-50 ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                        {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
-                                                                    </td>
-                                                                );
-                                                            })()}
+                                                            {/* Weekly & Custom Placeholders - Populated */}
                                                             {selectedWeeks.map(w => {
-                                                                const gap = total.weeklyGaps[w - 1];
-                                                                // We need weekly target for this group total to calc %
+                                                                // Calculate weekly target for Global Totals (needed for %)
                                                                 let wTgt = 0;
-                                                                group.products.forEach(p => {
+                                                                products.forEach(p => {
                                                                     const d = row.products[p.id];
                                                                     if (d) wTgt += d.target.weekly[w - 1] || 0;
                                                                 });
-                                                                const wGapPct = wTgt > 0 ? (gap / wTgt) * 100 : 0;
+
+                                                                const wAct = weeklyActuals[w - 1];
+                                                                const wAchPct = wTgt > 0 ? (wAct / wTgt) * 100 : 0;
+
+                                                                // Growth %
+                                                                const wPrevAct = getPrevMonthValue(wAct);
+                                                                const wGrowthPct = wPrevAct > 0 ? ((wAct - wPrevAct) / wPrevAct) * 100 : 0;
+                                                                const wGrowthColor = wGrowthPct >= 0 ? 'text-green-600' : 'text-red-600';
 
                                                                 return (
-                                                                    <React.Fragment key={`total-w${w}-data`}>
-                                                                        <td className={`p-1 text-center ${weekBgColors[w]} font-semibold`}>{formatNumber(total.weeklyActuals[w - 1])}</td>
-                                                                        <td className={`p-1 text-center ${weekBgColors[w]} font-semibold ${wGapPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                            {wGapPct > 0 ? `+${Math.round(wGapPct)}%` : `${Math.round(wGapPct)}%`}
+                                                                    <React.Fragment key={w}>
+                                                                        <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{formatNumber(wTgt)}</td>
+                                                                        <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{formatNumber(wAct)}</td>
+                                                                        <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{Math.round(wAchPct)}%</td>
+                                                                        <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]} ${wGrowthColor}`}>
+                                                                            {wGrowthPct > 0 ? `+${Math.round(wGrowthPct)}%` : `${Math.round(wGrowthPct)}%`}
                                                                         </td>
                                                                     </React.Fragment>
                                                                 );
                                                             })}
                                                             {customRange && (
-                                                                <>
-                                                                    <td className="p-1 text-center bg-green-50 font-semibold">-</td>
-                                                                    <td className="p-1 text-center bg-green-50 font-semibold">-</td>
-                                                                </>
-                                                            )}
-                                                        </>
-                                                    )}
-                                                </React.Fragment>
-                                            );
-                                        })}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </div>
-        );
-
-        return (
-            <div className="p-6 animate-fade-in">
-                <Header title="Sales Plan Voucher Fisik" subtitle="" />
-
-                <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
-                    <Clock size={14} />
-                    <span>Data diperbarui: <span className="font-medium text-gray-700">{dataUpdateTime}</span></span>
-                    <span className="ml-4 px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">
-                        {filteredProducts.length} produk aktif • {productGroups.length} grup
-                    </span>
-                </div>
-
-                <FilterBar
-                    onFilterChange={setFilters}
-                    useMonthPicker={true}
-                    className="mt-4"
-                    showTAP={true}
-                    showSalesforce={true}
-                    showKabupaten={true}
-                    showFlag={true}
-                    showPJPStatus={true}
-                    tapOptions={tapOptions}
-                    salesforceOptions={salesforceOptions}
-                    kabupatenOptions={kabupatenOptions}
-                    flagOptions={flagOptions}
-                    pjpOptions={locationOptions}
-                />
-
-                <VoucherFilterPanel
-                    onFilterChange={setFilters}
-                    month={filters.month || new Date().getMonth() + 1}
-                    year={filters.year || new Date().getFullYear()}
-                    selectedBrand={selectedBrand}
-                    onBrandChange={setSelectedBrand}
-                    selectedValidities={selectedValidities}
-                    onValiditiesChange={setSelectedValidities}
-                    selectedWeeks={selectedWeeks}
-                    onSelectedWeeksChange={setSelectedWeeks}
-                    customRange={customRange}
-                    onCustomRangeChange={setCustomRange}
-                    showCustomDate={false}
-                />
-
-                <Card padding="none" className="mt-2">
-                    <Tabs defaultValue="summary">
-                        <TabList>
-                            <Tab value="summary" icon={<LayoutDashboard size={16} />}>Summary</Tab>
-                            <Tab value="detail" icon={<TableIcon size={16} />}>Detail Outlet</Tab>
-                        </TabList>
-
-                        <TabPanel value="summary" className="p-4">
-                            <SummaryTable data={tapSummary} title="Summary per TAP" icon={<MapPin size={16} className="text-blue-600" />} expanded={tapExpanded} onToggle={() => setTapExpanded(!tapExpanded)} />
-                            <SummaryTable data={sfSummary} showTap={true} title="Summary per Salesforce" icon={<User size={16} className="text-green-600" />} expanded={sfExpanded} onToggle={() => setSfExpanded(!sfExpanded)} />
-                        </TabPanel>
-
-                        <TabPanel value="detail" className="p-0">
-                            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-                                <Input placeholder="Search Outlet, ID Digipos, or Salesforce..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} leftIcon={<Search size={16} />} className="max-w-md" />
-                                <Button variant="outline" size="sm" leftIcon={<Download size={16} />} onClick={handleExportExcel}>Export Excel</Button>
-                            </div>
-                            <div className="overflow-auto max-h-[600px] relative">
-                                <table className="w-full text-[10px] text-left border-collapse whitespace-nowrap">
-                                    <thead>
-                                        <tr className="bg-gray-100 uppercase">
-                                            <th rowSpan={3} onClick={() => handleSort('id_digipos')} className={`${stickyHeaderStyle} left-0 z-40 bg-gray-100 min-w-[80px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">ID {getSortIcon('id_digipos')}</div>
-                                            </th>
-                                            <th rowSpan={3} onClick={() => handleSort('outlet_name')} className={`${stickyHeaderStyle} left-[80px] z-40 bg-gray-100 min-w-[120px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">OUTLET {getSortIcon('outlet_name')}</div>
-                                            </th>
-                                            <th rowSpan={3} onClick={() => handleSort('rs_number')} className={`${stickyHeaderStyle} left-[200px] z-40 bg-gray-100 min-w-[80px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">NO RS {getSortIcon('rs_number')}</div>
-                                            </th>
-                                            <th rowSpan={3} onClick={() => handleSort('tap_name')} className={`${stickyHeaderStyle} left-[280px] z-40 bg-gray-100 min-w-[100px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">TAP {getSortIcon('tap_name')}</div>
-                                            </th>
-                                            <th rowSpan={3} onClick={() => handleSort('salesforce_name')} className={`${stickyHeaderStyle} left-[380px] z-40 bg-gray-100 min-w-[100px] border-r border-gray-300 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">SF {getSortIcon('salesforce_name')}</div>
-                                            </th>
-                                            <th rowSpan={3} onClick={() => handleSort('kabupaten')} className={`${stickyHeaderStyle} min-w-[100px] border-r border-gray-300 bg-gray-100 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">KAB {getSortIcon('kabupaten')}</div>
-                                            </th>
-                                            <th rowSpan={3} onClick={() => handleSort('outlet_flag')} className={`${stickyHeaderStyle} min-w-[80px] border-r border-gray-300 bg-gray-100 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">FLAG {getSortIcon('outlet_flag')}</div>
-                                            </th>
-                                            <th rowSpan={3} onClick={() => handleSort('outlet_location')} className={`${stickyHeaderStyle} min-w-[70px] border-r border-gray-300 bg-gray-100 cursor-pointer hover:bg-gray-200`}>
-                                                <div className="flex items-center justify-between">LOC {getSortIcon('outlet_location')}</div>
-                                            </th>
-
-                                            {/* Global Totals Header */}
-                                            <th rowSpan={2} colSpan={getTotalColSpan()} className={`${stickyHeaderStyle} text-center bg-gray-200 border-r-2 border-gray-400 align-middle`}>TOTAL ALL</th>
-                                            <th rowSpan={2} colSpan={getTotalColSpan()} className={`${stickyHeaderStyle} text-center ${getProductHeaderBg('simpati')} border-r-2 border-gray-400 align-middle`}>TOTAL SIMPATI</th>
-                                            <th rowSpan={2} colSpan={getTotalColSpan()} className={`${stickyHeaderStyle} text-center ${getProductHeaderBg('byu')} border-r-2 border-gray-400 align-middle`}>TOTAL BYU</th>
-                                            {productGroups.map(group => (
-                                                <th key={group.key} colSpan={getGroupColSpan(group.products.length)} className={`${stickyHeaderStyle} text-center ${productSeparator} ${getProductHeaderBg(group.brand)}`}>
-                                                    {group.label}
-                                                </th>
-                                            ))}
-                                        </tr>
-                                        <tr className="bg-[#3d5f85]">
-                                            {/* Empty headers for locked columns are handled by rowspan */}
-                                            {/* Product Headers */}
-                                            {/* Global Totals Sub-headers */}
-                                            {[
-                                                { key: 'total_all', label: 'TOTAL ALL', bg: 'bg-slate-300' },
-                                                { key: 'total_simpati', label: 'TOTAL SIMPATI', bg: getProductSubHeaderBg('simpati') },
-                                                { key: 'total_byu', label: 'TOTAL BYU', bg: getProductSubHeaderBg('byu') }
-                                            ].map((g, i) => (
-                                                <th key={g.key} colSpan={getTotalColSpan()} className={`p-1 border-b text-center border-l-2 border-gray-400 font-semibold sticky top-[33px] z-20 ${g.bg}`}>
-                                                </th>
-                                            ))}
-
-                                            {productGroups.map(group => (
-                                                <React.Fragment key={group.key}>
-                                                    {group.products.map((product, idx) => (
-                                                        <th key={product.id} colSpan={getMetricColSpan()} className={`p-1 border-b text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'} ${getProductSubHeaderBg(group.key)} sticky top-[33px] z-20`}>
-                                                            {getShortProductName(product.name)}
-                                                        </th>
-                                                    ))}
-                                                    {group.products.length > 1 && (
-                                                        <th colSpan={getTotalColSpan()} className="p-1 border-b text-center border-l-2 border-gray-500 bg-slate-200 font-bold sticky top-[33px] z-20">
-                                                            TOTAL
-                                                        </th>
-                                                    )}
-                                                </React.Fragment>
-                                            ))}
-                                        </tr>
-                                        <tr className="bg-white text-gray-500 text-[10px] sticky top-[66px] z-20">
-                                            {/* Global Totals Metrics Headers */}
-                                            {['bg-gray-200', 'bg-red-50', 'bg-purple-50'].map((bg, i) => (
-                                                <React.Fragment key={`global-total-hdr-${i}`}>
-                                                    <th className={`p-1 border-b min-w-[40px] text-center border-l-2 border-gray-400 ${bg} font-semibold`}>Tgt</th>
-                                                    <th className={`p-1 border-b min-w-[40px] text-center ${bg} font-semibold`}>Act</th>
-                                                    <th className={`p-1 border-b min-w-[45px] text-center ${bg} font-semibold`}>Ach%</th>
-                                                    <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>M-1</th>
-                                                    <th className={`p-1 border-b min-w-[35px] text-center ${bg} font-semibold text-amber-800`}>Gwth</th>
-                                                    {selectedWeeks.map(w => (
-                                                        <React.Fragment key={`global-total-w${w}-${i}`}>
-                                                            <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
-                                                            <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
-                                                            <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
-                                                            <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
-                                                        </React.Fragment>
-                                                    ))}
-                                                    {customRange && (
-                                                        <React.Fragment>
-                                                            <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
-                                                            <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
-                                                        </React.Fragment>
-                                                    )}
-                                                </React.Fragment>
-                                            ))}
-
-                                            {productGroups.map(group => (
-                                                <React.Fragment key={group.key}>
-                                                    {group.products.map((product, idx) => (
-                                                        <React.Fragment key={product.id}>
-                                                            <th className={`p-1 border-b min-w-[35px] text-center ${idx === 0 ? 'border-l-2 border-gray-400' : 'border-l border-gray-200'}`}>Tgt</th>
-                                                            <th className="p-1 border-b min-w-[35px] text-center">Act</th>
-                                                            <th className="p-1 border-b min-w-[40px] text-center">Ach%</th>
-                                                            <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">M-1</th>
-                                                            <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">Gwth</th>
-                                                            {selectedWeeks.map(w => (
-                                                                <React.Fragment key={`${product.id}-w${w}`}>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T.W{w}</th>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A.W{w}</th>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac%</th>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
+                                                                <React.Fragment>
+                                                                    <td className={`p-1 text-center ${bgClass}`}>-</td>
+                                                                    <td className={`p-1 text-center ${bgClass}`}>-</td>
                                                                 </React.Fragment>
-                                                            ))}
-                                                            {customRange && (
-                                                                <>
-                                                                    <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
-                                                                    <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
-                                                                </>
                                                             )}
                                                         </React.Fragment>
-                                                    ))}
-                                                    {/* Total Headers - only if more than 1 product */}
-                                                    {group.products.length > 1 && (
-                                                        <>
-                                                            <th className="p-1 border-b min-w-[40px] text-center border-l-2 border-gray-500 bg-slate-100 font-semibold">Tgt</th>
-                                                            <th className="p-1 border-b min-w-[40px] text-center bg-slate-100 font-semibold">Act</th>
-                                                            <th className="p-1 border-b min-w-[45px] text-center bg-slate-100 font-semibold">Ach%</th>
-                                                            <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">M-1</th>
-                                                            <th className="p-1 border-b min-w-[35px] text-center bg-amber-50 text-amber-800">Gwth</th>
-                                                            {selectedWeeks.map(w => (
-                                                                <React.Fragment key={`total-w${w}-hdr`}>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>T</th>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>A</th>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>Ac</th>
-                                                                    <th className={`p-1 border-b min-w-[25px] text-center ${weekHeaderBgColors[w]} text-gray-800`}>G%</th>
+                                                    );
+                                                };
+
+                                                return (
+                                                    <React.Fragment>
+                                                        {renderTotalColumn(allProducts, 'bg-gray-100')}
+                                                        {renderTotalColumn(simpatiProducts, 'bg-red-50')}
+                                                        {renderTotalColumn(byuProducts, 'bg-purple-50')}
+                                                    </React.Fragment>
+                                                );
+                                            })()}
+
+                                            {productGroups.map(group => {
+                                                const total = calculateGroupTotal(group.products, row.products, selectedWeeks);
+                                                return (
+                                                    <React.Fragment key={group.key}>
+                                                        {group.products.map((product, idx) => {
+                                                            const pData = row.products[product.id];
+                                                            if (!pData) return <td key={product.id} colSpan={getMetricColSpan()} className="p-1 text-center text-gray-300">-</td>;
+                                                            return (
+                                                                <React.Fragment key={product.id}>
+                                                                    <td className={`p-1 text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'} ${getProductTargetBg(group.brand)}`}>{formatNumber(pData.target.mtd)}</td>
+                                                                    <td className="p-1 text-center font-semibold">{formatNumber(pData.actual.mtd)}</td>
+                                                                    <td className="p-1 text-center">
+                                                                        <span className={`px-1 py-0.5 rounded text-[9px] ${pData.achievement_pct >= 100 ? 'bg-green-100 text-green-700' : pData.achievement_pct >= 80 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
+                                                                            {Math.round(pData.achievement_pct)}%
+                                                                        </span>
+                                                                    </td>
+
+                                                                    {
+                                                                        (() => {
+                                                                            const m1 = pData.actual.mtd - (pData.mom_growth || 0);
+                                                                            const growthPct = m1 !== 0 ? ((pData.mom_growth || 0) / m1) * 100 : 0;
+                                                                            return (
+                                                                                <>
+                                                                                    <td className="p-1 text-center bg-yellow-50 text-amber-800">{formatNumber(m1)}</td>
+                                                                                    <td className={`p-1 text-center bg-yellow-50 ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                                        {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                                                    </td>
+                                                                                </>
+                                                                            );
+                                                                        })()
+                                                                    }
+                                                                    {
+                                                                        selectedWeeks.map(w => {
+                                                                            const tgt = pData.target.weekly[w - 1] || 0;
+                                                                            const act = pData.actual.weekly[w - 1] || 0;
+                                                                            const achPct = tgt > 0 ? (act / tgt) * 100 : 0;
+
+                                                                            // Growth %
+                                                                            const prevAct = getPrevMonthValue(act);
+                                                                            const growthPct = prevAct > 0 ? ((act - prevAct) / prevAct) * 100 : 0;
+                                                                            const growthColor = growthPct >= 0 ? 'text-green-600' : 'text-red-600';
+
+                                                                            return (
+                                                                                <React.Fragment key={`${product.id}-w${w}-data`}>
+                                                                                    <td className={`p-1 text-center ${weekBgColors[w]}`}>{formatNumber(tgt)}</td>
+                                                                                    <td className={`p-1 text-center ${weekBgColors[w]}`}>{formatNumber(act)}</td>
+                                                                                    <td className={`p-1 text-center ${weekBgColors[w]}`}>{Math.round(achPct)}%</td>
+                                                                                    <td className={`p-1 text-center ${weekBgColors[w]} ${growthColor}`}>
+                                                                                        {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                                                    </td>
+                                                                                </React.Fragment>
+                                                                            );
+                                                                        })
+                                                                    }
+                                                                    {
+                                                                        customRange && (() => {
+                                                                            return (
+                                                                                <>
+                                                                                    <td className="p-1 text-center bg-green-50">-</td>
+                                                                                    <td className="p-1 text-center bg-green-50">-</td>
+                                                                                </>
+                                                                            );
+                                                                        })()
+                                                                    }
                                                                 </React.Fragment>
-                                                            ))}
-                                                            {customRange && (
-                                                                <>
-                                                                    <th className="p-1 border-b min-w-[35px] text-center bg-green-100 text-green-800">A</th>
-                                                                    <th className="p-1 border-b min-w-[30px] text-center bg-green-100 text-green-800">G</th>
-                                                                </>
-                                                            )}
-                                                        </>
-                                                    )}
-                                                </React.Fragment>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {sortedData.map(row => (
-                                            <tr key={row.outlet_id} className="hover:bg-gray-50 border-b border-gray-100">
-                                                <td className="sticky left-0 z-20 bg-white p-1 font-mono text-[9px] border-r border-gray-100">{row.id_digipos}</td>
-                                                <td className="sticky left-[80px] z-20 bg-white p-1 font-medium border-r border-gray-100">{row.outlet_name}</td>
-                                                <td className="sticky left-[200px] z-20 bg-white p-1 font-mono text-[9px] border-r border-gray-100">{formatRSNumber(row.rs_number)}</td>
-                                                <td className="sticky left-[280px] z-20 bg-white p-1 text-gray-700 border-r border-gray-100">{row.tap_name}</td>
-                                                <td className="sticky left-[380px] z-20 bg-white p-1 text-gray-700 border-r border-gray-100">{row.salesforce_name}</td>
-                                                <td className="p-1 text-center border-r border-gray-200">{row.kabupaten || '-'}</td>
-                                                <td className="p-1 text-center border-r border-gray-200">{row.outlet_flag || '-'}</td>
-                                                <td className="p-1 text-center border-r border-gray-200">
-                                                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-medium ${row.outlet_location === 'Ring 1' ? 'bg-green-100 text-green-700' : row.outlet_location === 'Ring 2' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
-                                                        {row.outlet_location || '-'}
-                                                    </span>
-                                                </td>
-
-                                                {/* Global Totals Logic */}
-                                                {(() => {
-                                                    // Calculate Totals for All, Simpati, and byU
-                                                    const allProducts = productGroups.flatMap(g => g.products);
-                                                    const simpatiProducts = allProducts.filter(p => p.brand === 'simpati');
-                                                    const byuProducts = allProducts.filter(p => p.brand === 'byu');
-
-                                                    const renderTotalColumn = (products: any[], bgClass: string) => {
-                                                        let tgt = 0, act = 0, m1 = 0;
-                                                        const weeklyActuals = [0, 0, 0, 0, 0];
-                                                        const weeklyGaps = [0, 0, 0, 0, 0];
-
-                                                        products.forEach(p => {
-                                                            const d = row.products[p.id];
-                                                            if (d) {
-                                                                tgt += d.target.mtd;
-                                                                act += d.actual.mtd;
-                                                                m1 += (d.actual.mtd - (d.mom_growth || 0)); // Approx M-1
-
-                                                                // Weekly aggregation
-                                                                for (let i = 0; i < 5; i++) {
-                                                                    weeklyActuals[i] += d.actual.weekly[i] || 0;
-                                                                    weeklyGaps[i] += d.gap.weekly[i] || 0;
-                                                                }
-                                                            }
-                                                        });
-                                                        const ach = tgt > 0 ? (act / tgt) * 100 : 0;
-                                                        const growthAbs = act - m1;
-                                                        const growthPct = m1 !== 0 ? (growthAbs / m1) * 100 : 0;
-                                                        const growthColor = growthPct >= 0 ? 'text-green-600' : 'text-red-600';
-
-                                                        return (
-                                                            <React.Fragment>
-                                                                <td className={`p-1 text-center border-r border-gray-300 font-semibold ${bgClass}`}>{formatNumber(tgt)}</td>
-                                                                <td className={`p-1 text-center border-r border-gray-300 font-bold ${bgClass}`}>{formatNumber(act)}</td>
-                                                                <td className={`p-1 text-center border-r border-gray-300 ${bgClass}`}>{Math.round(ach)}%</td>
-                                                                <td className={`p-1 text-center border-r border-gray-300 ${bgClass} text-amber-800`}>{formatNumber(m1)}</td>
-                                                                <td className={`p-1 text-center border-r border-gray-300 ${bgClass} ${growthColor}`}>
-                                                                    {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                            );
+                                                        })}
+                                                        {/* Total - only if more than 1 product */}
+                                                        {group.products.length > 1 && (
+                                                            <>
+                                                                <td className="p-1 text-center border-l-2 border-gray-500 bg-slate-50 font-semibold">{formatNumber(total.target)}</td>
+                                                                <td className="p-1 text-center bg-slate-50 font-bold text-blue-700">{formatNumber(total.actual)}</td>
+                                                                <td className="p-1 text-center bg-slate-50">
+                                                                    <span className={`px-1 py-0.5 rounded text-[9px] font-semibold ${total.achievementPct >= 100 ? 'bg-green-200 text-green-800' : total.achievementPct >= 80 ? 'bg-yellow-200 text-yellow-800' : 'bg-red-200 text-red-800'}`}>
+                                                                        {Math.round(total.achievementPct)}%
+                                                                    </span>
                                                                 </td>
-                                                                {/* Weekly & Custom Placeholders - Populated */}
+                                                                <td className="p-1 text-center bg-yellow-50 text-amber-800">{formatNumber(total.m1)}</td>
+                                                                {(() => {
+                                                                    const growthPct = total.m1 !== 0 ? (total.growth / total.m1) * 100 : 0;
+                                                                    return (
+                                                                        <td className={`p-1 text-center bg-yellow-50 ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                            {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
+                                                                        </td>
+                                                                    );
+                                                                })()}
                                                                 {selectedWeeks.map(w => {
-                                                                    // Calculate weekly target for Global Totals (needed for %)
+                                                                    // We need weekly target for this group total to calc %
+                                                                    // calculateGroupTotal doesn't return weeklyTarget array, let's fix that or compute on fly.
+                                                                    // Easier to compute here as we have the products list.
                                                                     let wTgt = 0;
-                                                                    products.forEach(p => {
+                                                                    group.products.forEach(p => {
                                                                         const d = row.products[p.id];
                                                                         if (d) wTgt += d.target.weekly[w - 1] || 0;
                                                                     });
-
-                                                                    const wAct = weeklyActuals[w - 1];
-                                                                    const wAchPct = wTgt > 0 ? (wAct / wTgt) * 100 : 0;
-
-                                                                    // Growth %
-                                                                    const wPrevAct = getPrevMonthValue(wAct);
-                                                                    const wGrowthPct = wPrevAct > 0 ? ((wAct - wPrevAct) / wPrevAct) * 100 : 0;
-                                                                    const wGrowthColor = wGrowthPct >= 0 ? 'text-green-600' : 'text-red-600';
+                                                                    const wGap = total.weeklyGaps[w - 1];
+                                                                    const wGapPct = wTgt > 0 ? (wGap / wTgt) * 100 : 0;
 
                                                                     return (
-                                                                        <React.Fragment key={w}>
-                                                                            <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{formatNumber(wTgt)}</td>
-                                                                            <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{formatNumber(wAct)}</td>
-                                                                            <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]}`}>{Math.round(wAchPct)}%</td>
-                                                                            <td className={`p-1 text-center ${bgClass} ${weekBgColors[w]} ${wGrowthColor}`}>
-                                                                                {wGrowthPct > 0 ? `+${Math.round(wGrowthPct)}%` : `${Math.round(wGrowthPct)}%`}
+                                                                        <React.Fragment key={`total-w${w}-outlet`}>
+                                                                            <td className={`p-1 text-center ${weekBgColors[w]} font-semibold`}>{formatNumber(total.weeklyActuals[w - 1])}</td>
+                                                                            <td className={`p-1 text-center ${weekBgColors[w]} font-semibold ${wGapPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                                                                {wGapPct > 0 ? `+${Math.round(wGapPct)}%` : `${Math.round(wGapPct)}%`}
                                                                             </td>
                                                                         </React.Fragment>
                                                                     );
                                                                 })}
                                                                 {customRange && (
-                                                                    <React.Fragment>
-                                                                        <td className={`p-1 text-center ${bgClass}`}>-</td>
-                                                                        <td className={`p-1 text-center ${bgClass}`}>-</td>
-                                                                    </React.Fragment>
+                                                                    <>
+                                                                        <td className="p-1 text-center bg-green-50 font-semibold">-</td>
+                                                                        <td className="p-1 text-center bg-green-50 font-semibold">-</td>
+                                                                    </>
                                                                 )}
-                                                            </React.Fragment>
-                                                        );
-                                                    };
+                                                            </>
+                                                        )}
+                                                    </React.Fragment>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </TabPanel>
+                </Tabs>
+            </Card>
+        </div>
+    );
+};
 
-                                                    return (
-                                                        <React.Fragment>
-                                                            {renderTotalColumn(allProducts, 'bg-gray-100')}
-                                                            {renderTotalColumn(simpatiProducts, 'bg-red-50')}
-                                                            {renderTotalColumn(byuProducts, 'bg-purple-50')}
-                                                        </React.Fragment>
-                                                    );
-                                                })()}
-
-                                                {productGroups.map(group => {
-                                                    const total = calculateGroupTotal(group.products, row.products, selectedWeeks);
-                                                    return (
-                                                        <React.Fragment key={group.key}>
-                                                            {group.products.map((product, idx) => {
-                                                                const pData = row.products[product.id];
-                                                                if (!pData) return <td key={product.id} colSpan={getMetricColSpan()} className="p-1 text-center text-gray-300">-</td>;
-                                                                return (
-                                                                    <React.Fragment key={product.id}>
-                                                                        <td className={`p-1 text-center ${idx === 0 ? productSeparator : 'border-l border-gray-200'} ${getProductTargetBg(group.brand)}`}>{formatNumber(pData.target.mtd)}</td>
-                                                                        <td className="p-1 text-center font-semibold">{formatNumber(pData.actual.mtd)}</td>
-                                                                        <td className="p-1 text-center">
-                                                                            <span className={`px-1 py-0.5 rounded text-[9px] ${pData.achievement_pct >= 100 ? 'bg-green-100 text-green-700' : pData.achievement_pct >= 80 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
-                                                                                {Math.round(pData.achievement_pct)}%
-                                                                            </span>
-                                                                        </td>
-
-                                                                        {
-                                                                            (() => {
-                                                                                const m1 = pData.actual.mtd - (pData.mom_growth || 0);
-                                                                                const growthPct = m1 !== 0 ? ((pData.mom_growth || 0) / m1) * 100 : 0;
-                                                                                return (
-                                                                                    <>
-                                                                                        <td className="p-1 text-center bg-yellow-50 text-amber-800">{formatNumber(m1)}</td>
-                                                                                        <td className={`p-1 text-center bg-yellow-50 ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                                            {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
-                                                                                        </td>
-                                                                                    </>
-                                                                                );
-                                                                            })()
-                                                                        }
-                                                                        {
-                                                                            selectedWeeks.map(w => {
-                                                                                const tgt = pData.target.weekly[w - 1] || 0;
-                                                                                const act = pData.actual.weekly[w - 1] || 0;
-                                                                                const achPct = tgt > 0 ? (act / tgt) * 100 : 0;
-
-                                                                                // Growth %
-                                                                                const prevAct = getPrevMonthValue(act);
-                                                                                const growthPct = prevAct > 0 ? ((act - prevAct) / prevAct) * 100 : 0;
-                                                                                const growthColor = growthPct >= 0 ? 'text-green-600' : 'text-red-600';
-
-                                                                                return (
-                                                                                    <React.Fragment key={`${product.id}-w${w}-data`}>
-                                                                                        <td className={`p-1 text-center ${weekBgColors[w]}`}>{formatNumber(tgt)}</td>
-                                                                                        <td className={`p-1 text-center ${weekBgColors[w]}`}>{formatNumber(act)}</td>
-                                                                                        <td className={`p-1 text-center ${weekBgColors[w]}`}>{Math.round(achPct)}%</td>
-                                                                                        <td className={`p-1 text-center ${weekBgColors[w]} ${growthColor}`}>
-                                                                                            {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
-                                                                                        </td>
-                                                                                    </React.Fragment>
-                                                                                );
-                                                                            })
-                                                                        }
-                                                                        {
-                                                                            customRange && (() => {
-                                                                                return (
-                                                                                    <>
-                                                                                        <td className="p-1 text-center bg-green-50">-</td>
-                                                                                        <td className="p-1 text-center bg-green-50">-</td>
-                                                                                    </>
-                                                                                );
-                                                                            })()
-                                                                        }
-                                                                    </React.Fragment>
-                                                                );
-                                                            })}
-                                                            {/* Total - only if more than 1 product */}
-                                                            {group.products.length > 1 && (
-                                                                <>
-                                                                    <td className="p-1 text-center border-l-2 border-gray-500 bg-slate-50 font-semibold">{formatNumber(total.target)}</td>
-                                                                    <td className="p-1 text-center bg-slate-50 font-bold text-blue-700">{formatNumber(total.actual)}</td>
-                                                                    <td className="p-1 text-center bg-slate-50">
-                                                                        <span className={`px-1 py-0.5 rounded text-[9px] font-semibold ${total.achievementPct >= 100 ? 'bg-green-200 text-green-800' : total.achievementPct >= 80 ? 'bg-yellow-200 text-yellow-800' : 'bg-red-200 text-red-800'}`}>
-                                                                            {Math.round(total.achievementPct)}%
-                                                                        </span>
-                                                                    </td>
-                                                                    <td className="p-1 text-center bg-yellow-50 text-amber-800">{formatNumber(total.m1)}</td>
-                                                                    {(() => {
-                                                                        const growthPct = total.m1 !== 0 ? (total.growth / total.m1) * 100 : 0;
-                                                                        return (
-                                                                            <td className={`p-1 text-center bg-yellow-50 ${growthPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                                {growthPct > 0 ? `+${Math.round(growthPct)}%` : `${Math.round(growthPct)}%`}
-                                                                            </td>
-                                                                        );
-                                                                    })()}
-                                                                    {selectedWeeks.map(w => {
-                                                                        // We need weekly target for this group total to calc %
-                                                                        // calculateGroupTotal doesn't return weeklyTarget array, let's fix that or compute on fly.
-                                                                        // Easier to compute here as we have the products list.
-                                                                        let wTgt = 0;
-                                                                        group.products.forEach(p => {
-                                                                            const d = row.products[p.id];
-                                                                            if (d) wTgt += d.target.weekly[w - 1] || 0;
-                                                                        });
-                                                                        const wGap = total.weeklyGaps[w - 1];
-                                                                        const wGapPct = wTgt > 0 ? (wGap / wTgt) * 100 : 0;
-
-                                                                        return (
-                                                                            <React.Fragment key={`total-w${w}-outlet`}>
-                                                                                <td className={`p-1 text-center ${weekBgColors[w]} font-semibold`}>{formatNumber(total.weeklyActuals[w - 1])}</td>
-                                                                                <td className={`p-1 text-center ${weekBgColors[w]} font-semibold ${wGapPct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                                                    {wGapPct > 0 ? `+${Math.round(wGapPct)}%` : `${Math.round(wGapPct)}%`}
-                                                                                </td>
-                                                                            </React.Fragment>
-                                                                        );
-                                                                    })}
-                                                                    {customRange && (
-                                                                        <>
-                                                                            <td className="p-1 text-center bg-green-50 font-semibold">-</td>
-                                                                            <td className="p-1 text-center bg-green-50 font-semibold">-</td>
-                                                                        </>
-                                                                    )}
-                                                                </>
-                                                            )}
-                                                        </React.Fragment>
-                                                    );
-                                                })}
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </TabPanel>
-                    </Tabs>
-                </Card>
-            </div>
-        );
-    };
-
-    export default PlanVoucherPage;
+export default PlanVoucherPage;

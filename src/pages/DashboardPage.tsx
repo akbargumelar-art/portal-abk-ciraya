@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import {
     DollarSign,
     Store,
@@ -21,13 +21,16 @@ import {
     Filler,
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
-import Header from '../components/layout/Header';
 import KPICard from '../components/ui/KPICard';
 import { Card } from '../components/ui/index';
-import FilterBar from '../components/common/FilterBar';
+import { PageShell } from '../components/layout/Page';
+import FilterBar, { createDefaultFilterState } from '../components/common/FilterBar';
 import type { FilterState } from '../components/common/FilterBar';
-import { kpiSummary, outletDistribution, salesTrend, outlets } from '../data/mockData';
+import { outlets as mockOutlets, transactions as mockTransactions } from '../data/mockData';
+import { buildDashboardViewModel } from '../utils/dashboardFilterMock';
 import { useAuth } from '../contexts/AuthContext';
+import { useIsMobile } from '../hooks/useIsMobile';
+import MobileDashboard from './mobile/MobileDashboard';
 
 // Register ChartJS components
 ChartJS.register(
@@ -44,53 +47,61 @@ ChartJS.register(
 
 const DashboardPage: React.FC = () => {
     const { user } = useAuth();
+    const isMobile = useIsMobile();
+    const [filters, setFilters] = useState<FilterState>(() => createDefaultFilterState());
 
-    // Handle filter changes (mock - logs to console)
-    const handleFilterChange = useCallback((filters: FilterState) => {
-        console.log('Dashboard filters changed:', filters);
-        // TODO: Use filters to fetch filtered data from API
+    // Mobile: render native mobile dashboard
+    if (isMobile) return <MobileDashboard />;
+
+    const handleFilterChange = useCallback((next: FilterState) => {
+        setFilters(next);
     }, []);
+
+    const view = useMemo(
+        () => buildDashboardViewModel(mockOutlets, mockTransactions, filters),
+        [filters],
+    );
 
     // KPI Cards data
     const kpiCards = useMemo(() => [
         {
             title: 'Total Sales',
-            value: kpiSummary.totalSales,
-            growth: kpiSummary.totalSalesGrowth,
+            value: view.kpiSummary.totalSales,
+            growth: view.kpiSummary.totalSalesGrowth,
             icon: <DollarSign size={24} className="text-[#F13B4B]" />,
             iconBgColor: 'bg-[#F13B4B]/10',
             prefix: 'Rp ',
         },
         {
-            title: 'Active Outlets',
-            value: kpiSummary.activeOutlets,
-            growth: kpiSummary.activeOutletsGrowth,
+            title: 'Outlet Aktif',
+            value: view.kpiSummary.activeOutlets,
+            growth: view.kpiSummary.activeOutletsGrowth,
             icon: <Store size={24} className="text-[#10B981]" />,
             iconBgColor: 'bg-[#10B981]/10',
         },
         {
-            title: 'Digipos Transactions',
-            value: kpiSummary.digiposTrx,
-            growth: kpiSummary.digiposTrxGrowth,
+            title: 'Transaksi Digipos',
+            value: view.kpiSummary.digiposTrx,
+            growth: view.kpiSummary.digiposTrxGrowth,
             icon: <Smartphone size={24} className="text-[#3B82F6]" />,
             iconBgColor: 'bg-[#3B82F6]/10',
         },
         {
             title: 'Sell-out Qty',
-            value: kpiSummary.sellOutQty,
-            growth: kpiSummary.sellOutQtyGrowth,
+            value: view.kpiSummary.sellOutQty,
+            growth: view.kpiSummary.sellOutQtyGrowth,
             icon: <ShoppingCart size={24} className="text-[#F59E0B]" />,
             iconBgColor: 'bg-[#F59E0B]/10',
         },
-    ], []);
+    ], [view.kpiSummary]);
 
     // Bar chart for outlet distribution
     const barChartData = {
-        labels: outletDistribution.map(d => d.label.split(' ')[0]),
+        labels: view.outletDistribution.map(d => d.label.split(' ')[0]),
         datasets: [
             {
-                label: 'Outlets',
-                data: outletDistribution.map(d => d.value),
+                label: 'Outlet',
+                data: view.outletDistribution.map(d => d.value),
                 backgroundColor: 'rgba(241, 59, 75, 0.8)',
                 borderColor: '#F13B4B',
                 borderWidth: 1,
@@ -133,11 +144,11 @@ const DashboardPage: React.FC = () => {
 
     // Line chart for sales trend
     const lineChartData = {
-        labels: salesTrend.map(d => d.month),
+        labels: view.salesTrend.map(d => d.month),
         datasets: [
             {
                 label: 'Perdana',
-                data: salesTrend.map(d => d.perdana),
+                data: view.salesTrend.map(d => d.perdana),
                 borderColor: '#F13B4B',
                 backgroundColor: 'rgba(241, 59, 75, 0.1)',
                 fill: true,
@@ -149,7 +160,7 @@ const DashboardPage: React.FC = () => {
             },
             {
                 label: 'Voucher',
-                data: salesTrend.map(d => d.voucher),
+                data: view.salesTrend.map(d => d.voucher),
                 borderColor: '#3B82F6',
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
                 fill: true,
@@ -161,7 +172,7 @@ const DashboardPage: React.FC = () => {
             },
             {
                 label: 'Digipos',
-                data: salesTrend.map(d => d.digipos),
+                data: view.salesTrend.map(d => d.digipos),
                 borderColor: '#10B981',
                 backgroundColor: 'rgba(16, 185, 129, 0.1)',
                 fill: true,
@@ -231,33 +242,32 @@ const DashboardPage: React.FC = () => {
     // Quick stats
     const quickStats = [
         {
-            label: 'Total Outlets',
-            value: outlets.length.toLocaleString(),
+            label: 'Total Outlet',
+            value: view.filteredOutlets.length.toLocaleString(),
             icon: <Store size={16} className="text-gray-400" />,
         },
         {
-            label: 'Active PJP',
-            value: outlets.filter(o => o.pjpStatus === 'PJP').length.toLocaleString(),
+            label: 'PJP Aktif',
+            value: view.filteredOutlets.filter(o => o.pjpStatus === 'PJP').length.toLocaleString(),
             icon: <Users size={16} className="text-gray-400" />,
         },
         {
-            label: 'This Month',
+            label: 'Bulan Ini',
             value: new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }),
             icon: <Calendar size={16} className="text-gray-400" />,
         },
     ];
 
     return (
-        <div className="p-6 animate-fade-in">
-            <Header
-                title="Dashboard"
-                subtitle={`Welcome back, ${user?.name?.split(' ')[0] || 'User'}!`}
-            />
+        <PageShell
+            title="Dashboard"
+            subtitle={`Selamat datang, ${user?.name?.split(' ')[0] || 'User'}!`}
+        >
 
             {/* Filter Bar */}
             <FilterBar
                 onFilterChange={handleFilterChange}
-                className="mt-6"
+                className="mt-0"
             />
 
             {/* Quick Stats Bar */}
@@ -284,8 +294,8 @@ const DashboardPage: React.FC = () => {
                 <Card padding="md">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h3 className="font-semibold text-gray-900">Outlet Distribution per PJP</h3>
-                            <p className="text-sm text-gray-500">Top 10 Salesforce by outlet count</p>
+                            <h3 className="font-semibold text-gray-900">Distribusi Outlet per PJP</h3>
+                            <p className="text-sm text-gray-500">Top 10 Salesforce berdasarkan jumlah outlet</p>
                         </div>
                         <TrendingUp size={20} className="text-gray-400" />
                     </div>
@@ -298,8 +308,8 @@ const DashboardPage: React.FC = () => {
                 <Card padding="md">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h3 className="font-semibold text-gray-900">6-Month Sales Trend</h3>
-                            <p className="text-sm text-gray-500">Perdana, Voucher, and Digipos performance</p>
+                            <h3 className="font-semibold text-gray-900">Tren Sales 6 Bulan</h3>
+                            <p className="text-sm text-gray-500">Performa Perdana, Voucher, dan Digipos</p>
                         </div>
                         <TrendingUp size={20} className="text-gray-400" />
                     </div>
@@ -312,78 +322,84 @@ const DashboardPage: React.FC = () => {
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
                 <Card padding="md">
-                    <h4 className="font-medium text-gray-900 mb-3">Outlet Status</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">Status Outlet</h4>
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-500">Fisik</span>
                             <span className="text-sm font-semibold text-green-600">
-                                {outlets.filter(o => o.physicalStatus === 'Fisik').length.toLocaleString()}
+                                {view.filteredOutlets.filter(o => o.physicalStatus === 'Fisik').length.toLocaleString()}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-500">Non Fisik</span>
                             <span className="text-sm font-semibold text-gray-900">
-                                {outlets.filter(o => o.physicalStatus === 'Non Fisik').length.toLocaleString()}
+                                {view.filteredOutlets.filter(o => o.physicalStatus === 'Non Fisik').length.toLocaleString()}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-500">Fisik Ratio</span>
+                            <span className="text-sm text-gray-500">Rasio Fisik</span>
                             <span className="text-sm font-semibold text-blue-600">
-                                {((outlets.filter(o => o.physicalStatus === 'Fisik').length / outlets.length) * 100).toFixed(1)}%
+                                {view.filteredOutlets.length === 0
+                                    ? '0.0'
+                                    : ((view.filteredOutlets.filter(o => o.physicalStatus === 'Fisik').length / view.filteredOutlets.length) * 100).toFixed(1)}%
                             </span>
                         </div>
                     </div>
                 </Card>
 
                 <Card padding="md">
-                    <h4 className="font-medium text-gray-900 mb-3">PJP Status</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">Status PJP</h4>
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-500">PJP</span>
                             <span className="text-sm font-semibold text-green-600">
-                                {outlets.filter(o => o.pjpStatus === 'PJP').length.toLocaleString()}
+                                {view.filteredOutlets.filter(o => o.pjpStatus === 'PJP').length.toLocaleString()}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
                             <span className="text-sm text-gray-500">Non PJP</span>
                             <span className="text-sm font-semibold text-gray-900">
-                                {outlets.filter(o => o.pjpStatus === 'Non PJP').length.toLocaleString()}
+                                {view.filteredOutlets.filter(o => o.pjpStatus === 'Non PJP').length.toLocaleString()}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-500">PJP Ratio</span>
+                            <span className="text-sm text-gray-500">Rasio PJP</span>
                             <span className="text-sm font-semibold text-blue-600">
-                                {((outlets.filter(o => o.pjpStatus === 'PJP').length / outlets.length) * 100).toFixed(1)}%
+                                {view.filteredOutlets.length === 0
+                                    ? '0.0'
+                                    : ((view.filteredOutlets.filter(o => o.pjpStatus === 'PJP').length / view.filteredOutlets.length) * 100).toFixed(1)}%
                             </span>
                         </div>
                     </div>
                 </Card>
 
                 <Card padding="md">
-                    <h4 className="font-medium text-gray-900 mb-3">Digipos Status</h4>
+                    <h4 className="font-medium text-gray-900 mb-3">Status Digipos</h4>
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-500">Active</span>
+                            <span className="text-sm text-gray-500">Aktif</span>
                             <span className="text-sm font-semibold text-green-600">
-                                {outlets.filter(o => o.digiposStatus === 'active').length.toLocaleString()}
+                                {view.filteredOutlets.filter(o => o.digiposStatus === 'active').length.toLocaleString()}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-500">Inactive</span>
+                            <span className="text-sm text-gray-500">Tidak Aktif</span>
                             <span className="text-sm font-semibold text-gray-900">
-                                {outlets.filter(o => o.digiposStatus === 'inactive').length.toLocaleString()}
+                                {view.filteredOutlets.filter(o => o.digiposStatus === 'inactive').length.toLocaleString()}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-500">Activation Rate</span>
+                            <span className="text-sm text-gray-500">Rasio Aktivasi</span>
                             <span className="text-sm font-semibold text-blue-600">
-                                {((outlets.filter(o => o.digiposStatus === 'active').length / outlets.length) * 100).toFixed(1)}%
+                                {view.filteredOutlets.length === 0
+                                    ? '0.0'
+                                    : ((view.filteredOutlets.filter(o => o.digiposStatus === 'active').length / view.filteredOutlets.length) * 100).toFixed(1)}%
                             </span>
                         </div>
                     </div>
                 </Card>
             </div>
-        </div>
+        </PageShell>
     );
 };
 

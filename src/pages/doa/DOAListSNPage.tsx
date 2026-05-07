@@ -257,7 +257,7 @@ const DOAListSNPage: React.FC = () => {
                             <AlertTriangle size={20} className="text-white" />
                         </div>
                         <div>
-                            <div className={`text-xs font-medium ${summary.expiring_soon_count > 0 ? 'text-red-600' : 'text-white'}`}>Segera Expire</div>
+                            <div className={`text-xs font-medium ${summary.expiring_soon_count > 0 ? 'text-red-600' : 'text-gray-500'}`}>Segera Expire</div>
                             <div className={`text-xl font-bold ${summary.expiring_soon_count > 0 ? 'text-red-800' : 'text-gray-800'}`}>{summary.expiring_soon_count}</div>
                         </div>
                     </div>
@@ -382,16 +382,16 @@ const DOAListSNPage: React.FC = () => {
                                 {/* DO Detail Table */}
                                 {isExpanded && (
                                     <div className="border-t border-gray-200 overflow-x-auto">
-                                        <table className="w-full text-xs">
-                                            <thead className="bg-[#3d5f85]">
-                                                <tr>
-                                                    <th className="p-2 text-left border-b font-semibold">Kode</th>
-                                                    <th className="p-2 text-left border-b font-semibold">Produk</th>
-                                                    <th className="p-2 text-center border-b font-semibold">SN Start</th>
-                                                    <th className="p-2 text-center border-b font-semibold">SN End</th>
-                                                    <th className="p-2 text-right border-b font-semibold">Qty</th>
-                                                    <th className="p-2 text-center border-b font-semibold">Expiry Date</th>
-                                                    <th className="p-2 text-center border-b font-semibold">Status</th>
+                                        <table className="data-table data-table-compact">
+                                            <thead className="bg-[#2c4a6a]">
+                                                <tr className="text-white">
+                                                    <th className="p-2 text-left border-b border-gray-600 font-semibold">Kode</th>
+                                                    <th className="p-2 text-left border-b border-gray-600 font-semibold">Produk</th>
+                                                    <th className="p-2 text-center border-b border-gray-600 font-semibold">SN Start</th>
+                                                    <th className="p-2 text-center border-b border-gray-600 font-semibold">SN End</th>
+                                                    <th className="p-2 text-right border-b border-gray-600 font-semibold">Qty</th>
+                                                    <th className="p-2 text-center border-b border-gray-600 font-semibold">Expiry Date</th>
+                                                    <th className="p-2 text-center border-b border-gray-600 font-semibold">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

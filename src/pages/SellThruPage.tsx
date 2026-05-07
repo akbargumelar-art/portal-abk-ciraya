@@ -165,7 +165,7 @@ const SellThruPage: React.FC = () => {
                     <h3 className="font-semibold text-gray-900">Detail Sell Thru per Produk</h3>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className="w-full">
+                    <table className="data-table">
                         <thead>
                             <tr className="border-b border-gray-100 bg-gray-50">
                                 <th className="text-left p-4 text-sm font-semibold text-white">Produk</th>

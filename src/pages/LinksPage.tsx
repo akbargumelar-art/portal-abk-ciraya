@@ -306,7 +306,7 @@ const LinksPage: React.FC = () => {
                                 px-4 py-2 rounded-full text-sm font-medium transition-all
                                 ${activeCategory === cat.value
                                     ? 'bg-[#F13B4B] text-white shadow-lg shadow-red-200'
-                                    : 'bg-gray-100 text-white hover:bg-gray-200'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }
                             `}
                         >
@@ -364,7 +364,7 @@ const LinksPage: React.FC = () => {
                             rel="noopener noreferrer"
                             className="group block"
                         >
-                            <div className="relative bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <div className="relative bg-white rounded-lg border border-gray-100 p-5 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                                 {/* Admin Controls */}
                                 {isAdmin && (
                                     <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
@@ -424,7 +424,7 @@ const LinksPage: React.FC = () => {
                             rel="noopener noreferrer"
                             className="group block"
                         >
-                            <div className="flex items-center gap-4 bg-white rounded-xl border border-gray-100 p-4 hover:shadow-lg hover:border-gray-200 transition-all">
+                            <div className="flex items-center gap-4 bg-white rounded-lg border border-gray-100 p-4 hover:shadow-md hover:border-gray-200 transition-all">
                                 {/* Icon */}
                                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getColorClass(link.color)} flex items-center justify-center text-white flex-shrink-0`}>
                                     {getIconComponent(link.icon, 22)}

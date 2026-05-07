@@ -281,8 +281,8 @@ const OutletRegisterPage: React.FC = () => {
             </button>
 
             {expanded && (
-                <div className="overflow-x-auto max-h-[400px]">
-                    <table className="w-full text-[10px] border-collapse whitespace-nowrap">
+                <div className="table-scroll max-h-[400px]">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-10 bg-[#2c4a6a]">
                             {/* Header Row 1: Main Groups */}
                             <tr>

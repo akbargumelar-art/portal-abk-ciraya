@@ -363,7 +363,7 @@ const VisitFormPage: React.FC = () => {
                                                 key={issue}
                                                 type="button"
                                                 onClick={() => addIssue(issue)}
-                                                className="px-3 py-1 bg-gray-100 text-white rounded-full text-sm hover:bg-gray-200 transition-colors"
+                                                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors"
                                             >
                                                 + {issue}
                                             </button>

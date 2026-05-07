@@ -23,10 +23,10 @@ const LoginPage: React.FC = () => {
             if (success) {
                 navigate('/dashboard');
             } else {
-                setError('Invalid username or password');
+                setError('Username atau password tidak sesuai');
             }
-        } catch (err) {
-            setError('An error occurred. Please try again.');
+        } catch {
+            setError('Terjadi kesalahan. Silakan coba lagi.');
         } finally {
             setIsLoading(false);
         }
@@ -59,10 +59,10 @@ const LoginPage: React.FC = () => {
                 </div>
 
                 {/* Login Card */}
-                <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl p-8">
+                <div className="bg-white/95 backdrop-blur-xl rounded-lg shadow-lg p-8">
                     <div className="text-center mb-6">
-                        <h2 className="text-xl font-semibold text-gray-900">Welcome Back</h2>
-                        <p className="text-gray-500 text-sm mt-1">Sign in to your account</p>
+                        <h2 className="text-xl font-semibold text-gray-900">Selamat Datang</h2>
+                        <p className="text-gray-500 text-sm mt-1">Masuk ke akun portal Anda</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
                                 value={username}
                                 onChange={e => setUsername(e.target.value)}
                                 className="input"
-                                placeholder="Enter your username"
+                                placeholder="Masukkan username"
                                 required
                             />
                         </div>
@@ -96,13 +96,14 @@ const LoginPage: React.FC = () => {
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
                                     className="input pr-10"
-                                    placeholder="Enter your password"
+                                    placeholder="Masukkan password"
                                     required
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                                    aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
@@ -112,10 +113,10 @@ const LoginPage: React.FC = () => {
                         <div className="flex items-center justify-between">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-[#F13B4B] focus:ring-[#F13B4B]" />
-                                <span className="text-sm text-white">Remember me</span>
+                                <span className="text-sm text-gray-700">Ingat saya</span>
                             </label>
                             <a href="#" className="text-sm text-[#F13B4B] hover:underline">
-                                Forgot password?
+                                Lupa password?
                             </a>
                         </div>
 
@@ -127,14 +128,14 @@ const LoginPage: React.FC = () => {
                             {isLoading ? (
                                 <Loader2 className="animate-spin" size={20} />
                             ) : (
-                                'Sign In'
+                                'Masuk'
                             )}
                         </button>
                     </form>
 
                     {/* Demo Accounts */}
                     <div className="mt-6 pt-6 border-t border-gray-100">
-                        <p className="text-xs text-gray-500 text-center mb-3">Demo accounts (password: password)</p>
+                        <p className="text-xs text-gray-500 text-center mb-3">Akun demo (password: password)</p>
                         <div className="grid grid-cols-2 gap-2">
                             {demoAccounts.map(account => (
                                 <button
@@ -144,7 +145,7 @@ const LoginPage: React.FC = () => {
                                         setUsername(account.username);
                                         setPassword('password');
                                     }}
-                                    className="px-3 py-2 text-xs bg-gray-50 hover:bg-gray-100 rounded-lg text-white transition-colors text-left"
+                                    className="px-3 py-2 text-xs bg-gray-50 hover:bg-gray-100 rounded-lg text-gray-700 transition-colors text-left"
                                 >
                                     <span className="font-medium">{account.username}</span>
                                     <span className="text-gray-400 block">{account.role}</span>

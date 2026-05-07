@@ -211,7 +211,7 @@ const KPIClusterPage: React.FC = () => {
                         </div>
                     ) : (
                         <div className="overflow-x-auto max-h-96 border border-gray-200 rounded-lg">
-                            <table className="min-w-full divide-y divide-gray-200">
+                            <table className="data-table">
                                 <thead className="bg-[#2c4a6a] sticky top-0 z-10">
                                     <tr>
                                         <SortableHeader

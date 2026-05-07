@@ -132,7 +132,7 @@ const mockDocuments: Document[] = [
 
 // Categories with colors
 const categories = [
-    { value: '', label: 'Semua', color: 'bg-gray-100 text-white' },
+    { value: '', label: 'Semua', color: 'bg-gray-100 text-gray-700' },
     { value: 'SOP', label: 'SOP', color: 'bg-blue-100 text-blue-700' },
     { value: 'Manual', label: 'Manual', color: 'bg-green-100 text-green-700' },
     { value: 'Memo', label: 'Memo', color: 'bg-yellow-100 text-yellow-700' },
@@ -161,7 +161,7 @@ const getFileIcon = (type: string) => {
 
 // Category badge color
 const getCategoryColor = (category: string) => {
-    return categories.find(c => c.value === category)?.color || 'bg-gray-100 text-white';
+    return categories.find(c => c.value === category)?.color || 'bg-gray-100 text-gray-700';
 };
 
 const DocumentsPage: React.FC = () => {
@@ -241,7 +241,7 @@ const DocumentsPage: React.FC = () => {
                                 className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all
                                     ${categoryFilter === cat.value
                                         ? 'bg-[#F13B4B] text-white shadow-md'
-                                        : 'bg-gray-100 text-white hover:bg-gray-200'
+                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                             >
                                 {cat.label}
@@ -270,7 +270,7 @@ const DocumentsPage: React.FC = () => {
             {/* Documents Table */}
             <Card padding="none" className="mt-4 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full">
+                    <table className="data-table">
                         <thead className="bg-[#2c4a6a] border-b border-gray-700">
                             <tr>
                                 <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase">Document Name</th>

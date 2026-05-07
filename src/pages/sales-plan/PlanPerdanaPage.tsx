@@ -12,9 +12,6 @@ import {
     User,
     Clock,
     Download,
-    ArrowUpDown,
-    ArrowUp,
-    ArrowDown
 } from 'lucide-react';
 import Header from '../../components/layout/Header';
 import { Card, Input, Button } from '../../components/ui';
@@ -23,7 +20,7 @@ import FilterBar, { type FilterState } from '../../components/common/FilterBar';
 import PeriodControlPanel from '../../components/sales-plan/PeriodControlPanel';
 import { salesPlanData } from '../../services/mock/salesPlanData';
 import type { OutletSalesPlan, ProductMetric } from '../../types/salesPlan';
-import { getProductHeaderBg, getProductCellBg, getProductSubHeaderBg, getProductTargetBg } from '../../utils/brandColors';
+import { getProductHeaderBg, getProductCellBg, getProductTargetBg } from '../../utils/brandColors';
 import { exportToExcel } from '../../utils/excelExport';
 import { formatRSNumber } from '../../utils/formatters';
 
@@ -124,30 +121,6 @@ const PlanPerdanaPage: React.FC = () => {
     // Collapsible State for Summary Tables
     const [tapExpanded, setTapExpanded] = useState(true);
     const [sfExpanded, setSfExpanded] = useState(true);
-
-    // Sorting state for Detail Outlet table
-    const [sortColumn, setSortColumn] = useState<string | null>(null);
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-
-    // Sort handler
-    const handleSort = useCallback((column: string) => {
-        if (sortColumn === column) {
-            setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
-        } else {
-            setSortColumn(column);
-            setSortDirection('asc');
-        }
-    }, [sortColumn]);
-
-    // Get sort icon for column
-    const getSortIcon = useCallback((column: string) => {
-        if (sortColumn !== column) {
-            return <ArrowUpDown size={10} className="ml-1 opacity-40" />;
-        }
-        return sortDirection === 'asc'
-            ? <ArrowUp size={10} className="ml-1 text-yellow-300" />
-            : <ArrowDown size={10} className="ml-1 text-yellow-300" />;
-    }, [sortColumn, sortDirection]);
 
     const dataUpdateTime = new Date().toLocaleString('id-ID', {
         day: '2-digit',
@@ -542,7 +515,7 @@ const PlanPerdanaPage: React.FC = () => {
                 {/* Table Content */}
                 {expanded && (
                     <div className="overflow-auto max-h-[400px]">
-                        <table className="w-full text-xs text-left border-collapse">
+                        <table className="data-table data-table-compact text-left">
                             <thead>
                                 <tr className="bg-gray-100 sticky top-0 z-10">
                                     {showTap && <th rowSpan={2} className="py-1 px-2 min-w-[100px] font-semibold border-r border-gray-300 align-middle bg-gray-100">TAP</th>}
@@ -777,7 +750,7 @@ const PlanPerdanaPage: React.FC = () => {
                         </div>
 
                         <div className="overflow-auto max-h-[600px] relative">
-                            <table className="w-full text-xs text-left border-collapse whitespace-nowrap">
+                            <table className="data-table data-table-compact text-left whitespace-nowrap">
                                 <thead>
                                     {/* Row 1: Left columns (rowSpan=3) + Product Group Names (rowSpan=2) */}
                                     <tr>

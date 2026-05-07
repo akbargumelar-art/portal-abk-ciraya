@@ -1,0 +1,993 @@
+{
+  "communities": {
+    "0": [
+      "data_mockdata_calculatekpisummary",
+      "data_mockdata_generateid",
+      "data_mockdata_generateoutlets",
+      "data_mockdata_generatesalesplans",
+      "data_mockdata_generatestockitems",
+      "data_mockdata_generatetransactions",
+      "data_mockdata_getoutletdistributionbypjp",
+      "data_mockdata_getsalestrend",
+      "data_mockdata_randomelement",
+      "data_mockdata_randomfloat",
+      "data_mockdata_randomint",
+      "performansi_selloutpage_calcachpct",
+      "performansi_selloutpage_calcgap",
+      "performansi_selloutpage_calcgrowth",
+      "performansi_selloutpage_calcmom",
+      "performansi_selloutpage_formatpct",
+      "performansi_selloutpage_formatvalue",
+      "performansi_selloutpage_getachbgcolor",
+      "performansi_selloutpage_getachcolor",
+      "performansi_selloutpage_getgrowthcolor",
+      "performansi_selloutpage_getmonthname",
+      "src_data_mockdata_ts",
+      "src_pages_performansi_selloutpage_tsx",
+      "src_utils_dashboardfiltermock_ts",
+      "utils_dashboardfiltermock_builddashboardviewmodel",
+      "utils_dashboardfiltermock_monthsbetween",
+      "utils_dashboardfiltermock_outletmatchestapregion"
+    ],
+    "1": [
+      "config_navigation_filternavitem",
+      "config_navigation_getnavigationforrole",
+      "contexts_authcontext_authprovider",
+      "contexts_authcontext_useauth",
+      "guards_protectedroute_authloadingspinner",
+      "guards_protectedroute_userolecheck",
+      "hooks_userolebaseddata_usehasfullaccess",
+      "hooks_userolebaseddata_userolebasedoutlets",
+      "hooks_userolebaseddata_userolebasedsalesforce",
+      "hooks_userolebaseddata_useuserfiltercontext",
+      "modals_profileeditmodal_profileeditmodal",
+      "pages_outletregisterpage_outletregisterpage",
+      "src_components_guards_protectedroute_tsx",
+      "src_components_modals_profileeditmodal_tsx",
+      "src_config_navigation_tsx",
+      "src_contexts_authcontext_tsx",
+      "src_hooks_userolebaseddata_ts",
+      "src_pages_outletregisterpage_tsx",
+      "src_utils_roleaccess_ts",
+      "utils_roleaccess_normalizerole",
+      "utils_roleaccess_rolehasaccess"
+    ],
+    "2": [
+      "mock_datagenerator_generateavatarurl",
+      "mock_datagenerator_generated2cusers",
+      "mock_datagenerator_generateid",
+      "mock_datagenerator_generateoutlets",
+      "mock_datagenerator_generatesalesforceusers",
+      "mock_datagenerator_generatesingleoutlet",
+      "mock_datagenerator_getd2cbycluster",
+      "mock_datagenerator_getdatastatistics",
+      "mock_datagenerator_getkabupatenfortap",
+      "mock_datagenerator_getoutletsbykabupaten",
+      "mock_datagenerator_getoutletsbysalesforce",
+      "mock_datagenerator_getoutletsbytap",
+      "mock_datagenerator_getpjpoutlets",
+      "mock_datagenerator_getregularoutlets",
+      "mock_datagenerator_getsalesforcebytap",
+      "mock_datagenerator_randomelement",
+      "mock_datagenerator_randomint",
+      "src_services_mock_datagenerator_ts"
+    ],
+    "3": [
+      "mock_visitdata_calculatevisitsummary",
+      "mock_visitdata_generatecoords",
+      "mock_visitdata_generatemockvisits",
+      "mock_visitdata_generaterandomtime",
+      "mock_visitdata_getrandomitem",
+      "mock_visitdata_getrandomstatus",
+      "mock_visitdata_getsalesforceoptions",
+      "mock_visitdata_getstatusoptions",
+      "sales_plan_monitoringvisitpage_handlerefresh",
+      "sales_plan_monitoringvisitpage_handleviewphoto",
+      "sales_plan_monitoringvisitpage_loaddata",
+      "sales_plan_monitoringvisitpage_statcardskeleton",
+      "sales_plan_monitoringvisitpage_timelineitemskeleton",
+      "src_pages_sales_plan_monitoringvisitpage_tsx",
+      "src_services_mock_visitdata_ts"
+    ],
+    "4": [
+      "mock_sellthrudata_aggregated2ctosf",
+      "mock_sellthrudata_aggregated2ctotap",
+      "mock_sellthrudata_aggregatemetrics",
+      "mock_sellthrudata_aggregatetosfsummary",
+      "mock_sellthrudata_aggregatetotapsummary",
+      "mock_sellthrudata_created2cmetric",
+      "mock_sellthrudata_createemptymetric",
+      "mock_sellthrudata_createmetric",
+      "mock_sellthrudata_generated2cdata",
+      "mock_sellthrudata_generateoutletdigiposdata",
+      "mock_sellthrudata_generateoutletnotadata",
+      "mock_sellthrudata_randomint",
+      "src_services_mock_sellthrudata_ts"
+    ],
+    "5": [
+      "mock_performancedata_buildperformancetablerows",
+      "mock_performancedata_calculatekpisummaries",
+      "mock_performancedata_filtervaluesbycategory",
+      "mock_performancedata_generatecategoryvalues",
+      "mock_performancedata_generateid",
+      "mock_performancedata_generatekpivalue",
+      "mock_performancedata_generatekpivalues",
+      "mock_performancedata_getactiveparameters",
+      "mock_performancedata_getparameterbycode",
+      "mock_performancedata_getparametersbycategory",
+      "mock_performancedata_randomint",
+      "src_services_mock_performancedata_ts"
+    ],
+    "6": [
+      "performansi_aktifasipage_calcachpct",
+      "performansi_aktifasipage_calcgap",
+      "performansi_aktifasipage_calcgrowth",
+      "performansi_aktifasipage_calcmom",
+      "performansi_aktifasipage_formatpct",
+      "performansi_aktifasipage_formatvalue",
+      "performansi_aktifasipage_getachbgcolor",
+      "performansi_aktifasipage_getachcolor",
+      "performansi_aktifasipage_getgrowthcolor",
+      "performansi_aktifasipage_getmonthname",
+      "src_pages_performansi_aktifasipage_tsx"
+    ],
+    "7": [
+      "performansi_injectvoucherpage_calcachpct",
+      "performansi_injectvoucherpage_calcgap",
+      "performansi_injectvoucherpage_calcgrowth",
+      "performansi_injectvoucherpage_calcmom",
+      "performansi_injectvoucherpage_formatpct",
+      "performansi_injectvoucherpage_formatvalue",
+      "performansi_injectvoucherpage_getachbgcolor",
+      "performansi_injectvoucherpage_getachcolor",
+      "performansi_injectvoucherpage_getgrowthcolor",
+      "performansi_injectvoucherpage_getmonthname",
+      "src_pages_performansi_injectvoucherpage_tsx"
+    ],
+    "8": [
+      "performansi_redeemvoucherpage_calcachpct",
+      "performansi_redeemvoucherpage_calcgap",
+      "performansi_redeemvoucherpage_calcgrowth",
+      "performansi_redeemvoucherpage_calcmom",
+      "performansi_redeemvoucherpage_formatpct",
+      "performansi_redeemvoucherpage_formatvalue",
+      "performansi_redeemvoucherpage_getachbgcolor",
+      "performansi_redeemvoucherpage_getachcolor",
+      "performansi_redeemvoucherpage_getgrowthcolor",
+      "performansi_redeemvoucherpage_getmonthname",
+      "src_pages_performansi_redeemvoucherpage_tsx"
+    ],
+    "9": [
+      "pages_datauploadpage_getstatusbadge",
+      "pages_datauploadpage_getstatusicon",
+      "pages_datauploadpage_handledrag",
+      "pages_datauploadpage_handledrop",
+      "pages_datauploadpage_handlefile",
+      "src_components_ui_imagedropzone_tsx",
+      "src_pages_datauploadpage_tsx",
+      "ui_imagedropzone_handleclear",
+      "ui_imagedropzone_handleclick",
+      "ui_imagedropzone_handleinputchange"
+    ],
+    "10": [
+      "sales_plan_planvoucherpage_formatnumber",
+      "sales_plan_planvoucherpage_getprevmonthvalue",
+      "sales_plan_planvoucherpage_gettotalcolspan",
+      "src_pages_sales_plan_planvoucherpage_tsx",
+      "src_utils_brandcolors_ts",
+      "utils_brandcolors_getbrandcolors",
+      "utils_brandcolors_getproductcellbg",
+      "utils_brandcolors_getproductheaderbg",
+      "utils_brandcolors_getproductsubheaderbg",
+      "utils_brandcolors_getproducttargetbg"
+    ],
+    "11": [
+      "mock_fives4rdata_avgfield",
+      "mock_fives4rdata_generate4rdata",
+      "mock_fives4rdata_generate4rrow",
+      "mock_fives4rdata_generate5sdata",
+      "mock_fives4rdata_generate5srow",
+      "mock_fives4rdata_randomfloat",
+      "mock_fives4rdata_randomint",
+      "mock_fives4rdata_randompct",
+      "mock_fives4rdata_sumfield",
+      "src_services_mock_fives4rdata_ts"
+    ],
+    "12": [
+      "sales_plan_periodcontrolpanel_clearcustomrange",
+      "sales_plan_periodcontrolpanel_getmaxdays",
+      "sales_plan_periodcontrolpanel_handlerangeendchange",
+      "sales_plan_periodcontrolpanel_handlerangestartchange",
+      "sales_plan_periodcontrolpanel_selectall",
+      "sales_plan_periodcontrolpanel_selectnone",
+      "sales_plan_periodcontrolpanel_toggleweek",
+      "src_components_sales_plan_periodcontrolpanel_tsx"
+    ],
+    "13": [
+      "sales_plan_voucherfilterpanel_clearvalidities",
+      "sales_plan_voucherfilterpanel_getmaxdays",
+      "sales_plan_voucherfilterpanel_handlerangeendchange",
+      "sales_plan_voucherfilterpanel_handlerangestartchange",
+      "sales_plan_voucherfilterpanel_selectallvalidities",
+      "sales_plan_voucherfilterpanel_togglevalidity",
+      "sales_plan_voucherfilterpanel_toggleweek",
+      "src_components_sales_plan_voucherfilterpanel_tsx"
+    ],
+    "14": [
+      "doa_doastockpage_doastockpage",
+      "doa_doastockpage_formatdate",
+      "doa_doastockpage_formatnumber",
+      "doa_doastockpage_getproductcolor",
+      "doa_doastockpage_getstatuscolor",
+      "doa_doastockpage_getstatustext",
+      "doa_doastockpage_searchsnindataset",
+      "src_pages_doa_doastockpage_tsx"
+    ],
+    "15": [
+      "performansi_fives4rpage_formatbn",
+      "performansi_fives4rpage_formatnum",
+      "performansi_fives4rpage_formatpct",
+      "performansi_fives4rpage_getachbgcolor",
+      "performansi_fives4rpage_getachcolor",
+      "performansi_fives4rpage_getmomcolor",
+      "performansi_fives4rpage_getmonthname",
+      "src_pages_performansi_fives4rpage_tsx"
+    ],
+    "16": [
+      "performansi_marketsharepage_formatdiff",
+      "performansi_marketsharepage_formatpct",
+      "performansi_marketsharepage_getdiffcolor",
+      "performansi_marketsharepage_getmonthname",
+      "performansi_marketsharepage_getsharecolor",
+      "performansi_marketsharepage_getwinlosecolor",
+      "performansi_marketsharepage_handlesort",
+      "src_pages_performansi_marketsharepage_tsx"
+    ],
+    "17": [
+      "mock_popdata_getpopitembyid",
+      "mock_popdata_getpopitems",
+      "mock_popdata_getpopitemsbycategory",
+      "mock_popdata_getpoprecords",
+      "mock_popdata_getpoprecordsbystatus",
+      "mock_popdata_getpoptransactions",
+      "mock_popdata_getpoptransactionsbytype",
+      "src_services_mock_popdata_ts"
+    ],
+    "18": [
+      "layout_notificationdropdown_getbgcolor",
+      "layout_notificationdropdown_geticon",
+      "layout_notificationdropdown_handleclickoutside",
+      "layout_notificationdropdown_markallasread",
+      "layout_notificationdropdown_markasread",
+      "layout_notificationdropdown_removenotification",
+      "src_components_layout_notificationdropdown_tsx"
+    ],
+    "19": [
+      "pages_linkspage_getcolorclass",
+      "pages_linkspage_geticoncomponent",
+      "pages_linkspage_handleaddlink",
+      "pages_linkspage_handledeletelink",
+      "pages_linkspage_handleeditlink",
+      "pages_linkspage_handlesave",
+      "src_pages_linkspage_tsx"
+    ],
+    "20": [
+      "pages_settingspage_handlechange",
+      "pages_settingspage_handleresetlookerurl",
+      "pages_settingspage_handlesave",
+      "pages_settingspage_handlesavelookerurl",
+      "pages_settingspage_isallowedlookerurl",
+      "pages_settingspage_testconnection",
+      "src_pages_settingspage_tsx"
+    ],
+    "21": [
+      "pages_visitformpage_addissue",
+      "pages_visitformpage_getlocation",
+      "pages_visitformpage_handlephotoupload",
+      "pages_visitformpage_handlesubmit",
+      "pages_visitformpage_removeissue",
+      "pages_visitformpage_removephoto",
+      "src_pages_visitformpage_tsx"
+    ],
+    "22": [
+      "doa_doalistsnpage_formatdate",
+      "doa_doalistsnpage_formatnumber",
+      "doa_doalistsnpage_getexpirystatus",
+      "doa_doalistsnpage_getproductcolor",
+      "doa_doalistsnpage_isexpired",
+      "doa_doalistsnpage_isexpiringsoon",
+      "src_pages_doa_doalistsnpage_tsx"
+    ],
+    "23": [
+      "performansi_toplinepage_calculatetotalrow",
+      "performansi_toplinepage_formatcurrency",
+      "performansi_toplinepage_generatemetric",
+      "performansi_toplinepage_generaterowmetrics",
+      "performansi_toplinepage_getmonthname",
+      "performansi_toplinepage_randomint",
+      "src_pages_performansi_toplinepage_tsx"
+    ],
+    "24": [
+      "mock_aktifasidata_generateaktifasidata",
+      "mock_aktifasidata_generateareasummaries",
+      "mock_aktifasidata_generatedailytrend",
+      "mock_aktifasidata_generatemetricset",
+      "mock_aktifasidata_randomfloat",
+      "mock_aktifasidata_summetricset",
+      "src_services_mock_aktifasidata_ts"
+    ],
+    "25": [
+      "src_components_ui_multiselect_tsx",
+      "ui_multiselect_clearall",
+      "ui_multiselect_handleclickoutside",
+      "ui_multiselect_removevalue",
+      "ui_multiselect_selectall",
+      "ui_multiselect_toggleoption"
+    ],
+    "26": [
+      "doa_doaalokasipage_formatcurrency",
+      "doa_doaalokasipage_formatdate",
+      "doa_doaalokasipage_formatnumber",
+      "doa_doaalokasipage_getminggucolor",
+      "doa_doaalokasipage_gettahapcolor",
+      "src_pages_doa_doaalokasipage_tsx"
+    ],
+    "27": [
+      "mock_kpiservice_calculatecumulativescores",
+      "mock_kpiservice_generatehistoricalkpi",
+      "mock_kpiservice_getavailableyears",
+      "mock_kpiservice_gettiercolor",
+      "mock_kpiservice_gettiername",
+      "src_services_mock_kpiservice_ts"
+    ],
+    "28": [
+      "src_types_auth_ts",
+      "types_auth_getrolebadgecolor",
+      "types_auth_getroledisplayname",
+      "types_auth_hasminimumrole",
+      "types_auth_haspermission",
+      "types_auth_maplegacyrole"
+    ],
+    "29": [
+      "pop_popinstallationform_handleimageremove",
+      "pop_popinstallationform_handleimageselect",
+      "pop_popinstallationform_handlesubmit",
+      "pop_popinstallationform_validate",
+      "src_components_pop_popinstallationform_tsx"
+    ],
+    "30": [
+      "src_components_ui_kpicard_tsx",
+      "ui_kpicard_formatvalue",
+      "ui_kpicard_getgrowthbgcolor",
+      "ui_kpicard_getgrowthcolor",
+      "ui_kpicard_getgrowthicon"
+    ],
+    "31": [
+      "contexts_sidebarcontext_usesidebar",
+      "src_app_applayout",
+      "src_app_tsx",
+      "src_contexts_sidebarcontext_tsx",
+      "src_main_tsx"
+    ],
+    "32": [
+      "pages_omzetoutletpage_clearallfilters",
+      "pages_omzetoutletpage_gettransactions",
+      "pages_omzetoutletpage_handlesort",
+      "pages_omzetoutletpage_pageloadingoverlay",
+      "src_pages_omzetoutletpage_tsx"
+    ],
+    "33": [
+      "pages_popmonitoringpage_handleadditem",
+      "pages_popmonitoringpage_handleedititem",
+      "pages_popmonitoringpage_handleinstallationsubmit",
+      "pages_popmonitoringpage_handleitemformsubmit",
+      "src_pages_popmonitoringpage_tsx"
+    ],
+    "34": [
+      "sales_plan_popmaterialpage_clearallfilters",
+      "sales_plan_popmaterialpage_handlesalesforcechange",
+      "sales_plan_popmaterialpage_handletapchange",
+      "sales_plan_popmaterialpage_imagemodal",
+      "src_pages_sales_plan_popmaterialpage_tsx"
+    ],
+    "35": [
+      "sell_thru_stdigipospage_getaggregatedmetric",
+      "sell_thru_stdigipospage_getmetric",
+      "sell_thru_stdigipospage_getoutletaktif",
+      "sell_thru_stdigipospage_getratepjp",
+      "src_pages_sell_thru_stdigipospage_tsx"
+    ],
+    "36": [
+      "sell_thru_stnotapage_getaggregatedmetric",
+      "sell_thru_stnotapage_getmetric",
+      "sell_thru_stnotapage_getoutletaktif",
+      "sell_thru_stnotapage_getratepjp",
+      "src_pages_sell_thru_stnotapage_tsx"
+    ],
+    "37": [
+      "mock_marketsharedata_generatecitydata",
+      "mock_marketsharedata_generatekecamatandata",
+      "mock_marketsharedata_generatetrenddata",
+      "mock_marketsharedata_randomfloat",
+      "src_services_mock_marketsharedata_ts"
+    ],
+    "38": [
+      "src_types_performance_ts",
+      "types_performance_calculatemetrics",
+      "types_performance_formatkpivalue",
+      "types_performance_getachievementcolor",
+      "types_performance_getachievementvariant"
+    ],
+    "39": [
+      "src_types_pop_ts",
+      "types_pop_getcategorydisplayname",
+      "types_pop_getstatusbadgevariant",
+      "types_pop_getstatusdisplayname",
+      "types_pop_gettransactiontypedisplayname"
+    ],
+    "40": [
+      "common_filterbar_createdefaultfilterstate",
+      "common_filterbar_getdefaultdaterange",
+      "common_filterbar_handlereset",
+      "src_components_common_filterbar_tsx"
+    ],
+    "41": [
+      "layout_sidebar_floatingpopup",
+      "layout_sidebar_if",
+      "layout_sidebar_tooltip",
+      "src_components_layout_sidebar_tsx"
+    ],
+    "42": [
+      "layout_userprofilemenu_handleclickoutside",
+      "layout_userprofilemenu_handleeditprofile",
+      "layout_userprofilemenu_handlelogout",
+      "src_components_layout_userprofilemenu_tsx"
+    ],
+    "43": [
+      "src_components_table_advancedtable_tsx",
+      "table_advancedtable_getcellvalue",
+      "table_advancedtable_getsorticon",
+      "table_advancedtable_handlesort"
+    ],
+    "44": [
+      "services_auth_service_delay",
+      "services_auth_service_generatemocktoken",
+      "services_auth_service_sanitizeuser",
+      "src_services_auth_service_ts"
+    ],
+    "45": [
+      "api_client_apifetch",
+      "api_client_getapibaseurl",
+      "api_client_trimslash",
+      "src_services_api_client_ts"
+    ],
+    "46": [
+      "mock_cvmsalesdata_generatecvmmetric",
+      "mock_cvmsalesdata_generatecvmsalesdata",
+      "mock_cvmsalesdata_randomint",
+      "src_services_mock_cvmsalesdata_ts"
+    ],
+    "47": [
+      "mock_vouchersalesdata_generateproductmetric",
+      "mock_vouchersalesdata_generatevouchersalesdata",
+      "mock_vouchersalesdata_randomint",
+      "src_services_mock_vouchersalesdata_ts"
+    ],
+    "48": [
+      "src_utils_dateutils_ts",
+      "utils_dateutils_getmonthname",
+      "utils_dateutils_getweekbucket",
+      "utils_dateutils_hasweek5"
+    ],
+    "49": [
+      "src_utils_excelexport_ts",
+      "utils_excelexport_exportd2csummary",
+      "utils_excelexport_exportdetailoutlet",
+      "utils_excelexport_exporttoexcel"
+    ],
+    "50": [
+      "common_errorboundary_componentdidcatch",
+      "common_errorboundary_getderivedstatefromerror",
+      "src_components_common_errorboundary_tsx"
+    ],
+    "51": [
+      "doa_stockdetailmodal_formatdate",
+      "doa_stockdetailmodal_generatesnlist",
+      "src_components_doa_stockdetailmodal_tsx"
+    ],
+    "52": [
+      "src_components_table_datatable_tsx",
+      "table_datatable_handleexport",
+      "table_datatable_handlesort"
+    ],
+    "53": [
+      "src_components_ui_imagelightbox_tsx",
+      "ui_imagelightbox_handlebackdropclick",
+      "ui_imagelightbox_handlekeydown"
+    ],
+    "54": [
+      "contexts_searchcontext_usesearch",
+      "contexts_searchcontext_usesearchfilter",
+      "src_contexts_searchcontext_tsx"
+    ],
+    "55": [
+      "data_mockusers_getrolebadgecolor",
+      "data_mockusers_getroledisplayname",
+      "src_data_mockusers_ts"
+    ],
+    "56": [
+      "hooks_usetablesort_usetablesort",
+      "src_hooks_usetablesort_tsx",
+      "src_pages_kpi_kpiclusterpage_tsx"
+    ],
+    "57": [
+      "pages_complaintpage_getstatusbadge",
+      "pages_complaintpage_handlesubmit",
+      "src_pages_complaintpage_tsx"
+    ],
+    "58": [
+      "pages_kpipage_getprogresscolor",
+      "pages_kpipage_getstatusbadge",
+      "src_pages_kpipage_tsx"
+    ],
+    "59": [
+      "pages_programpage_getstatusbadge",
+      "pages_programpage_gettypebadge",
+      "src_pages_programpage_tsx"
+    ],
+    "60": [
+      "pages_reportspage_isallowedlookerurl",
+      "pages_reportspage_reportspage",
+      "src_pages_reportspage_tsx"
+    ],
+    "61": [
+      "dokumentasi_documentspage_getcategorycolor",
+      "dokumentasi_documentspage_getfileicon",
+      "src_pages_dokumentasi_documentspage_tsx"
+    ],
+    "62": [
+      "sell_thru_penjualand2cpage_calculatetotal",
+      "sell_thru_penjualand2cpage_formatcurrency",
+      "src_pages_sell_thru_penjualand2cpage_tsx"
+    ],
+    "63": [
+      "services_permission_service_getallpages",
+      "services_permission_service_getdefaultpermissions",
+      "src_services_permission_service_ts"
+    ],
+    "64": [
+      "mock_salesplandata_generatesalesplandata",
+      "mock_salesplandata_randomint",
+      "src_services_mock_salesplandata_ts"
+    ],
+    "65": [
+      "layout_page_pageshell",
+      "src_components_layout_page_tsx"
+    ],
+    "66": [
+      "performance_dynamickpitable_trendindicator",
+      "src_components_performance_dynamickpitable_tsx"
+    ],
+    "67": [
+      "pop_popcatalog_getstockbadgevariant",
+      "src_components_pop_popcatalog_tsx"
+    ],
+    "68": [
+      "pop_popitemform_popitemform",
+      "src_components_pop_popitemform_tsx"
+    ],
+    "69": [
+      "src_components_ui_index_tsx",
+      "ui_index_getvariant"
+    ],
+    "70": [
+      "src_components_ui_tabs_tsx",
+      "ui_tabs_tab"
+    ],
+    "71": [
+      "config_approuteconfig_if",
+      "src_config_approuteconfig_tsx"
+    ],
+    "72": [
+      "config_voucherconfig_getshortproductname",
+      "src_config_voucherconfig_ts"
+    ],
+    "73": [
+      "pages_documentationpage_getfileicon",
+      "src_pages_documentationpage_tsx"
+    ],
+    "74": [
+      "pages_feepage_getstatusbadge",
+      "src_pages_feepage_tsx"
+    ],
+    "75": [
+      "pages_loginpage_handlesubmit",
+      "src_pages_loginpage_tsx"
+    ],
+    "76": [
+      "pages_notfoundpage_notfoundpage",
+      "src_pages_notfoundpage_tsx"
+    ],
+    "77": [
+      "pages_performancepage_trendindicator",
+      "src_pages_performancepage_tsx"
+    ],
+    "78": [
+      "pages_salesplanpage_calculatecategorytotal",
+      "src_pages_salesplanpage_tsx"
+    ],
+    "79": [
+      "pages_stockpage_stockpage",
+      "src_pages_stockpage_tsx"
+    ],
+    "80": [
+      "pages_underconstructionpage_underconstructionpage",
+      "src_pages_underconstructionpage_tsx"
+    ],
+    "81": [
+      "dokumentasi_videoroleplaypage_getcategorycolor",
+      "src_pages_dokumentasi_videoroleplaypage_tsx"
+    ],
+    "82": [
+      "fee_grossprofitpage_grossprofitpage",
+      "src_pages_fee_grossprofitpage_tsx"
+    ],
+    "83": [
+      "fee_managementfeepage_managementfeepage",
+      "src_pages_fee_managementfeepage_tsx"
+    ],
+    "84": [
+      "fee_marketingfeepage_marketingfeepage",
+      "src_pages_fee_marketingfeepage_tsx"
+    ],
+    "85": [
+      "kpi_kpisfpage_kpisfpage",
+      "src_pages_kpi_kpisfpage_tsx"
+    ],
+    "86": [
+      "sales_plan_plancvmpage_formatnumber",
+      "src_pages_sales_plan_plancvmpage_tsx"
+    ],
+    "87": [
+      "sales_plan_planperdanapage_getproductcolspan",
+      "src_pages_sales_plan_planperdanapage_tsx"
+    ],
+    "88": [
+      "src_utils_devlog_ts",
+      "utils_devlog_devlog"
+    ],
+    "89": [
+      "src_utils_formatters_ts",
+      "utils_formatters_formatrsnumber"
+    ],
+    "90": [
+      "src_utils_sellthruanalytics_ts",
+      "utils_sellthruanalytics_analyzesummarydata"
+    ],
+    "91": [
+      "eslint_config_js"
+    ],
+    "92": [
+      "postcss_config_js"
+    ],
+    "93": [
+      "tailwind_config_js"
+    ],
+    "94": [
+      "vite_config_ts"
+    ],
+    "95": [
+      "src_vite_env_d_ts"
+    ],
+    "96": [
+      "src_components_admin_rolepermissionmanager_tsx"
+    ],
+    "97": [
+      "src_components_common_pageloadingoverlay_tsx"
+    ],
+    "98": [
+      "src_components_layout_header_tsx"
+    ],
+    "99": [
+      "src_components_pop_evidencethumbnail_tsx"
+    ],
+    "100": [
+      "src_components_sell_thru_smartsummarycard_tsx"
+    ],
+    "101": [
+      "src_components_table_sortableheader_tsx"
+    ],
+    "102": [
+      "src_pages_dashboardpage_tsx"
+    ],
+    "103": [
+      "src_pages_sellthrupage_tsx"
+    ],
+    "104": [
+      "src_pages_unauthorizedpage_tsx"
+    ],
+    "105": [
+      "src_pages_usermanagementpage_tsx"
+    ],
+    "106": [
+      "src_types_aktifasi_ts"
+    ],
+    "107": [
+      "src_types_cvm_ts"
+    ],
+    "108": [
+      "src_types_doa_ts"
+    ],
+    "109": [
+      "src_types_fives4r_ts"
+    ],
+    "110": [
+      "src_types_index_ts"
+    ],
+    "111": [
+      "src_types_marketshare_ts"
+    ],
+    "112": [
+      "src_types_salesplan_ts"
+    ],
+    "113": [
+      "src_types_sellthru_ts"
+    ],
+    "114": [
+      "src_types_visit_ts"
+    ]
+  },
+  "cohesion": {
+    "0": 0.08,
+    "1": 0.12,
+    "2": 0.14,
+    "3": 0.18,
+    "4": 0.18,
+    "5": 0.21,
+    "6": 0.18,
+    "7": 0.18,
+    "8": 0.18,
+    "9": 0.24,
+    "10": 0.2,
+    "11": 0.44,
+    "12": 0.32,
+    "13": 0.32,
+    "14": 0.25,
+    "15": 0.25,
+    "16": 0.25,
+    "17": 0.25,
+    "18": 0.29,
+    "19": 0.29,
+    "20": 0.33,
+    "21": 0.29,
+    "22": 0.38,
+    "23": 0.38,
+    "24": 0.43,
+    "25": 0.33,
+    "26": 0.33,
+    "27": 0.33,
+    "28": 0.33,
+    "29": 0.5,
+    "30": 0.4,
+    "31": 0.4,
+    "32": 0.4,
+    "33": 0.4,
+    "34": 0.4,
+    "35": 0.4,
+    "36": 0.4,
+    "37": 0.5,
+    "38": 0.4,
+    "39": 0.4,
+    "40": 0.67,
+    "41": 0.5,
+    "42": 0.5,
+    "43": 0.5,
+    "44": 0.5,
+    "45": 0.83,
+    "46": 0.67,
+    "47": 0.67,
+    "48": 0.5,
+    "49": 0.83,
+    "50": 0.67,
+    "51": 0.67,
+    "52": 0.67,
+    "53": 0.67,
+    "54": 1.0,
+    "55": 0.67,
+    "56": 0.67,
+    "57": 0.67,
+    "58": 0.67,
+    "59": 1.0,
+    "60": 0.67,
+    "61": 0.67,
+    "62": 0.67,
+    "63": 0.67,
+    "64": 0.67,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0
+  },
+  "gods": [
+    {
+      "id": "contexts_authcontext_useauth",
+      "label": "useAuth()",
+      "degree": 7
+    },
+    {
+      "id": "mock_visitdata_generatemockvisits",
+      "label": "generateMockVisits()",
+      "degree": 6
+    },
+    {
+      "id": "mock_datagenerator_generatesingleoutlet",
+      "label": "generateSingleOutlet()",
+      "degree": 5
+    },
+    {
+      "id": "utils_dashboardfiltermock_builddashboardviewmodel",
+      "label": "buildDashboardViewModel()",
+      "degree": 5
+    },
+    {
+      "id": "mock_fives4rdata_sumfield",
+      "label": "sumField()",
+      "degree": 4
+    },
+    {
+      "id": "mock_fives4rdata_avgfield",
+      "label": "avgField()",
+      "degree": 4
+    },
+    {
+      "id": "mock_fives4rdata_generate5srow",
+      "label": "generate5SRow()",
+      "degree": 4
+    },
+    {
+      "id": "mock_fives4rdata_generate4rrow",
+      "label": "generate4RRow()",
+      "degree": 4
+    },
+    {
+      "id": "guards_protectedroute_userolecheck",
+      "label": "useRoleCheck()",
+      "degree": 3
+    },
+    {
+      "id": "sales_plan_periodcontrolpanel_getmaxdays",
+      "label": "getMaxDays()",
+      "degree": 3
+    }
+  ],
+  "surprises": [
+    {
+      "source": "ProfileEditModal()",
+      "target": "useAuth()",
+      "source_files": [
+        "src\\components\\modals\\ProfileEditModal.tsx",
+        "src\\contexts\\AuthContext.tsx"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `ProfileEditModal()` unexpectedly reaches hub `useAuth()`"
+    },
+    {
+      "source": "useHasFullAccess()",
+      "target": "useAuth()",
+      "source_files": [
+        "src\\hooks\\useRoleBasedData.ts",
+        "src\\contexts\\AuthContext.tsx"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `useHasFullAccess()` unexpectedly reaches hub `useAuth()`"
+    },
+    {
+      "source": "useRoleBasedSalesforce()",
+      "target": "useAuth()",
+      "source_files": [
+        "src\\hooks\\useRoleBasedData.ts",
+        "src\\contexts\\AuthContext.tsx"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `useRoleBasedSalesforce()` unexpectedly reaches hub `useAuth()`"
+    },
+    {
+      "source": "buildDashboardViewModel()",
+      "target": "getOutletDistributionByPJP()",
+      "source_files": [
+        "src\\utils\\dashboardFilterMock.ts",
+        "src\\data\\mockData.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `getOutletDistributionByPJP()` unexpectedly reaches hub `buildDashboardViewModel()`"
+    },
+    {
+      "source": "buildDashboardViewModel()",
+      "target": "getSalesTrend()",
+      "source_files": [
+        "src\\utils\\dashboardFilterMock.ts",
+        "src\\data\\mockData.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `getSalesTrend()` unexpectedly reaches hub `buildDashboardViewModel()`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "verify_inferred",
+      "question": "Are the 6 inferred relationships involving `useAuth()` (e.g. with `useRoleCheck()` and `ProfileEditModal()`) actually correct?",
+      "why": "`useAuth()` has 6 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 3 inferred relationships involving `buildDashboardViewModel()` (e.g. with `calculateKPISummary()` and `getOutletDistributionByPJP()`) actually correct?",
+      "why": "`buildDashboardViewModel()` has 3 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.08 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.12 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.14 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

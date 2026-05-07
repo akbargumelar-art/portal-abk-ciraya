@@ -102,10 +102,10 @@ function AdvancedTable<T extends Record<string, any>>({
 
     // Get sort icon
     const getSortIcon = (key: string) => {
-        if (sortKey !== key) return <ArrowUpDown size={14} className="text-white/50" />;
+        if (sortKey !== key) return <ArrowUpDown size={14} className="text-white/60" />;
         if (sortDirection === 'asc') return <ArrowUp size={14} className="text-white" />;
         if (sortDirection === 'desc') return <ArrowDown size={14} className="text-white" />;
-        return <ArrowUpDown size={14} className="text-white/50" />;
+        return <ArrowUpDown size={14} className="text-white/60" />;
     };
 
     // Get cell value
@@ -118,29 +118,29 @@ function AdvancedTable<T extends Record<string, any>>({
     };
 
     return (
-        <div className={`bg-white rounded-xl border border-gray-200 overflow-hidden ${className}`}>
+        <div className={`table-shell bg-white ${className}`}>
             {/* Header */}
             {(title || subtitle) && (
-                <div className="px-4 py-3 border-b border-gray-100">
+                <div className="table-caption-bar">
                     {title && <h3 className="font-semibold text-gray-900">{title}</h3>}
                     {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
                 </div>
             )}
 
             {/* Table Container */}
-            <div className="overflow-x-auto">
+            <div className="table-scroll">
                 <div style={{ maxHeight }} className="overflow-y-auto">
-                    <table className="w-full">
+                    <table className="data-table">
                         {/* Sticky Header */}
-                        <thead className="sticky top-0 z-10 bg-[#2c4a6a] shadow-sm">
+                        <thead className="sticky top-0 z-10 shadow-sm">
                             <tr>
                                 {columns.map(column => (
                                     <th
                                         key={String(column.key)}
-                                        className={`px-4 py-3 text-xs font-semibold text-white uppercase whitespace-nowrap
+                                        className={`whitespace-nowrap
                                             ${column.align === 'center' ? 'text-center' :
                                                 column.align === 'right' ? 'text-right' : 'text-left'}
-                                            ${column.sortable ? 'cursor-pointer hover:bg-[#3d5f85] select-none' : ''}
+                                            ${column.sortable ? 'cursor-pointer select-none' : ''}
                                         `}
                                         style={{ width: column.width }}
                                         onClick={() => column.sortable && handleSort(String(column.key))}
@@ -170,7 +170,7 @@ function AdvancedTable<T extends Record<string, any>>({
                                     <tr
                                         key={index}
                                         onClick={() => onRowClick?.(row)}
-                                        className={`border-b border-gray-50 hover:bg-gray-50 transition-colors
+                                        className={`transition-colors
                                             ${onRowClick ? 'cursor-pointer' : ''}
                                             ${rowClassName ? rowClassName(row, index) : ''}
                                         `}
@@ -178,9 +178,10 @@ function AdvancedTable<T extends Record<string, any>>({
                                         {columns.map(column => (
                                             <td
                                                 key={String(column.key)}
-                                                className={`px-4 py-3 text-sm
+                                                className={`
                                                     ${column.align === 'center' ? 'text-center' :
                                                         column.align === 'right' ? 'text-right' : 'text-left'}
+                                                    ${column.align === 'right' ? 'numeric' : ''}
                                                 `}
                                             >
                                                 {getCellValue(row, column, index)}
@@ -196,9 +197,9 @@ function AdvancedTable<T extends Record<string, any>>({
 
             {/* Pagination */}
             {showPagination && totalPages > 1 && (
-                <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-gray-50">
+                <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-white">
                     <span className="text-sm text-gray-500">
-                        Showing {((currentPage - 1) * pageSize) + 1} - {Math.min(currentPage * pageSize, sortedData.length)} of {sortedData.length}
+                        Menampilkan {((currentPage - 1) * pageSize) + 1} - {Math.min(currentPage * pageSize, sortedData.length)} dari {sortedData.length} data
                     </span>
                     <div className="flex items-center gap-1">
                         <button

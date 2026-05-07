@@ -7,7 +7,7 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-    Clock, Search, Filter, Package, MapPin, Calendar, Eye, Download,
+    Clock, Search, Filter, MapPin, Eye, Download,
     Boxes, AlertTriangle, CheckCircle, Database, Hash
 } from 'lucide-react';
 import Header from '../../components/layout/Header';
@@ -370,17 +370,17 @@ const DOAStockPage: React.FC = () => {
                     Stok per Grup ({filteredData.length} grup)
                 </h3>
                 <div className="overflow-x-auto">
-                    <table className="w-full text-xs border-collapse">
-                        <thead className="bg-gray-100">
+                    <table className="data-table data-table-compact">
+                        <thead className="bg-[#2c4a6a]">
                             <tr>
-                                <th className="p-2 border text-center font-semibold">No</th>
-                                <th className="p-2 border text-left font-semibold">Kode</th>
-                                <th className="p-2 border text-left font-semibold">Produk</th>
-                                <th className="p-2 border text-left font-semibold">Lokasi</th>
-                                <th className="p-2 border text-right font-semibold">Total Qty</th>
-                                <th className="p-2 border text-center font-semibold">Expiry</th>
-                                <th className="p-2 border text-center font-semibold">Status</th>
-                                <th className="p-2 border text-center font-semibold">Action</th>
+                                <th className="p-2 border border-gray-600 text-center font-semibold text-white">No</th>
+                                <th className="p-2 border border-gray-600 text-left font-semibold text-white">Kode</th>
+                                <th className="p-2 border border-gray-600 text-left font-semibold text-white">Produk</th>
+                                <th className="p-2 border border-gray-600 text-left font-semibold text-white">Lokasi</th>
+                                <th className="p-2 border border-gray-600 text-right font-semibold text-white">Total Qty</th>
+                                <th className="p-2 border border-gray-600 text-center font-semibold text-white">Expiry</th>
+                                <th className="p-2 border border-gray-600 text-center font-semibold text-white">Status</th>
+                                <th className="p-2 border border-gray-600 text-center font-semibold text-white">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -393,7 +393,7 @@ const DOAStockPage: React.FC = () => {
                                         </span>
                                     </td>
                                     <td className="p-2 border font-medium text-gray-700">{row.product_name}</td>
-                                    <td className="p-2 border text-white flex items-center gap-1">
+                                    <td className="p-2 border text-gray-700 flex items-center gap-1">
                                         <MapPin size={12} className="text-gray-400" />
                                         {row.location}
                                     </td>

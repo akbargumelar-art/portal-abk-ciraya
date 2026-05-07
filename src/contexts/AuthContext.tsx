@@ -21,6 +21,7 @@ import type {
     LoginCredentials
 } from '../types/auth';
 import { ROLE_PERMISSIONS, ROLE_HIERARCHY } from '../types/auth';
+import { normalizeRole } from '../utils/roleAccess';
 
 // For backward compatibility with existing code
 import type { UserRole } from '../types';
@@ -182,14 +183,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const hasRole = useCallback((roles: (Role | UserRole)[]): boolean => {
         if (!state.user) return false;
 
-        // Map legacy roles to new roles
-        const normalizedRoles = roles.map(role => {
-            if (role === 'supervisor_ids') return 'spv_ids';
-            if (role === 'supervisor_d2c') return 'spv_d2c';
-            return role;
-        });
-
-        const userRole = state.user.role;
+        const normalizedRoles = roles.map((role) => normalizeRole(role as string));
+        const userRole = normalizeRole(state.user.role as string);
         return normalizedRoles.includes(userRole);
     }, [state.user]);
 

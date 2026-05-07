@@ -119,7 +119,7 @@ const SummaryCards: React.FC<{ data: AreaSummary[], isRevenue: boolean }> = memo
                     <div key={idx} className={`${card.bg} rounded-xl p-4 border border-gray-100`}>
                         <div className="flex items-center gap-2 mb-2">
                             <Icon size={16} className={card.iconColor} />
-                            <span className="text-xs text-white font-medium">{card.title}</span>
+                            <span className="text-xs text-gray-600 font-medium">{card.title}</span>
                         </div>
                         <div className={`text-2xl font-bold ${card.valueColor}`}>{card.value}</div>
                         <div className="text-[10px] text-gray-500 mt-1">{card.sub1}</div>
@@ -189,7 +189,7 @@ const AreaSummaryTable: React.FC<{ data: AreaSummary[], isRevenue: boolean, show
 
             {expanded && (
                 <div className="overflow-x-auto">
-                    <table className="w-full text-[10px] border-collapse whitespace-nowrap">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-10">
                             <tr className="bg-gray-100">
                                 <th rowSpan={2} className="p-2 border min-w-[100px] sticky left-0 bg-gray-100 z-20 font-semibold">Kabupaten</th>
@@ -199,11 +199,11 @@ const AreaSummaryTable: React.FC<{ data: AreaSummary[], isRevenue: boolean, show
                             </tr>
                             <tr className="bg-[#3d5f85]">
                                 {/* Simpati */}
-                                {headerCols.map(col => <th key={`s-${col}`} className="p-1.5 border text-center text-white bg-red-50/50">{col}</th>)}
+                                {headerCols.map(col => <th key={`s-${col}`} className="p-1.5 border text-center text-red-800 bg-red-50/50">{col}</th>)}
                                 {/* byU */}
-                                {headerCols.map(col => <th key={`b-${col}`} className="p-1.5 border text-center text-white bg-purple-50/50">{col}</th>)}
+                                {headerCols.map(col => <th key={`b-${col}`} className="p-1.5 border text-center text-purple-800 bg-purple-50/50">{col}</th>)}
                                 {/* Total */}
-                                {headerCols.map(col => <th key={`t-${col}`} className="p-1.5 border text-center text-white bg-slate-50">{col}</th>)}
+                                {headerCols.map(col => <th key={`t-${col}`} className="p-1.5 border text-center text-slate-700 bg-slate-50">{col}</th>)}
                             </tr>
                         </thead>
                         <tbody>
@@ -263,7 +263,7 @@ const DailyTrendChart: React.FC<{ areaFilter: string, isRevenue: boolean }> = me
     const calcGap = (current: number, m1: number) => current - m1;
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             <div className="p-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                 <div>
                     <h3 className="font-semibold text-gray-800 text-sm">Pencapaian Harian - {areaFilter}</h3>
@@ -366,7 +366,7 @@ const DailyTrendChart: React.FC<{ areaFilter: string, isRevenue: boolean }> = me
             {/* Daily Table */}
             {showTable && (
                 <div className="overflow-x-auto max-h-[400px]">
-                    <table className="w-full text-[9px] border-collapse">
+                    <table className="data-table data-table-compact">
                         <thead className="sticky top-0 z-10 bg-[#2c4a6a]">
                             <tr>
                                 <th rowSpan={2} className="p-1.5 border text-center font-semibold min-w-[40px]">Tgl</th>
@@ -500,7 +500,7 @@ const AktifasiPage: React.FC = () => {
             </div>
 
             {/* Controls */}
-            <div className="mt-4 bg-slate-100 rounded-xl border border-gray-200 p-4">
+            <div className="mt-4 bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     {/* Metric Mode Toggle */}
                     <div className="flex items-center gap-2">

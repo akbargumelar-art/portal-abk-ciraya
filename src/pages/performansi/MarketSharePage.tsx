@@ -86,7 +86,7 @@ const SummaryCards: React.FC<{ cityData: MarketShareCity[], kecData: MarketShare
     }, [cityData, kecData]);
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             <div className="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2">
                 <div className="flex items-center gap-2">
                     <BarChart3 size={16} className="text-white/80" />
@@ -165,7 +165,7 @@ const SummaryCards: React.FC<{ cityData: MarketShareCity[], kecData: MarketShare
 // ===========================================
 const TrendFBChart: React.FC<{ data: TrendFBData[] }> = memo(({ data }) => {
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             <div className="p-3 border-b border-gray-200 bg-gray-50">
                 <h3 className="font-semibold text-gray-800 text-sm">Trend Market Share (Weekly)</h3>
                 <p className="text-xs text-gray-500">Perbandingan share Telkomsel vs Kompetitor per minggu</p>
@@ -177,7 +177,7 @@ const TrendFBChart: React.FC<{ data: TrendFBData[] }> = memo(({ data }) => {
                         <XAxis dataKey="week" tick={{ fontSize: 12 }} />
                         <YAxis domain={[0, 60]} tick={{ fontSize: 12 }} tickFormatter={(v) => `${v}%`} />
                         <Tooltip
-                            formatter={(value: number) => [`${value.toFixed(1)}%`, '']}
+                            formatter={(value: number | undefined) => [`${(value ?? 0).toFixed(1)}%`, '']}
                             labelStyle={{ fontWeight: 'bold' }}
                             contentStyle={{ fontSize: 12 }}
                         />
@@ -211,7 +211,7 @@ const CityTable: React.FC<{ data: MarketShareCity[] }> = memo(({ data }) => {
 
             {expanded && (
                 <div className="overflow-x-auto">
-                    <table className="w-full text-xs border-collapse">
+                    <table className="data-table data-table-compact">
                         <thead className="bg-[#2c4a6a] sticky top-0">
                             <tr>
                                 <th className="p-2 border text-left font-semibold">City</th>
@@ -293,7 +293,7 @@ const KecamatanTable: React.FC<{ data: MarketShareKecamatan[] }> = memo(({ data 
 
             {expanded && (
                 <div className="overflow-x-auto max-h-[500px]">
-                    <table className="w-full text-[10px] border-collapse whitespace-nowrap">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="bg-[#2c4a6a] sticky top-0 z-10">
                             <tr>
                                 <th colSpan={3} className="p-1.5 border text-center bg-slate-200 font-semibold">Identitas</th>
@@ -375,7 +375,7 @@ const MarketSharePage: React.FC = () => {
             </div>
 
             {/* Filter */}
-            <div className="mt-4 bg-slate-100 rounded-xl border border-gray-200 p-4">
+            <div className="mt-4 bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
                 <div className="flex items-center gap-4">
                     <Calendar size={16} className="text-gray-400" />
                     <span className="text-sm font-medium text-gray-700">Periode:</span>

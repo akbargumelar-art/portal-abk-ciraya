@@ -327,7 +327,7 @@ const DOAAlokasiPage: React.FC = () => {
                 </div>
                 <div className="flex flex-wrap gap-4">
                     <div className="flex items-center gap-2">
-                        <label className="text-xs text-white">Bulan:</label>
+                        <label className="text-xs text-gray-700">Bulan:</label>
                         <select
                             value={filterBulan}
                             onChange={(e) => {
@@ -343,7 +343,7 @@ const DOAAlokasiPage: React.FC = () => {
                     </div>
                     <div className="border-l border-gray-300 h-6" />
                     <div className="flex items-center gap-2">
-                        <label className="text-xs text-white">Minggu:</label>
+                        <label className="text-xs text-gray-700">Minggu:</label>
                         <select
                             value={filterMinggu}
                             onChange={(e) => setFilterMinggu(e.target.value)}
@@ -354,7 +354,7 @@ const DOAAlokasiPage: React.FC = () => {
                         </select>
                     </div>
                     <div className="flex items-center gap-2">
-                        <label className="text-xs text-white">Tahap:</label>
+                        <label className="text-xs text-gray-700">Tahap:</label>
                         <select
                             value={filterTahap}
                             onChange={(e) => setFilterTahap(e.target.value)}
@@ -365,7 +365,7 @@ const DOAAlokasiPage: React.FC = () => {
                         </select>
                     </div>
                     <div className="flex items-center gap-2">
-                        <label className="text-xs text-white">Produk:</label>
+                        <label className="text-xs text-gray-700">Produk:</label>
                         <select
                             value={filterProduk}
                             onChange={(e) => setFilterProduk(e.target.value)}
@@ -387,12 +387,12 @@ const DOAAlokasiPage: React.FC = () => {
                         Summary per Minggu
                     </h3>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-xs border-collapse">
-                            <thead>
-                                <tr className="bg-[#3d5f85]">
-                                    <th className="p-2 border text-left font-semibold">Minggu</th>
-                                    <th className="p-2 border text-right font-semibold">Qty</th>
-                                    <th className="p-2 border text-right font-semibold">Nominal</th>
+                        <table className="data-table data-table-compact">
+                            <thead className="bg-[#2c4a6a]">
+                                <tr className="text-white">
+                                    <th className="p-2 border border-gray-600 text-left font-semibold">Minggu</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Qty</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Nominal</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -419,14 +419,14 @@ const DOAAlokasiPage: React.FC = () => {
                         Summary per Tahap (Rata-rata per Produk)
                     </h3>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-xs border-collapse">
-                            <thead>
-                                <tr className="bg-[#3d5f85]">
-                                    <th className="p-2 border text-left font-semibold">Tahap</th>
-                                    <th className="p-2 border text-right font-semibold">Total Qty</th>
-                                    <th className="p-2 border text-right font-semibold">Produk</th>
-                                    <th className="p-2 border text-right font-semibold">Avg Qty/Produk</th>
-                                    <th className="p-2 border text-right font-semibold">Avg Nominal/Produk</th>
+                        <table className="data-table data-table-compact">
+                            <thead className="bg-[#2c4a6a]">
+                                <tr className="text-white">
+                                    <th className="p-2 border border-gray-600 text-left font-semibold">Tahap</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Total Qty</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Produk</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Avg Qty/Produk</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Avg Nominal/Produk</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -455,14 +455,14 @@ const DOAAlokasiPage: React.FC = () => {
                         Summary per Produk (Rata-rata per Alokasi)
                     </h3>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-xs border-collapse">
-                            <thead>
-                                <tr className="bg-[#3d5f85]">
-                                    <th className="p-2 border text-left font-semibold">Produk</th>
-                                    <th className="p-2 border text-right font-semibold">Total Qty</th>
-                                    <th className="p-2 border text-right font-semibold">Alokasi</th>
-                                    <th className="p-2 border text-right font-semibold">Avg Qty/Alok</th>
-                                    <th className="p-2 border text-right font-semibold">Avg Nom/Alok</th>
+                        <table className="data-table data-table-compact">
+                            <thead className="bg-[#2c4a6a]">
+                                <tr className="text-white">
+                                    <th className="p-2 border border-gray-600 text-left font-semibold">Produk</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Total Qty</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Alokasi</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Avg Qty/Alok</th>
+                                    <th className="p-2 border border-gray-600 text-right font-semibold">Avg Nom/Alok</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -494,7 +494,7 @@ const DOAAlokasiPage: React.FC = () => {
                     </button>
                 </div>
                 <div className="overflow-x-auto max-h-[500px]">
-                    <table className="w-full text-xs border-collapse">
+                    <table className="data-table data-table-compact">
                         <thead className="sticky top-0 z-10 bg-[#2c4a6a]">
                             <tr>
                                 <th className="p-2 border text-center font-semibold min-w-[50px]">No</th>
@@ -524,7 +524,7 @@ const DOAAlokasiPage: React.FC = () => {
                                     </td>
                                     <td className="p-2 border font-medium text-gray-700">{row.produk}</td>
                                     <td className="p-2 border text-right font-semibold text-blue-700">{formatNumber(row.kuantiti)}</td>
-                                    <td className="p-2 border text-right text-white">Rp {formatNumber(row.hpp)}</td>
+                                    <td className="p-2 border text-right text-gray-600">Rp {formatNumber(row.hpp)}</td>
                                     <td className="p-2 border text-right font-semibold text-green-600">Rp {formatNumber(row.nominal)}</td>
                                 </tr>
                             ))}
@@ -533,7 +533,7 @@ const DOAAlokasiPage: React.FC = () => {
                             <tr>
                                 <td colSpan={5} className="p-2 border text-right">TOTAL</td>
                                 <td className="p-2 border text-right text-blue-700">{formatNumber(summary.totalKuantiti)}</td>
-                                <td className="p-2 border text-right text-white">-</td>
+                                <td className="p-2 border text-right text-gray-600">-</td>
                                 <td className="p-2 border text-right text-green-700">Rp {formatNumber(summary.totalNominal)}</td>
                             </tr>
                         </tfoot>

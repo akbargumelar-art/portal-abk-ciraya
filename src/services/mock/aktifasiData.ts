@@ -14,16 +14,12 @@ const AREAS = ['Cirebon', 'Kota Cirebon', 'Kuningan'];
 // ===========================================
 // HELPERS
 // ===========================================
-const randomInt = (min: number, max: number): number =>
-    Math.floor(Math.random() * (max - min + 1)) + min;
-
 const randomFloat = (min: number, max: number, decimals: number = 2): number =>
     parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
 
 // Generate a MetricSet with realistic values
 const generateMetricSet = (baseValue: number, isRevenue: boolean): MetricSet => {
     const multiplier = isRevenue ? 1000000 : 1; // Revenue in millions
-    const variance = 0.15;
 
     const target = Math.round(baseValue * multiplier * randomFloat(0.9, 1.1));
     const targetCommit = Math.round(target * randomFloat(0.85, 0.95));

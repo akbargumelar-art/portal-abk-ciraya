@@ -85,7 +85,7 @@ const DocumentationPage: React.FC = () => {
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedCategory === cat
                                     ? 'bg-[#F13B4B] text-white'
-                                    : 'bg-gray-100 text-white hover:bg-gray-200'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                         >
                             {cat}

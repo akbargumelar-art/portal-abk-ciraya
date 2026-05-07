@@ -40,9 +40,6 @@ const KECAMATAN_MAP: Record<string, { tap: string; kab: string; kecs: string[] }
 const randomFloat = (min: number, max: number, decimals: number = 1): number =>
     parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
 
-const randomInt = (min: number, max: number): number =>
-    Math.floor(Math.random() * (max - min + 1)) + min;
-
 // ===========================================
 // CITY DATA GENERATOR
 // ===========================================

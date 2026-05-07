@@ -193,8 +193,8 @@ const DynamicKPITable: React.FC<DynamicKPITableProps> = ({
 
                 {/* Table Content */}
                 {expanded && (
-                    <div className="overflow-x-auto" style={{ maxHeight: '600px' }}>
-                        <table className="w-full text-xs border-collapse whitespace-nowrap">
+                    <div className="table-scroll" style={{ maxHeight: '600px' }}>
+                        <table className="data-table data-table-compact whitespace-nowrap">
                             <thead className="sticky top-0 z-10 bg-[#2c4a6a]">
                                 {/* Level 1: KPI Names */}
                                 <tr className="border-b border-gray-700">
@@ -222,7 +222,7 @@ const DynamicKPITable: React.FC<DynamicKPITableProps> = ({
                                             <th className="p-1.5 text-center border-l-2 border-gray-700">Target</th>
                                             <th className="p-1.5 text-center">Actual</th>
                                             <th className="p-1.5 text-center">Ach%</th>
-                                            <th className="p-1.5 text-center text-yellow-300">M-1</th>
+                                            <th className="p-1.5 text-center">M-1</th>
                                             <th className="p-1.5 text-center">MoM</th>
                                         </React.Fragment>
                                     ))}
@@ -279,7 +279,7 @@ const DynamicKPITable: React.FC<DynamicKPITableProps> = ({
                                     </tr>
                                 ))}
                                 {/* TOTAL Row */}
-                                <tr className="bg-gray-100 font-semibold border-t-2 border-gray-300">
+                                <tr className="table-total-row">
                                     <td className="p-2 text-gray-900 border-r border-gray-200 sticky left-0 bg-gray-100 z-10">
                                         TOTAL
                                     </td>

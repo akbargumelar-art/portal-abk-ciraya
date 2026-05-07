@@ -12,6 +12,7 @@ import React from 'react';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import type { Role, UserRole } from '../../types/auth';
+import { normalizeRole } from '../../utils/roleAccess';
 
 // ============================================================================
 // INTERFACES
@@ -59,21 +60,6 @@ const AuthLoadingSpinner: React.FC = () => (
         </div>
     </div>
 );
-
-// ============================================================================
-// ROLE MAPPING HELPER
-// ============================================================================
-
-/**
- * Maps legacy role names to new role names for backward compatibility.
- */
-const normalizeRole = (role: string): Role => {
-    const mapping: Record<string, Role> = {
-        'supervisor_ids': 'spv_ids',
-        'supervisor_d2c': 'spv_d2c',
-    };
-    return (mapping[role] || role) as Role;
-};
 
 // ============================================================================
 // PROTECTED ROUTE COMPONENT

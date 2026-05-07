@@ -393,15 +393,15 @@ const POPMaterialPage: React.FC = () => {
                 {expanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
             </button>
             {expanded && (
-                <div className="overflow-x-auto">
-                    <table className="w-full text-xs text-left border-collapse">
-                        <thead>
-                            <tr className="bg-gray-100">
-                                <th className="p-3 border-b min-w-[150px] font-semibold border-r sticky left-0 bg-gray-100 z-10">Name</th>
-                                <th className="p-3 border-b text-center font-semibold border-r">Outlets</th>
-                                <th className="p-3 border-b text-center font-semibold border-r bg-blue-50">Avg Rate</th>
+                <div className="table-scroll">
+                    <table className="data-table data-table-compact text-left">
+                        <thead className="bg-[#2c4a6a]">
+                            <tr className="text-white">
+                                <th className="p-3 border-b border-gray-600 min-w-[150px] font-semibold border-r sticky left-0 bg-[#2c4a6a] z-10">Name</th>
+                                <th className="p-3 border-b border-gray-600 text-center font-semibold border-r">Outlets</th>
+                                <th className="p-3 border-b border-gray-600 text-center font-semibold border-r">Avg Rate</th>
                                 {POP_MATERIAL_TYPES.filter(t => !popTypeFilter || t.value === popTypeFilter).map(type => (
-                                    <th key={type.value} className="p-2 border-b text-center border-r min-w-[60px]">
+                                    <th key={type.value} className="p-2 border-b border-gray-600 text-center border-r min-w-[60px]">
                                         {type.label}
                                     </th>
                                 ))}
@@ -528,7 +528,7 @@ const POPMaterialPage: React.FC = () => {
                                                 <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden mx-2">
                                                     <div className="h-full bg-blue-500 rounded-full" style={{ width: `${pct}%` }}></div>
                                                 </div>
-                                                <div className="w-10 text-right text-white">{Math.round(pct)}%</div>
+                                                <div className="w-10 text-right text-gray-700">{Math.round(pct)}%</div>
                                             </div>
                                         );
                                     })
@@ -643,24 +643,24 @@ const POPMaterialPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="overflow-x-auto" style={{ maxHeight: '600px', overflowY: 'auto' }}>
-                            <table className="w-full text-[10px]">
+                        <div className="table-scroll" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                            <table className="data-table data-table-compact whitespace-nowrap">
                                 <thead className="sticky top-0 z-10 bg-[#2c4a6a]">
                                     <tr className="border-b">
                                         <th className="px-3 py-2 text-left font-semibold text-white min-w-[150px]">Outlet</th>
                                         <th className="px-3 py-2 text-left font-semibold text-white min-w-[100px]">Salesforce</th>
                                         <th className="px-3 py-2 text-left font-semibold text-white min-w-[80px]">TAP</th>
                                         <th className="px-3 py-2 text-left font-semibold text-white min-w-[100px]">Kabupaten</th>
-                                        <th className="px-3 py-2 text-center font-semibold text-white min-w-[70px] bg-purple-50">Lokasi</th>
-                                        <th className="px-3 py-2 text-center font-semibold text-white min-w-[90px] bg-amber-50">Flag</th>
+                                        <th className="px-3 py-2 text-center font-semibold text-purple-800 min-w-[70px] bg-purple-50">Lokasi</th>
+                                        <th className="px-3 py-2 text-center font-semibold text-amber-800 min-w-[90px] bg-amber-50">Flag</th>
                                         {/* POP Material Columns */}
                                         {POP_MATERIAL_TYPES.filter(t => !popTypeFilter || t.value === popTypeFilter).map(type => (
-                                            <th key={type.value} className="px-2 py-2 text-center font-semibold text-white min-w-[60px] bg-blue-50">
+                                            <th key={type.value} className="px-2 py-2 text-center font-semibold text-blue-800 min-w-[60px] bg-blue-50">
                                                 <span className="text-[8px] leading-tight block">{type.label}</span>
                                             </th>
                                         ))}
-                                        <th className="px-3 py-2 text-center font-semibold text-white min-w-[60px] bg-green-50">Total</th>
-                                        <th className="px-3 py-2 text-center font-semibold text-white min-w-[60px] bg-green-50">Rate</th>
+                                        <th className="px-3 py-2 text-center font-semibold text-green-800 min-w-[60px] bg-green-50">Total</th>
+                                        <th className="px-3 py-2 text-center font-semibold text-green-800 min-w-[60px] bg-green-50">Rate</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
@@ -681,7 +681,7 @@ const POPMaterialPage: React.FC = () => {
                                                         <p className="text-[9px] text-gray-400">{outlet.kecamatan}</p>
                                                     </div>
                                                 </td>
-                                                <td className="px-3 py-2 text-white">{outlet.salesforce}</td>
+                                                <td className="px-3 py-2 text-gray-700">{outlet.salesforce}</td>
                                                 <td className="px-3 py-2">
                                                     <Badge variant="info" className="text-[8px]">{outlet.tap}</Badge>
                                                 </td>
@@ -697,7 +697,7 @@ const POPMaterialPage: React.FC = () => {
                                                         outlet.flag === 'Pareto Retail' ? 'bg-orange-100 text-orange-700' :
                                                             outlet.flag === 'D2C' ? 'bg-purple-100 text-purple-700' :
                                                                 outlet.flag === 'Office' ? 'bg-cyan-100 text-cyan-700' :
-                                                                    'bg-gray-100 text-white'
+                                                                    'bg-gray-100 text-gray-700'
                                                         }`}>{outlet.flag}</span>
                                                 </td>
                                                 {/* POP Status Columns */}

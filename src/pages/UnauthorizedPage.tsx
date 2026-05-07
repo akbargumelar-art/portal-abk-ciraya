@@ -36,7 +36,7 @@ const UnauthorizedPage: React.FC = () => {
                 </h1>
 
                 {/* Description */}
-                <p className="text-white mb-6">
+                <p className="text-gray-600 mb-6">
                     Anda tidak memiliki izin untuk mengakses halaman ini.
                 </p>
 

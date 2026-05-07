@@ -92,7 +92,7 @@ const D2CSummaryCard: React.FC<D2CSummaryCardProps> = memo(({ data }) => {
     const isPositiveGrowth = stats.qtyGrowth >= 0;
 
     return (
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-4 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-4 overflow-hidden">
             {/* Header */}
             <div className="bg-slate-600 px-4 py-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -127,8 +127,8 @@ const D2CSummaryCard: React.FC<D2CSummaryCardProps> = memo(({ data }) => {
                             />
                         </div>
                         <div className="flex justify-between mt-1.5 text-[10px] text-gray-400">
-                            <span>Act: <b className="text-white">{stats.totalQtyActual.toLocaleString()}</b></span>
-                            <span>Tgt: <b className="text-white">{stats.totalQtyTarget.toLocaleString()}</b></span>
+                            <span>Act: <b className="text-gray-700">{stats.totalQtyActual.toLocaleString()}</b></span>
+                            <span>Tgt: <b className="text-gray-700">{stats.totalQtyTarget.toLocaleString()}</b></span>
                         </div>
                     </div>
 
@@ -151,7 +151,7 @@ const D2CSummaryCard: React.FC<D2CSummaryCardProps> = memo(({ data }) => {
                         </div>
                         <div className="flex justify-between mt-1.5 text-[10px] text-gray-400">
                             <span>Act: <b className="text-green-600">{formatCurrency(stats.totalRevActual)}</b></span>
-                            <span>Tgt: <b className="text-white">{formatCurrency(stats.totalRevTarget)}</b></span>
+                            <span>Tgt: <b className="text-gray-700">{formatCurrency(stats.totalRevTarget)}</b></span>
                         </div>
                     </div>
 
@@ -331,7 +331,7 @@ const D2CSummaryTable: React.FC<D2CSummaryTableProps> = ({ data, title, icon }) 
 
             {expanded && (
                 <div className="overflow-x-auto max-h-[400px]">
-                    <table className="w-full text-[10px] border-collapse whitespace-nowrap">
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-20 bg-[#2c4a6a]">
                             {/* Level 1: Product Groups */}
                             <tr>
@@ -355,9 +355,9 @@ const D2CSummaryTable: React.FC<D2CSummaryTableProps> = ({ data, title, icon }) 
                                 })}
                             </tr>
                             {/* Level 2: Metric Headers */}
-                            <tr className="bg-gray-50 text-gray-500">
-                                <th className="p-1 border-b border-r sticky left-0 bg-gray-50 z-30"></th>
-                                {!isSalesforceTable && <th className="p-1 border-b border-r"></th>}
+                            <tr className="bg-[#3d5f85] text-white">
+                                <th className="p-1 border-b border-gray-600 border-r sticky left-0 bg-[#3d5f85] z-30"></th>
+                                {!isSalesforceTable && <th className="p-1 border-b border-gray-600 border-r"></th>}
                                 {['total', ...D2C_PRODUCTS.map(p => p.id)].map((productId, idx) => (
                                     <React.Fragment key={productId}>
                                         <th className={`p-1 border-b text-center ${idx === 0 ? 'border-l-2' : 'border-l'}`}>Tgt</th>

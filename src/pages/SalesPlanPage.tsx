@@ -187,12 +187,12 @@ const SalesPlanPage: React.FC = () => {
                     <h3 className="font-semibold text-gray-900">Sales Plan Matrix</h3>
                     <p className="text-sm text-gray-500">Detailed tracking by Salesforce</p>
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full">
+                <div className="table-scroll">
+                    <table className="data-table">
                         {/* Multi-level headers */}
                         <thead>
                             <tr className="bg-gray-100">
-                                <th rowSpan={2} className="px-4 py-2 text-left text-xs font-semibold text-white uppercase border-b border-r border-gray-200 sticky left-0 bg-gray-100 min-w-[150px]">
+                                <th rowSpan={2} className="px-4 py-2 text-left text-xs font-semibold text-gray-700 uppercase border-b border-r border-gray-200 sticky left-0 bg-gray-100 min-w-[150px]">
                                     Salesforce
                                 </th>
                                 <th rowSpan={2} className="px-4 py-2 text-center text-xs font-semibold text-white uppercase border-b border-r border-gray-200 min-w-[80px]">

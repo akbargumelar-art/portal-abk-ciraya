@@ -170,7 +170,7 @@ const VideoModal: React.FC<{ video: Video | null; onClose: () => void }> = ({ vi
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-xl max-w-4xl w-full overflow-hidden shadow-2xl animate-scale-up"
+                className="bg-white rounded-lg max-w-4xl w-full overflow-hidden shadow-lg animate-scale-up"
                 onClick={e => e.stopPropagation()}
             >
                 {/* Video Player */}
@@ -204,7 +204,7 @@ const VideoModal: React.FC<{ video: Video | null; onClose: () => void }> = ({ vi
                 {/* Video Info */}
                 <div className="p-6">
                     <h2 className="text-xl font-bold text-gray-900">{video.title}</h2>
-                    <p className="text-white mt-2">{video.description}</p>
+                    <p className="text-gray-600 mt-2">{video.description}</p>
 
                     <div className="flex flex-wrap items-center gap-4 mt-4">
                         <span className="flex items-center gap-1 text-sm text-gray-500">
@@ -315,7 +315,7 @@ const VideoRoleplayPage: React.FC = () => {
                                 className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all
                                     ${categoryFilter === cat.value
                                         ? 'bg-[#F13B4B] text-white'
-                                        : 'bg-gray-100 text-white hover:bg-gray-200'
+                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                             >
                                 {cat.label}

@@ -88,6 +88,20 @@ const getDefaultDateRange = (): DateRange => {
     };
 };
 
+/** Default filter state for pages that mirror FilterBar (e.g. dashboard mock slice). */
+export function createDefaultFilterState(): FilterState {
+    return {
+        date: getDefaultDateRange(),
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+        tap: [],
+        salesforce: [],
+        kabupaten: [],
+        flag: [],
+        pjpStatus: [],
+    };
+}
+
 const FilterBar: React.FC<FilterBarProps> = ({
     onFilterChange,
     showDate = true,
@@ -104,16 +118,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     pjpOptions: propPjpOptions = [],
     className = '',
 }) => {
-    const defaultFilters: FilterState = {
-        date: getDefaultDateRange(),
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
-        tap: [],
-        salesforce: [],
-        kabupaten: [],
-        flag: [],
-        pjpStatus: [],
-    };
+    const defaultFilters = createDefaultFilterState();
 
     const [filters, setFilters] = useState<FilterState>(defaultFilters);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -180,7 +185,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         (hasActiveFilters ? 1 : 0); // Simplified count
 
     return (
-        <div className={`bg-slate-100 rounded-xl border border-gray-200 ${className}`}>
+        <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}>
             {/* Compact Header */}
             <div className="flex items-center justify-between px-4 py-3">
                 <button

@@ -131,7 +131,7 @@ const NotificationDropdown: React.FC = () => {
 
             {/* Dropdown Panel */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-100 z-50 overflow-hidden animate-fade-in">
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50">
                         <h3 className="font-semibold text-gray-900">Notifikasi</h3>

@@ -22,7 +22,7 @@ const PageLoadingOverlay: React.FC = () => {
             {/* Stats Cards Skeleton */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div key={i} className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
                         <div className="h-4 w-24 bg-gray-200 rounded mb-2"></div>
                         <div className="h-8 w-32 bg-gray-200 rounded"></div>
                     </div>
@@ -42,7 +42,7 @@ const PageLoadingOverlay: React.FC = () => {
             </div>
 
             {/* Table Skeleton */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden mt-6">
                 <div className="p-4 border-b border-gray-100">
                     <div className="h-6 w-48 bg-gray-200 rounded"></div>
                 </div>

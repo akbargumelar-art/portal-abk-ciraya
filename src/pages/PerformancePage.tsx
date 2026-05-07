@@ -34,7 +34,6 @@ import {
     kpiValues,
     getParametersByCategory,
     getActiveParameters,
-    getParameterByCode,
     buildPerformanceTableRows,
     calculateKPISummaries,
 } from '../services/mock/performanceData';
@@ -115,12 +114,12 @@ const DynamicPerformanceTable: React.FC<DynamicPerformanceTableProps> = ({
 
             {/* Table Content */}
             {expanded && (
-                <div className="overflow-x-auto" style={{ maxHeight: '500px' }}>
-                    <table className="w-full text-xs border-collapse whitespace-nowrap">
+                <div className="table-scroll" style={{ maxHeight: '500px' }}>
+                    <table className="data-table data-table-compact whitespace-nowrap">
                         <thead className="sticky top-0 z-10 bg-[#2c4a6a]">
                             {/* Level 1: KPI Names */}
                             <tr className="border-b">
-                                <th className="p-2 text-left font-semibold text-white min-w-[120px] border-r border-gray-200 sticky left-0 bg-gray-100 z-20">
+                                <th className="p-2 text-left font-semibold text-gray-700 min-w-[120px] border-r border-gray-200 sticky left-0 bg-gray-100 z-20">
                                     TAP
                                 </th>
                                 {parameters.map(param => (
@@ -196,7 +195,7 @@ const DynamicPerformanceTable: React.FC<DynamicPerformanceTableProps> = ({
                                 </tr>
                             ))}
                             {/* Summary Row */}
-                            <tr className="bg-gray-100 font-semibold border-t-2 border-gray-300">
+                            <tr className="table-total-row">
                                 <td className="p-2 text-gray-900 border-r border-gray-200 sticky left-0 bg-gray-100 z-10">
                                     TOTAL
                                 </td>
@@ -216,7 +215,7 @@ const DynamicPerformanceTable: React.FC<DynamicPerformanceTableProps> = ({
 
                                     return (
                                         <React.Fragment key={`total-${param.code}`}>
-                                            <td className="p-2 text-center text-white border-l-2 border-gray-300">
+                                            <td className="p-2 text-center text-gray-600 border-l-2 border-gray-300">
                                                 {formatKPIValue(summary.total_target, param.format, param.unit)}
                                             </td>
                                             <td className="p-2 text-center text-gray-900">
@@ -269,8 +268,6 @@ const PerformancePage: React.FC = () => {
         const summaries = calculateKPISummaries(kpiValues);
         const activeParams = getActiveParameters();
 
-        const totalTarget = summaries.reduce((sum, s) => sum + s.total_target, 0);
-        const totalActual = summaries.reduce((sum, s) => sum + s.total_actual, 0);
         const avgAchievement = summaries.length > 0
             ? summaries.reduce((sum, s) => sum + s.achievement_pct, 0) / summaries.length
             : 0;
@@ -412,7 +409,7 @@ const PerformancePage: React.FC = () => {
                         <h4 className="text-sm font-medium text-blue-600 mb-2">Top Line</h4>
                         <div className="space-y-1">
                             {getParametersByCategory('TOP_LINE').map(p => (
-                                <div key={p.code} className="text-xs text-white flex items-center gap-2">
+                                <div key={p.code} className="text-xs text-gray-600 flex items-center gap-2">
                                     <span className="font-mono bg-gray-100 px-1 rounded">{p.code}</span>
                                     <span>{p.label}</span>
                                 </div>
@@ -423,7 +420,7 @@ const PerformancePage: React.FC = () => {
                         <h4 className="text-sm font-medium text-purple-600 mb-2">Bottom Line</h4>
                         <div className="space-y-1">
                             {getParametersByCategory('BOTTOM_LINE').map(p => (
-                                <div key={p.code} className="text-xs text-white flex items-center gap-2">
+                                <div key={p.code} className="text-xs text-gray-600 flex items-center gap-2">
                                     <span className="font-mono bg-gray-100 px-1 rounded">{p.code}</span>
                                     <span>{p.label}</span>
                                 </div>

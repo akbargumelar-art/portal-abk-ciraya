@@ -7,6 +7,8 @@
  */
 
 import { navigationItems } from '../config/navigation';
+import { getPathAccessRoles } from '../config/appRouteConfig';
+import { roleHasAccess } from '../utils/roleAccess';
 import type { UserRole } from '../types';
 
 // ============================================================================
@@ -77,6 +79,7 @@ export const getAllPages = (): PagePermission[] => {
 const getDefaultPermissions = (): RolePermissions[] => {
     const roles: UserRole[] = [
         'admin_super',
+        'admin',
         'manager',
         'supervisor_ids',
         'supervisor_d2c',
@@ -88,16 +91,14 @@ const getDefaultPermissions = (): RolePermissions[] => {
         const allowedPages: string[] = [];
 
         navigationItems.forEach(item => {
-            // Check if role has access based on original nav config
-            const hasAccess = !item.roles || item.roles.includes(role);
+            const hasAccess = roleHasAccess(role, getPathAccessRoles(item.path));
 
             if (hasAccess) {
                 allowedPages.push(item.id);
 
-                // Also add children
                 if (item.children) {
                     item.children.forEach(child => {
-                        const childHasAccess = !child.roles || child.roles.includes(role);
+                        const childHasAccess = roleHasAccess(role, getPathAccessRoles(child.path));
                         if (childHasAccess) {
                             allowedPages.push(child.id);
                         }

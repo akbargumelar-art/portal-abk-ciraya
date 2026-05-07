@@ -147,8 +147,8 @@ const FeePage: React.FC = () => {
                 <div className="p-4 border-b border-gray-100">
                     <h3 className="font-semibold text-gray-900">Detail Fee - {period}</h3>
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full">
+                <div className="table-scroll">
+                    <table className="data-table">
                         <thead>
                             <tr className="border-b border-gray-100 bg-gray-50">
                                 <th className="text-left p-4 text-sm font-semibold text-white">ID</th>
@@ -172,13 +172,13 @@ const FeePage: React.FC = () => {
                                 filteredFees.map(fee => (
                                     <tr key={fee.id} className="border-b border-gray-50 hover:bg-gray-50">
                                         <td className="p-4">
-                                            <span className="font-mono text-sm text-white">{fee.id}</span>
+                                            <span className="font-mono text-sm text-gray-700">{fee.id}</span>
                                         </td>
                                         <td className="p-4 font-medium text-gray-900">{fee.name}</td>
                                         <td className="p-4">
                                             <Badge variant="neutral">{fee.role}</Badge>
                                         </td>
-                                        <td className="p-4 text-sm text-white">{fee.region}</td>
+                                        <td className="p-4 text-sm text-gray-600">{fee.region}</td>
                                         <td className="p-4 text-right text-sm">
                                             Rp {fee.salesAmount.toLocaleString()}
                                         </td>

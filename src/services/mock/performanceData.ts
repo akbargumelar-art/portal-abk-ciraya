@@ -150,7 +150,6 @@ export const kpiParameters: KPIParameterConfig[] = [
 
 const generateKPIValue = (tap_id: string, param: KPIParameterConfig): KPIValue => {
     let baseTarget: number;
-    let variance: number = 0.2;
 
     // Set realistic base targets based on KPI type
     switch (param.code) {
@@ -168,7 +167,6 @@ const generateKPIValue = (tap_id: string, param: KPIParameterConfig): KPIValue =
             break;
         case 'NET_ADD_30D':
             baseTarget = randomInt(100, 500);
-            variance = 0.5; // Higher variance for net add
             break;
         case 'OUTLET_AKTIF':
             baseTarget = randomInt(150, 400);

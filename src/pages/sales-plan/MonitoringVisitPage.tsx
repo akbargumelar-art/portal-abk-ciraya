@@ -39,7 +39,7 @@ import type { Visit, VisitStatus, VisitSummary } from '../../types/visit';
 // ============================================================================
 
 const StatCardSkeleton: React.FC = () => (
-    <div className="bg-white rounded-xl p-5 border border-slate-100 animate-pulse">
+    <div className="bg-white rounded-lg p-5 border border-slate-100 animate-pulse">
         <div className="flex items-start justify-between">
             <div className="flex-1">
                 <div className="h-4 bg-slate-200 rounded w-24 mb-2" />
@@ -56,7 +56,7 @@ const TimelineItemSkeleton: React.FC = () => (
             <div className="w-10 h-10 rounded-full bg-slate-200" />
             <div className="w-0.5 flex-1 bg-slate-200 my-2" />
         </div>
-        <div className="flex-1 bg-white rounded-xl p-4 border border-slate-100 mb-4">
+        <div className="flex-1 bg-white rounded-lg p-4 border border-slate-100 mb-4">
             <div className="h-5 bg-slate-200 rounded w-48 mb-2" />
             <div className="h-4 bg-slate-200 rounded w-32 mb-3" />
             <div className="h-4 bg-slate-200 rounded w-24" />
@@ -165,7 +165,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ visit, isLast, onViewPhoto 
             </div>
 
             {/* Content Card */}
-            <div className="flex-1 bg-white rounded-xl p-4 border border-slate-100 mb-4 hover:shadow-md transition-shadow">
+            <div className="flex-1 bg-white rounded-lg p-4 border border-slate-100 mb-4 hover:shadow-md transition-shadow">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                     <div>
@@ -239,7 +239,7 @@ const MapPlaceholder: React.FC<{ visits: Visit[] }> = ({ visits }) => {
             <div className="absolute bottom-1/3 left-1/3 w-24 h-24 bg-emerald-200/30 rounded-full" />
 
             <div className="relative z-10 text-center">
-                <div className="w-16 h-16 bg-white rounded-xl shadow-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-white rounded-lg shadow-md flex items-center justify-center mx-auto mb-4">
                     <MapPin size={32} className="text-blue-600" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">

@@ -188,7 +188,7 @@ const ProgramPage: React.FC = () => {
 
                         <h4 className="font-semibold text-gray-900 mb-2">{program.name}</h4>
 
-                        <div className="space-y-2 text-sm text-white">
+                        <div className="space-y-2 text-sm text-gray-600">
                             <div className="flex items-center gap-2">
                                 <Calendar size={14} />
                                 <span>{program.startDate} - {program.endDate}</span>
