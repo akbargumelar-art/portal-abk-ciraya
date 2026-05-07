@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import { Package, Search, Store, Download } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Card, Input, Select, Button } from '../components/ui/index';
+import MobileFilterCard from '../components/common/MobileFilterCard';
 import { Tabs, TabList, Tab, TabPanel } from '../components/ui/Tabs';
 import { stockItems, outlets } from '../data/mockData';
 import { formatRSNumber } from '../utils/formatters';
@@ -10,7 +11,6 @@ import { useSortableTable } from '../hooks/useSortableTable';
 import { StatusChip } from '../components/table/TableMicroComponents';
 import StockSummarySection from '../components/stock/StockSummarySection';
 import type { StockItem, Outlet } from '../types';
-import { Filter, X } from 'lucide-react';
 import { useState } from 'react';
 
 interface StockPageProps {
@@ -251,20 +251,13 @@ const StockPage: React.FC<StockPageProps> = ({ type }) => {
                 subtitle="Data Updated: real-time"
             />
 
-            {/* Filter Bar */}
-            <Card padding="md" className="mt-4 lg:mt-6 bg-slate-100">
-                <div className="flex items-center gap-2 mb-3">
-                    <Filter size={16} className="text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700">Filter Options</span>
-                    {hasActiveFilters && (
-                        <button
-                            onClick={clearAll}
-                            className="ml-auto flex items-center gap-1 text-xs text-red-600 hover:text-red-700 transition-colors"
-                        >
-                            <X size={14} />Clear All
-                        </button>
-                    )}
-                </div>
+            {/* Filter Bar — collapsible on mobile */}
+            <MobileFilterCard
+                className="mt-4 lg:mt-6"
+                hasActiveFilters={hasActiveFilters || !!infoFilter}
+                activeCount={Object.values(filters).filter(Boolean).length + (infoFilter ? 1 : 0)}
+                onClearAll={() => { clearAll(); setInfoFilter(''); }}
+            >
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 lg:gap-3">
                     {FILTER_DIMENSIONS.map(dim => (
                         <Select
@@ -282,7 +275,7 @@ const StockPage: React.FC<StockPageProps> = ({ type }) => {
                         options={INFO_OPTIONS}
                     />
                 </div>
-            </Card>
+            </MobileFilterCard>
 
             <Card padding="none" className="mt-4 lg:mt-6 overflow-hidden">
                 <Tabs defaultValue="summary">

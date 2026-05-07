@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import { createPortal } from 'react-dom';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -132,6 +133,7 @@ const Tooltip: React.FC<TooltipProps> = ({ label, anchorRect }) => {
 const Sidebar: React.FC = () => {
     const { isCollapsed, toggleSidebar, isMobileOpen, closeMobileSidebar } = useSidebar();
     const { user, logout } = useAuth();
+    const isMobile = useIsMobile();
     const location = useLocation();
     const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
     const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
@@ -326,7 +328,7 @@ const Sidebar: React.FC = () => {
             {/* Mobile Backdrop */}
             {isMobileOpen && (
                 <div
-                    className="fixed inset-0 bg-black/40 z-30 lg:hidden"
+                    className="fixed inset-0 bg-black/40 z-40 lg:hidden"
                     onClick={closeMobileSidebar}
                     aria-hidden="true"
                 />
@@ -334,11 +336,12 @@ const Sidebar: React.FC = () => {
 
             <aside
                 className={`
-                    fixed left-0 top-0 h-screen bg-white border-r border-gray-200 z-40 flex flex-col
+                    fixed left-0 top-0 bg-white border-r border-gray-200 flex flex-col
                     transition-all duration-300
                     ${isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'}
                     w-64
-                    ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                    ${isMobileOpen ? 'translate-x-0 z-50' : '-translate-x-full lg:translate-x-0 z-40'}
+                    ${isMobile ? 'h-[100dvh]' : 'h-screen'}
                 `}
             >
                 {/* Logo Section */}
@@ -371,8 +374,8 @@ const Sidebar: React.FC = () => {
                     </ul>
                 </nav>
 
-                {/* User Section */}
-                <div className="p-3 border-t border-gray-200">
+                {/* User Section — extra bottom padding on mobile to clear BottomNav */}
+                <div className={`p-3 border-t border-gray-200 flex-shrink-0 ${isMobile && isMobileOpen ? 'pb-20' : ''}`}>
                     {!isCollapsed && (
                         <div className="flex items-center gap-3 px-3 py-2 mb-2">
                             <img

@@ -13,10 +13,11 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import {
     DollarSign, Target, BarChart3, Users,
     ArrowUpCircle, ArrowDownCircle, AlertCircle,
-    Filter, X, Download, ChevronLeft, ChevronRight
+    Download, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import Header from '../components/layout/Header';
 import { Card, Select, Button } from '../components/ui/index';
+import MobileFilterCard from '../components/common/MobileFilterCard';
 import { Tabs, TabList, Tab, TabPanel } from '../components/ui/Tabs';
 import { transactions } from '../data/mockData';
 import { useRoleBasedOutlets, useUserFilterContext } from '../hooks/useRoleBasedData';
@@ -223,17 +224,13 @@ const OmzetOutletPage: React.FC = () => {
                 </div>
             )}
 
-            {/* Filter Bar */}
-            <Card padding="md" className="mt-4 lg:mt-6 bg-slate-100">
-                <div className="flex items-center gap-2 mb-3">
-                    <Filter size={16} className="text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700">Filter Options</span>
-                    {hasActiveFilters && (
-                        <button onClick={clearAll} className="ml-auto flex items-center gap-1 text-xs text-red-600 hover:text-red-700 transition-colors">
-                            <X size={14} />Clear All
-                        </button>
-                    )}
-                </div>
+            {/* Filter Bar — collapsible on mobile */}
+            <MobileFilterCard
+                className="mt-4 lg:mt-6"
+                hasActiveFilters={hasActiveFilters}
+                activeCount={Object.values(filters).filter(Boolean).length}
+                onClearAll={() => { clearAll(); setCurrentPage(1); }}
+            >
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 lg:gap-3">
                     {FILTER_DIMENSIONS.map(dim => (
                         <Select
@@ -245,7 +242,7 @@ const OmzetOutletPage: React.FC = () => {
                         />
                     ))}
                 </div>
-            </Card>
+            </MobileFilterCard>
 
             {/* Summary Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mt-4 lg:mt-6">

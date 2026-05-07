@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
-import { Filter, X, AlertCircle, ChevronDown, ChevronRight, MapPin, User } from 'lucide-react';
+import { AlertCircle, ChevronDown, ChevronRight, MapPin, User } from 'lucide-react';
 import Header from '../components/layout/Header';
 import DataTable from '../components/table/DataTable';
 import { Card, Select } from '../components/ui/index';
+import MobileFilterCard from '../components/common/MobileFilterCard';
 import { useRoleBasedOutlets, useUserFilterContext } from '../hooks/useRoleBasedData';
 import { formatRSNumber } from '../utils/formatters';
 import type { Outlet, TableColumn } from '../types';
@@ -526,21 +527,13 @@ const OutletRegisterPage: React.FC = () => {
                 </Card>
             </div>
 
-            {/* Unified Filter Bar */}
-            <Card padding="md" className="mb-6 bg-slate-100">
-                <div className="flex items-center gap-2 mb-3">
-                    <Filter size={16} className="text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700">Filter Options</span>
-                    {hasActiveFilters && (
-                        <button
-                            onClick={clearAllFilters}
-                            className="ml-auto flex items-center gap-1 text-xs text-red-600 hover:text-red-700 transition-colors"
-                        >
-                            <X size={14} />
-                            Clear All
-                        </button>
-                    )}
-                </div>
+            {/* Unified Filter Bar — collapsible on mobile */}
+            <MobileFilterCard
+                className="mb-6"
+                hasActiveFilters={!!hasActiveFilters}
+                activeCount={[tapFilter, salesforceFilter, kabupatenFilter, physicalStatusFilter, pjpStatusFilter].filter(Boolean).length}
+                onClearAll={clearAllFilters}
+            >
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     <Select
                         label="TAP"
@@ -573,7 +566,7 @@ const OutletRegisterPage: React.FC = () => {
                         options={pjpStatusOptions}
                     />
                 </div>
-            </Card>
+            </MobileFilterCard>
 
             {/* Summary Tables */}
             <Card padding="md" className="mb-6">

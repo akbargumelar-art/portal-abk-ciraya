@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { Upload, FileText, Download, CheckCircle, XCircle, Clock, AlertTriangle } from 'lucide-react';
+import { Upload, FileText, Download, CheckCircle, XCircle, Clock, AlertTriangle, FileSpreadsheet, Package } from 'lucide-react';
 import { Card, Button, Select, Badge } from '../components/ui/index';
 import { ContentPanel, PageShell } from '../components/layout/Page';
+import { downloadTemplate, downloadAllTemplates, getTemplateList } from '../utils/excelTemplates';
 
 interface UploadRecord {
     id: string;
@@ -32,8 +33,10 @@ const uploadTypes = [
 const DataUploadPage: React.FC = () => {
     const [records, setRecords] = useState<UploadRecord[]>(mockRecords);
     const [selectedType, setSelectedType] = useState('outlet');
+    const [selectedTemplateId, setSelectedTemplateId] = useState('register_outlet');
     const [dragActive, setDragActive] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const templates = getTemplateList();
 
     const getStatusIcon = (status: UploadRecord['status']) => {
         switch (status) {
@@ -165,9 +168,64 @@ const DataUploadPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <Button variant="outline" className="w-full mt-4" leftIcon={<Download size={16} />}>
-                            Unduh Template
-                        </Button>
+                        <div className="mt-4 space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">Pilih Template</label>
+                            <Select
+                                value={selectedTemplateId}
+                                onChange={(e) => setSelectedTemplateId(e.target.value)}
+                                options={templates.map(t => ({
+                                    value: t.id,
+                                    label: `${t.name} (${t.columnCount} kolom)`,
+                                }))}
+                            />
+                            <Button
+                                variant="outline"
+                                className="w-full"
+                                leftIcon={<Download size={16} />}
+                                onClick={() => downloadTemplate(selectedTemplateId)}
+                            >
+                                Unduh Template
+                            </Button>
+                            <Button
+                                variant="primary"
+                                className="w-full"
+                                leftIcon={<Package size={16} />}
+                                onClick={downloadAllTemplates}
+                            >
+                                Unduh Semua Template
+                            </Button>
+                        </div>
+                    </Card>
+
+                    {/* Available Templates List */}
+                    <Card className="mt-6">
+                        <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                            <FileSpreadsheet size={18} className="text-green-600" />
+                            Template Tersedia
+                        </h3>
+                        <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
+                            {templates.map(t => (
+                                <div
+                                    key={t.id}
+                                    className="flex items-start justify-between gap-2 p-2.5 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
+                                >
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-sm font-medium text-gray-900 truncate">{t.name}</p>
+                                        <p className="text-xs text-gray-500 line-clamp-2">{t.description}</p>
+                                        <p className="text-[10px] text-gray-400 mt-0.5">{t.columnCount} kolom</p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => downloadTemplate(t.id)}
+                                        className="flex-shrink-0 p-2 text-gray-500 hover:text-[#F13B4B] hover:bg-red-50 rounded-lg transition-colors"
+                                        title={`Unduh template ${t.name}`}
+                                        aria-label={`Unduh template ${t.name}`}
+                                    >
+                                        <Download size={16} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </Card>
                 </div>
 
