@@ -36,7 +36,7 @@ const BOTTOM_TABS: BottomTab[] = [
         label: 'Outlet',
         icon: <Store size={22} />,
         path: '/outlets',
-        matchPaths: ['/outlets', '/stock'],
+        matchPaths: ['/outlets'],
     },
     {
         id: 'stock',

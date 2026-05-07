@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import NotificationDropdown from './NotificationDropdown';
 import UserProfileMenu from './UserProfileMenu';
 import ProfileEditModal from '../modals/ProfileEditModal';
 import { useSearch } from '../../contexts/SearchContext';
-import { useSidebar } from '../../contexts/SidebarContext';
 
 interface HeaderProps {
     title: string;
@@ -15,20 +14,12 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title, subtitle, actions }) => {
     const [showProfileEdit, setShowProfileEdit] = useState(false);
     const { searchQuery, setSearchQuery, clearSearch } = useSearch();
-    const { openMobileSidebar } = useSidebar();
 
     return (
         <>
-            <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
+            <header className="h-16 bg-white border-b border-gray-200 hidden lg:flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
                 {/* Left Section */}
                 <div className="flex items-center gap-3">
-                    <button
-                        className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
-                        onClick={openMobileSidebar}
-                        aria-label="Buka menu navigasi"
-                    >
-                        <Menu size={20} />
-                    </button>
                     <div>
                         <h2 className="text-lg lg:text-xl font-semibold text-gray-900 leading-tight">{title}</h2>
                         {subtitle && <p className="text-xs lg:text-sm text-gray-500">{subtitle}</p>}
